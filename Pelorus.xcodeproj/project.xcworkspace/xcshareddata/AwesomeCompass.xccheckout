@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F6983BFB-F5F6-44EE-A299-49CC0130289A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AwesomeCompass</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>89933C4B9B8F8A2F4535C73EF30133958C16219A</key>
+		<string>github.com:wcharczuk/Goggles.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AwesomeCompass.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>89933C4B9B8F8A2F4535C73EF30133958C16219A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:wcharczuk/Goggles.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>89933C4B9B8F8A2F4535C73EF30133958C16219A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>89933C4B9B8F8A2F4535C73EF30133958C16219A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Goggles</string>
+		</dict>
+	</array>
+</dict>
+</plist>
