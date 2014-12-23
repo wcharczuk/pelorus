@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */; };
 		B329AEDF1A1D12AF00FCC3C0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B329AEDE1A1D12AF00FCC3C0 /* CoreGraphics.framework */; };
+		B3330A661A49CAF800E309C8 /* Pelorus_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3330A651A49CAF800E309C8 /* Pelorus_Tests.swift */; };
+		B3330A6C1A49CB0E00E309C8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F01A448AAE006F903F /* Configuration.swift */; };
+		B3330A6D1A49CB1100E309C8 /* DistanceVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F21A448AAE006F903F /* DistanceVector.swift */; };
+		B3330A6F1A49CB1600E309C8 /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FA1A448AAE006F903F /* Themes.swift */; };
+		B3330A701A49CB1800E309C8 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */; };
+		B3330A711A49CB1D00E309C8 /* FixedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */; };
 		B33DB3DA1A1EB3E0000EDA88 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B33DB3D91A1EB3E0000EDA88 /* AVKit.framework */; };
 		B389403C1A12DC5C0022E281 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B389403B1A12DC5C0022E281 /* CoreLocation.framework */; };
 		B3B913BF1A13D685004D1019 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B913BE1A13D685004D1019 /* CoreMotion.framework */; };
@@ -24,30 +31,28 @@
 		B3D7F8091A448AAE006F903F /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FA1A448AAE006F903F /* Themes.swift */; };
 		B3D7F80A1A448AAE006F903F /* UIThemedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FB1A448AAE006F903F /* UIThemedViewController.swift */; };
 		B3D7F80B1A448AAE006F903F /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */; };
-		B3D7F8101A448AB7006F903F /* PelorusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F80E1A448AB7006F903F /* PelorusTests.swift */; };
-		B3D7F8121A448AD1006F903F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F01A448AAE006F903F /* Configuration.swift */; };
-		B3D7F8131A448AD1006F903F /* DistanceVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F21A448AAE006F903F /* DistanceVector.swift */; };
-		B3D7F8151A448AD1006F903F /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FA1A448AAE006F903F /* Themes.swift */; };
-		B3D7F8161A448AD1006F903F /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */; };
 		B3D7F8171A448DD7006F903F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3D7F7ED1A448AAE006F903F /* Main.storyboard */; };
 		B3DC95051A1933F9003F2B4A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3DC95041A1933F9003F2B4A /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		B3BD1F4F1A439A3E00152C36 /* PBXContainerItemProxy */ = {
+		B3330A671A49CAF800E309C8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B389400E1A12DC4B0022E281 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B38940151A12DC4B0022E281;
-			remoteInfo = Circuitis;
+			remoteInfo = Pelorus;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedQueue.swift; sourceTree = "<group>"; };
 		B329AEDE1A1D12AF00FCC3C0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B3330A611A49CAF800E309C8 /* Pelorus Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pelorus Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3330A641A49CAF800E309C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3330A651A49CAF800E309C8 /* Pelorus_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pelorus_Tests.swift; sourceTree = "<group>"; };
 		B33DB3D91A1EB3E0000EDA88 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		B38940161A12DC4B0022E281 /* Pelorus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pelorus.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B389402B1A12DC4C0022E281 /* PelorusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PelorusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B389403B1A12DC5C0022E281 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B3B913BE1A13D685004D1019 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		B3D7F7EC1A448AAE006F903F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +76,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B3330A5E1A49CAF800E309C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B38940131A12DC4B0022E281 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -83,16 +95,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B38940281A12DC4C0022E281 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B3330A621A49CAF800E309C8 /* Pelorus Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B3330A651A49CAF800E309C8 /* Pelorus_Tests.swift */,
+				B3330A631A49CAF800E309C8 /* Supporting Files */,
+			);
+			path = "Pelorus Tests";
+			sourceTree = "<group>";
+		};
+		B3330A631A49CAF800E309C8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B3330A641A49CAF800E309C8 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		B389400D1A12DC4B0022E281 = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +125,7 @@
 				B389403B1A12DC5C0022E281 /* CoreLocation.framework */,
 				B3D7F7EB1A448AAE006F903F /* Pelorus */,
 				B3D7F80C1A448AB7006F903F /* PelorusTests */,
+				B3330A621A49CAF800E309C8 /* Pelorus Tests */,
 				B38940171A12DC4B0022E281 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -111,7 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				B38940161A12DC4B0022E281 /* Pelorus.app */,
-				B389402B1A12DC4C0022E281 /* PelorusTests.xctest */,
+				B3330A611A49CAF800E309C8 /* Pelorus Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -151,6 +174,7 @@
 				B3D7F7FA1A448AAE006F903F /* Themes.swift */,
 				B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */,
 				B3D7F7FB1A448AAE006F903F /* UIThemedViewController.swift */,
+				B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -158,6 +182,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B3330A601A49CAF800E309C8 /* Pelorus Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3330A691A49CAF800E309C8 /* Build configuration list for PBXNativeTarget "Pelorus Tests" */;
+			buildPhases = (
+				B3330A5D1A49CAF800E309C8 /* Sources */,
+				B3330A5E1A49CAF800E309C8 /* Frameworks */,
+				B3330A5F1A49CAF800E309C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B3330A681A49CAF800E309C8 /* PBXTargetDependency */,
+			);
+			name = "Pelorus Tests";
+			productName = "Pelorus Tests";
+			productReference = B3330A611A49CAF800E309C8 /* Pelorus Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B38940151A12DC4B0022E281 /* Pelorus */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B38940351A12DC4C0022E281 /* Build configuration list for PBXNativeTarget "Pelorus" */;
@@ -175,24 +217,6 @@
 			productReference = B38940161A12DC4B0022E281 /* Pelorus.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B389402A1A12DC4C0022E281 /* PelorusTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B38940381A12DC4C0022E281 /* Build configuration list for PBXNativeTarget "PelorusTests" */;
-			buildPhases = (
-				B38940271A12DC4C0022E281 /* Sources */,
-				B38940281A12DC4C0022E281 /* Frameworks */,
-				B38940291A12DC4C0022E281 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B3BD1F501A439A3E00152C36 /* PBXTargetDependency */,
-			);
-			name = PelorusTests;
-			productName = GogglesTests;
-			productReference = B389402B1A12DC4C0022E281 /* PelorusTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -202,13 +226,13 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Will Charczuk";
 				TargetAttributes = {
+					B3330A601A49CAF800E309C8 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = B38940151A12DC4B0022E281;
+					};
 					B38940151A12DC4B0022E281 = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = 9Q2FWBTLSX;
-					};
-					B389402A1A12DC4C0022E281 = {
-						CreatedOnToolsVersion = 6.1;
-						TestTargetID = B38940151A12DC4B0022E281;
 					};
 				};
 			};
@@ -226,12 +250,19 @@
 			projectRoot = "";
 			targets = (
 				B38940151A12DC4B0022E281 /* Pelorus */,
-				B389402A1A12DC4C0022E281 /* PelorusTests */,
+				B3330A601A49CAF800E309C8 /* Pelorus Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B3330A5F1A49CAF800E309C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B38940141A12DC4B0022E281 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -241,16 +272,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B38940291A12DC4C0022E281 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B3330A5D1A49CAF800E309C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3330A6C1A49CB0E00E309C8 /* Configuration.swift in Sources */,
+				B3330A701A49CB1800E309C8 /* UserPreferences.swift in Sources */,
+				B3330A6D1A49CB1100E309C8 /* DistanceVector.swift in Sources */,
+				B3330A6F1A49CB1600E309C8 /* Themes.swift in Sources */,
+				B3330A661A49CAF800E309C8 /* Pelorus_Tests.swift in Sources */,
+				B3330A711A49CB1D00E309C8 /* FixedQueue.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B38940121A12DC4B0022E281 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,6 +296,7 @@
 				B3D7F80B1A448AAE006F903F /* UserPreferences.swift in Sources */,
 				B3D7F8011A448AAE006F903F /* DestinationSelectorController.swift in Sources */,
 				B3D7F8051A448AAE006F903F /* Pelorus.xcdatamodeld in Sources */,
+				B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */,
 				B3D7F8091A448AAE006F903F /* Themes.swift in Sources */,
 				B3D7F7FD1A448AAE006F903F /* AppDelegate.swift in Sources */,
 				B3D7F80A1A448AAE006F903F /* UIThemedViewController.swift in Sources */,
@@ -270,25 +308,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B38940271A12DC4C0022E281 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B3D7F8121A448AD1006F903F /* Configuration.swift in Sources */,
-				B3D7F8161A448AD1006F903F /* UserPreferences.swift in Sources */,
-				B3D7F8131A448AD1006F903F /* DistanceVector.swift in Sources */,
-				B3D7F8151A448AD1006F903F /* Themes.swift in Sources */,
-				B3D7F8101A448AB7006F903F /* PelorusTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B3BD1F501A439A3E00152C36 /* PBXTargetDependency */ = {
+		B3330A681A49CAF800E309C8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B38940151A12DC4B0022E281 /* Pelorus */;
-			targetProxy = B3BD1F4F1A439A3E00152C36 /* PBXContainerItemProxy */;
+			targetProxy = B3330A671A49CAF800E309C8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -304,6 +330,42 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B3330A6A1A49CAF800E309C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Pelorus Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pelorus.app/Pelorus";
+			};
+			name = Debug;
+		};
+		B3330A6B1A49CAF800E309C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Pelorus Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pelorus.app/Pelorus";
+			};
+			name = Release;
+		};
 		B38940331A12DC4C0022E281 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -413,41 +475,17 @@
 			};
 			name = Release;
 		};
-		B38940391A12DC4C0022E281 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = PelorusTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = PelorusTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pelorus.app/Pelorus";
-			};
-			name = Debug;
-		};
-		B389403A1A12DC4C0022E281 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = PelorusTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = PelorusTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pelorus.app/Pelorus";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B3330A691A49CAF800E309C8 /* Build configuration list for PBXNativeTarget "Pelorus Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3330A6A1A49CAF800E309C8 /* Debug */,
+				B3330A6B1A49CAF800E309C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		B38940111A12DC4B0022E281 /* Build configuration list for PBXProject "Pelorus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -462,15 +500,6 @@
 			buildConfigurations = (
 				B38940361A12DC4C0022E281 /* Debug */,
 				B38940371A12DC4C0022E281 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B38940381A12DC4C0022E281 /* Build configuration list for PBXNativeTarget "PelorusTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B38940391A12DC4C0022E281 /* Debug */,
-				B389403A1A12DC4C0022E281 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

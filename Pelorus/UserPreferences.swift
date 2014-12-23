@@ -25,18 +25,18 @@ struct UserPreferences {
         }
     }
     
-    static var CompassSmoothing : Int {
+    static var SensorSmoothing : Int {
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
             if nil != defaults.objectForKey("units") {
-                let value = defaults.integerForKey("compass_smoothing")
+                let value = defaults.integerForKey("sensor_smoothing")
                 if value < 1 {
                     return 1
                 } else {
                     return value
                 }
             } else {
-                return Configuration.COMPASS_SMOOTHING
+                return Configuration.SENSOR_SMOOTHING
             }
         }
         set(value) {
@@ -47,7 +47,37 @@ struct UserPreferences {
             }
             
             let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setInteger(newValue, forKey: "compass_smoothing")
+            defaults.setInteger(newValue, forKey: "sensor_smoothing")
+        }
+    }
+    
+    static var ShouldSmoothLocation : Bool {
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            if nil != defaults.objectForKey("should_smooth_location") {
+                return defaults.boolForKey("should_smooth_location")
+            } else {
+                return Configuration.SHOULD_SMOOTH_LOCATION
+            }
+        }
+        set(value) {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(value, forKey: "should_smooth_location")
+        }
+    }
+    
+    static var ShouldSmoothCompass : Bool {
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            if nil != defaults.objectForKey("should_smooth_compass") {
+                return defaults.boolForKey("should_smooth_compass")
+            } else {
+                return Configuration.SHOULD_SMOOTH_COMPASS
+            }
+        }
+        set(value) {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(value, forKey: "should_smooth_compass")
         }
     }
     

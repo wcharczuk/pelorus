@@ -9,7 +9,10 @@
 import Foundation
 
 struct Configuration {
-    static let COMPASS_SMOOTHING = 5
+    static let SENSOR_SMOOTHING = 5
     static let UNITS_USE_METRIC = true
     static let THEME = 0
+    
+    static let SHOULD_SMOOTH_LOCATION = true
+    static let SHOULD_SMOOTH_COMPASS = true
 }

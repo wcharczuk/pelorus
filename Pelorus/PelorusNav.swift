@@ -28,9 +28,12 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     private var _motionManager : CMMotionManager!
     private var _locationManager : CLLocationManager!
     
-    private var _headingQueue : [Double]!
+    private var _headingQueue = FixedQueue<Double>()
+    private var _locationQueue = FixedQueue<GPS>()
+    
     private var _motionQueue : NSOperationQueue = NSOperationQueue()
     
+    private var _currentUserLocationRaw : GPS!
     private var _currentUserLocation : GPS!
     private var _currentDestination : GPS!
     private var _currentDistance : DistanceVector!
@@ -111,9 +114,15 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
     }
     
+    func ChangeQueueLengths(length: Int) {
+        _headingQueue.MaxLength = length
+        _locationQueue.MaxLength = length
+    }
+    
     /******* Location Manager Specific Delegates *******/
     
-    func locationManager (manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    //location updated
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
         var locationObj = locationArray.lastObject as CLLocation
         var coord = locationObj.coordinate
@@ -122,7 +131,23 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         let my_long = coord.longitude
         let my_elev = locationObj.altitude
         
-        _currentUserLocation = GPS(latitude: my_lat, longitude: my_long, elevation: my_elev)
+        self._currentUserLocationRaw = GPS(latitude: my_lat, longitude: my_long, elevation: my_elev)
+        
+        if UserPreferences.ShouldSmoothLocation {
+            self._locationQueue.Enqueue(self._currentUserLocationRaw)
+            let reduced_totals = _locationQueue.Reduce {
+                (total : (Double, Double, Double)?, value : GPS) in
+                if nil == total {
+                    return (value.Latitude, value.Longitude, value.Elevation)
+                } else {
+                    return (value.Latitude + total!.0, value.Longitude + total!.1, value.Elevation + total!.2)
+                }
+            }
+            let count = Double(_locationQueue.Length)
+            self._currentUserLocation = GPS(latitude: reduced_totals!.0 / count , longitude: reduced_totals!.1 / count, elevation: reduced_totals!.2 / count)
+        } else {
+            self._currentUserLocation = self._currentUserLocationRaw
+        }
         
         if(_currentDestination != nil) {
             _currentDistance = DistanceVector(origin: CurrentUserLocation, destination: CurrentDestination)
@@ -134,25 +159,23 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
     }
     
-    private func _pushNewHeading(queue: [Double], newHeading: Double) -> [Double] {
-        if queue.count == 0 || queue.count == 1 {
-            return queue + [newHeading]
-        } else if queue.count < UserPreferences.CompassSmoothing {
-            return queue + [newHeading]
-        } else {
-            return queue[1 ... (queue.count - 1)] + [newHeading]
-        }
-    }
-    
-    private func _movingAverageFilter(newHeading: Double) -> Double {
-        self._headingQueue = _pushNewHeading(self._headingQueue, newHeading: _currentRawHeading)
-        return DistanceVector.CalculateAverageBearing(self._headingQueue)
-    }
-    
+    //heading updated
     func locationManager(manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
         
         self._currentRawHeading = newHeading.trueHeading
-        self._currentHeading = _movingAverageFilter(self._currentRawHeading)
+        
+        if UserPreferences.ShouldSmoothCompass {
+            self._headingQueue.Enqueue(self._currentRawHeading)
+            //need to filter this
+            let reduced = self._headingQueue.Reduce {
+                (total, value) in nil != total ? total! + value : value
+            }
+            let average = reduced! / Double(self._headingQueue.Length)
+            
+            self._currentHeading = average
+        } else {
+            self._currentHeading = self._currentRawHeading
+        }
         
         let orientation = UIDevice.currentDevice().orientation
         if orientation == UIDeviceOrientation.LandscapeLeft || orientation == UIDeviceOrientation.LandscapeRight {
@@ -216,7 +239,8 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
             
             _status = "Location Services started."
             
-            _headingQueue = [Double]()
+            _headingQueue = FixedQueue<Double>(maxLength: UserPreferences.SensorSmoothing)
+            _locationQueue = FixedQueue<GPS>(maxLength: UserPreferences.SensorSmoothing)
         } else {
             _status = "Location Services are disabled."
         }

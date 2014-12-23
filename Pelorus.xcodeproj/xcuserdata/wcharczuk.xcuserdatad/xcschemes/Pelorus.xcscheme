@@ -34,6 +34,20 @@
                ReferencedContainer = "container:Pelorus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B3330A601A49CAF800E309C8"
+               BuildableName = "Pelorus Tests.xctest"
+               BlueprintName = "Pelorus Tests"
+               ReferencedContainer = "container:Pelorus.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "B389402A1A12DC4C0022E281"
                BuildableName = "PelorusTests.xctest"
                BlueprintName = "PelorusTests"
+               ReferencedContainer = "container:Pelorus.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B3330A601A49CAF800E309C8"
+               BuildableName = "Pelorus Tests.xctest"
+               BlueprintName = "Pelorus Tests"
                ReferencedContainer = "container:Pelorus.xcodeproj">
             </BuildableReference>
          </TestableReference>
