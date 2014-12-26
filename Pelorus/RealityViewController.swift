@@ -389,7 +389,9 @@ class RealityViewController: UIThemedViewController, UIGestureRecognizerDelegate
         _nav.Receiver = self
         _navigationShowing = true
         
-        interfaceView.Destination = _nav.CurrentDestination.Label
+        if nil != _nav.CurrentDestination {
+            interfaceView.Destination = _nav.CurrentDestination.Label
+        }
         setDestinationButton.enabled = true
     }
     

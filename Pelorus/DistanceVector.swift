@@ -167,6 +167,41 @@ struct DistanceVector {
             }
         }
     }
+    
+    static func CalculateBearingDifferenceRadians(from: Double, to: Double) -> Double {
+        if from == to {
+            return 0.0
+        }
+        
+        if(from < to) {
+            //if from is less than to, to is either clockwise (right) or anti-clockwise to zero (left
+            let to_to_zero = (2*M_PI) - to
+            let from_to_zero = from
+            
+            let cw = to - from
+            let acw = to_to_zero + from_to_zero
+            
+            if(abs(acw) < cw) {
+                return -1*acw
+            } else {
+                return cw
+            }
+        } else {
+            //here, from is ahead of to. the 'to zero' for from will be 360 - from
+            let to_to_zero = to
+            let from_to_zero = (2*M_PI) - from
+            
+            let cw = to - from //this will be negative!!
+            let acw = to_to_zero + from_to_zero
+            
+            if(abs(acw) < abs(cw)) {
+                return acw
+            } else {
+                return cw
+            }
+        }
+
+    }
 
     static func CalculateAverageBearing(bearings: [Double]) -> Double {
         var x = 0.0
@@ -187,8 +222,35 @@ struct DistanceVector {
         return bearing_average
     }
     
+    static func AddRadians(base:Double, addition:Double) -> Double {
+        let new_base = base + addition
+        if new_base > (2*M_PI) {
+            return new_base - (2*M_PI)
+        } else if new_base < 0 {
+            return new_base + (2*M_PI)
+        } else {
+            return new_base
+        }
+    }
+    
+    static func AddDegrees(base: Double, addition: Double) -> Double {
+        let new_base = base + addition
+        if new_base > 360.0 {
+            return new_base - 360.0
+        } else if new_base < 0 {
+            return 360.0 + new_base
+        } else {
+            return new_base
+        }
+    }
+    
     static func Radians(value:Double) -> Double {
         return value * M_PI / 180.0
+    }
+    
+    static func RadiansCompass(value: Double) -> Double {
+        let inverted = 360.0 - value
+        return Radians(inverted)
     }
     
     static func Degrees(value:Double) -> Double {

@@ -11,10 +11,11 @@ import UIKit
 
 class Theme {
     
-    init(id: Int, name: String, primaryColor :UIColor, secondaryColor: UIColor, backgroundColor: UIColor, highlightColor: UIColor, primaryFontColor: UIColor, primaryFont : UIFont) {
+    init(id: Int, name: String, primaryColor :UIColor, borderColor :UIColor, secondaryColor: UIColor, backgroundColor: UIColor, highlightColor: UIColor, primaryFontColor: UIColor, primaryFont : UIFont) {
         self.Id = id
         self.Name = name
         self.PrimaryColor = primaryColor
+        self.BorderColor = borderColor
         self.SecondaryColor = secondaryColor
         self.BackgroundColor = backgroundColor
         self.HighlightColor = highlightColor
@@ -22,10 +23,11 @@ class Theme {
         self.PrimaryFontColor = primaryFontColor
     }
     
-    init(id: Int, name: String, primaryColor :UIColor, secondaryColor: UIColor, backgroundColor: UIColor, highlightColor: UIColor, primaryFontColor: UIColor, primaryFont : UIFont, menubarBackgroundColor: UIColor, menubarFontColor: UIColor) {
+    init(id: Int, name: String, primaryColor :UIColor, borderColor :UIColor, secondaryColor: UIColor, backgroundColor: UIColor, highlightColor: UIColor, primaryFontColor: UIColor, primaryFont : UIFont, menubarBackgroundColor: UIColor, menubarFontColor: UIColor) {
         self.Id = id
         self.Name = name
         self.PrimaryColor = primaryColor
+        self.BorderColor = borderColor
         self.SecondaryColor = secondaryColor
         self.BackgroundColor = backgroundColor
         self.HighlightColor = highlightColor
@@ -39,6 +41,7 @@ class Theme {
     var Name : String
     
     var PrimaryColor : UIColor
+    var BorderColor : UIColor
     var SecondaryColor: UIColor
     var BackgroundColor: UIColor
     var HighlightColor: UIColor
@@ -76,6 +79,7 @@ struct Themes {
                 id: 0,
                 name: "Light Blue",
                 primaryColor: UIColor(red: 0.38, green: 0.5921, blue: 0.73333, alpha: 1.0), //blue //r:97, g:151, b:187
+                borderColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0), //black
                 secondaryColor: UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0), //dark grey
                 backgroundColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), //white
                 highlightColor: UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.8), //light grey
@@ -91,6 +95,7 @@ struct Themes {
                 id: 1,
                 name: "Light Red",
                 primaryColor: UIColor(red: 0.74, green: 0.21, blue: 0.18, alpha: 1.0), //darkish red
+                borderColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0), //black
                 secondaryColor: UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0), //dark grey
                 backgroundColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), //white
                 highlightColor: UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.8), //light grey
@@ -106,6 +111,7 @@ struct Themes {
                 id: 2,
                 name: "Dark Blue",
                 primaryColor: UIColor(red: 0.38, green: 0.5921, blue: 0.73333, alpha: 1.0), //blue
+                borderColor: UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0),
                 secondaryColor: UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0), //dark grey
                 backgroundColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0), //black
                 highlightColor: UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.8), //light grey
@@ -123,6 +129,7 @@ struct Themes {
                 id: 3,
                 name: "Dark Red",
                 primaryColor: UIColor(red: 0.74, green: 0.21, blue: 0.18, alpha: 1.0), //darkish red
+                borderColor: UIColor(red: 0.74, green: 0.21, blue: 0.18, alpha: 0.6),
                 secondaryColor: UIColor(red: 0.74, green: 0.21, blue: 0.18, alpha: 0.6), //dark grey
                 backgroundColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0), //white
                 highlightColor: UIColor(red: 0.74, green: 0.21, blue: 0.18, alpha: 0.7), //light grey

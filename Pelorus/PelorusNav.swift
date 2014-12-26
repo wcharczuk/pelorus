@@ -166,13 +166,8 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         
         if UserPreferences.ShouldSmoothCompass {
             self._headingQueue.Enqueue(self._currentRawHeading)
-            //need to filter this
-            let reduced = self._headingQueue.Reduce {
-                (total, value) in nil != total ? total! + value : value
-            }
-            let average = reduced! / Double(self._headingQueue.Length)
             
-            self._currentHeading = average
+            self._currentHeading = DistanceVector.CalculateAverageBearing( self._headingQueue.ToList() )
         } else {
             self._currentHeading = self._currentRawHeading
         }

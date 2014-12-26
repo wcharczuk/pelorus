@@ -86,6 +86,14 @@ class FixedQueue<T> {
         return FixedQueue<T>(maxLength: _maxLength, values: _queue.reverse())
     }
     
+    func ToList() -> Array<T> {
+        var list = Array<T>()
+        for elem in _queue {
+            list.append(elem)
+        }
+        return list
+    }
+    
     subscript(index: Int) -> T {
         return _queue[index]
     }
