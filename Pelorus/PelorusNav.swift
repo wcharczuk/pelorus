@@ -167,7 +167,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         if UserPreferences.ShouldSmoothCompass {
             self._headingQueue.Enqueue(self._currentRawHeading)
             
-            self._currentHeading = DistanceVector.CalculateAverageBearing( self._headingQueue.ToList() )
+            self._currentHeading = CompassUtil.CalculateAverageBearing( self._headingQueue.ToList() )
         } else {
             self._currentHeading = self._currentRawHeading
         }
@@ -183,7 +183,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         
         if _currentDestination != nil && _currentDistance != nil {
             _currentDestinationHeading = _currentDistance.CompassHeading
-            _currentHeadingError = DistanceVector.CalculateBearingDifference(_currentHeading, to: _currentDestinationHeading)
+            _currentHeadingError = CompassUtil.CalculateBearingDifference(_currentHeading, to: _currentDestinationHeading)
         }
         
         if nil != Receiver {

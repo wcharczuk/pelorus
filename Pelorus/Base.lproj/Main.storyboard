@@ -402,6 +402,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="compassView" destination="s1P-6i-c1E" id="Jo3-Lc-DWJ"/>
                         <outlet property="destinationText" destination="HbK-jB-5Wo" id="uWf-xF-WvN"/>
@@ -448,7 +449,7 @@
                     <navigationItem key="navigationItem" title="Reality View" id="bXf-F0-i87">
                         <barButtonItem key="rightBarButtonItem" title="Set" id="az3-fs-Hkg">
                             <connections>
-                                <segue destination="1qR-Ps-Kt4" kind="show" id="caB-JW-bZM"/>
+                                <segue destination="1qR-Ps-Kt4" kind="show" identifier="selectDestinationSegue" id="caB-JW-bZM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

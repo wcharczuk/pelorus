@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B305C8551A51E505003564B5 /* CompassUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8541A51E505003564B5 /* CompassUtil.swift */; };
+		B305C8571A51E558003564B5 /* GPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8561A51E558003564B5 /* GPS.swift */; };
+		B305C8591A51E56C003564B5 /* CLPlacemarkExtesions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8581A51E56C003564B5 /* CLPlacemarkExtesions.swift */; };
 		B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */; };
 		B329AEDF1A1D12AF00FCC3C0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B329AEDE1A1D12AF00FCC3C0 /* CoreGraphics.framework */; };
 		B3330A661A49CAF800E309C8 /* Pelorus_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3330A651A49CAF800E309C8 /* Pelorus_Tests.swift */; };
@@ -33,6 +36,8 @@
 		B3D7F80B1A448AAE006F903F /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */; };
 		B3D7F8171A448DD7006F903F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3D7F7ED1A448AAE006F903F /* Main.storyboard */; };
 		B3DC95051A1933F9003F2B4A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3DC95041A1933F9003F2B4A /* CoreData.framework */; };
+		B3FAED0B1A51E60500EC7EBB /* CompassUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8541A51E505003564B5 /* CompassUtil.swift */; };
+		B3FAED0C1A51EA2F00EC7EBB /* GPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8561A51E558003564B5 /* GPS.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +51,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B305C8541A51E505003564B5 /* CompassUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassUtil.swift; sourceTree = "<group>"; };
+		B305C8561A51E558003564B5 /* GPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPS.swift; sourceTree = "<group>"; };
+		B305C8581A51E56C003564B5 /* CLPlacemarkExtesions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLPlacemarkExtesions.swift; sourceTree = "<group>"; };
 		B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedQueue.swift; sourceTree = "<group>"; };
 		B329AEDE1A1D12AF00FCC3C0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B3330A611A49CAF800E309C8 /* Pelorus Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pelorus Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,13 +176,16 @@
 		B3D7F8111A448ABC006F903F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B305C8581A51E56C003564B5 /* CLPlacemarkExtesions.swift */,
+				B305C8541A51E505003564B5 /* CompassUtil.swift */,
 				B3D7F7F01A448AAE006F903F /* Configuration.swift */,
 				B3D7F7F21A448AAE006F903F /* DistanceVector.swift */,
+				B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */,
+				B305C8561A51E558003564B5 /* GPS.swift */,
 				B3D7F7F71A448AAE006F903F /* PelorusNav.swift */,
 				B3D7F7FA1A448AAE006F903F /* Themes.swift */,
-				B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */,
 				B3D7F7FB1A448AAE006F903F /* UIThemedViewController.swift */,
-				B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */,
+				B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -285,6 +296,8 @@
 				B3330A6F1A49CB1600E309C8 /* Themes.swift in Sources */,
 				B3330A661A49CAF800E309C8 /* Pelorus_Tests.swift in Sources */,
 				B3330A711A49CB1D00E309C8 /* FixedQueue.swift in Sources */,
+				B3FAED0C1A51EA2F00EC7EBB /* GPS.swift in Sources */,
+				B3FAED0B1A51E60500EC7EBB /* CompassUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,11 +305,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B305C8551A51E505003564B5 /* CompassUtil.swift in Sources */,
 				B3D7F8001A448AAE006F903F /* Configuration.swift in Sources */,
 				B3D7F80B1A448AAE006F903F /* UserPreferences.swift in Sources */,
 				B3D7F8011A448AAE006F903F /* DestinationSelectorController.swift in Sources */,
 				B3D7F8051A448AAE006F903F /* Pelorus.xcdatamodeld in Sources */,
 				B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */,
+				B305C8591A51E56C003564B5 /* CLPlacemarkExtesions.swift in Sources */,
 				B3D7F8091A448AAE006F903F /* Themes.swift in Sources */,
 				B3D7F7FD1A448AAE006F903F /* AppDelegate.swift in Sources */,
 				B3D7F80A1A448AAE006F903F /* UIThemedViewController.swift in Sources */,
@@ -305,6 +320,7 @@
 				B3D7F8061A448AAE006F903F /* PelorusNav.swift in Sources */,
 				B3D7F8071A448AAE006F903F /* RealityViewController.swift in Sources */,
 				B3D7F8081A448AAE006F903F /* SettingsViewController.swift in Sources */,
+				B305C8571A51E558003564B5 /* GPS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,6 +501,7 @@
 				B3330A6B1A49CAF800E309C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B38940111A12DC4B0022E281 /* Build configuration list for PBXProject "Pelorus" */ = {
 			isa = XCConfigurationList;

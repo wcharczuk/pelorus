@@ -21,20 +21,17 @@ class UIThemedViewController : UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.translucent = false
+        self.tabBarController?.tabBar.translucent = false
+        
         if nil != Themes.Current.MenubarBackgroundColor {
             self.navigationController?.navigationBar.barTintColor = Themes.Current.MenubarBackgroundColor!
-            self.navigationController?.navigationBar.translucent = false
-            
             self.tabBarController?.tabBar.barTintColor = Themes.Current.MenubarBackgroundColor!
-            self.tabBarController?.tabBar.translucent = false
-            
         } else {
             
             self.navigationController?.navigationBar.barTintColor = nil
-            self.navigationController?.navigationBar.translucent = false
-            
             self.tabBarController?.tabBar.barTintColor = nil
-            self.tabBarController?.tabBar.translucent = false
+            
         }
         
         if nil != Themes.Current.MenubarFontColor {
@@ -56,6 +53,5 @@ class UIThemedViewController : UIViewController {
             self.tabBarController?.tabBar.selectedImageTintColor = nil
             self.tabBarController?.tabBar.tintColor = nil
         }
-
     }
 }

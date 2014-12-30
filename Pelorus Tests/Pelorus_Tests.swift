@@ -29,10 +29,10 @@ class PelorusTests: XCTestCase {
         
         //310 -
         
-        var result = DistanceVector.CalculateBearingDifference(90.0, to: 310.0)
+        var result = CompassUtil.CalculateBearingDifference(90.0, to: 310.0)
         XCTAssert(result == -140.0, "Difference should be -140 deg")
         
-        result = DistanceVector.CalculateBearingDifference(45.0, to: 50.0)
+        result = CompassUtil.CalculateBearingDifference(45.0, to: 50.0)
         XCTAssert(result == 5.0, "Difference should be 5 deg")
         
         //-135

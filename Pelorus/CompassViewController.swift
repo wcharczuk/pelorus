@@ -45,41 +45,50 @@ class CompassControlView : UIView {
         
         let outer_ratio = diameter / 800.0
         
+        let _2_pi = 2 * M_PI
+        
         //draw compass and compass rose
         //draw circle
         CGContextSetLineWidth(ctx, 2)
         CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(diameter / 2.0), CGFloat(0.0), CGFloat(M_PI*2.0), Int32(1))
+        CGContextAddArc(ctx, center.x, center.y, CGFloat(diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
         CGContextStrokePath(ctx)
         
         let outer_inner_diameter = 775 * outer_ratio
         
         CGContextSetLineWidth(ctx, 1)
         CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(outer_inner_diameter / 2.0), CGFloat(0.0), CGFloat(M_PI*2.0), Int32(1))
+        CGContextAddArc(ctx, center.x, center.y, CGFloat(outer_inner_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
         CGContextStrokePath(ctx)
         
         let inner_outer_diameter = 675.0 * outer_ratio
         
         CGContextSetLineWidth(ctx, 1)
         CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(inner_outer_diameter / 2.0), CGFloat(0.0), CGFloat(M_PI*2.0), Int32(1))
+        CGContextAddArc(ctx, center.x, center.y, CGFloat(inner_outer_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
         CGContextStrokePath(ctx)
         
         let inner_inner_diameter = 648.0 * outer_ratio
         
         CGContextSetLineWidth(ctx, 1)
         CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(inner_inner_diameter / 2.0), CGFloat(0.0), CGFloat(M_PI*2.0), Int32(1))
+        CGContextAddArc(ctx, center.x, center.y, CGFloat(inner_inner_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
         CGContextStrokePath(ctx)
         
         let rose_diameter = 315 * outer_ratio
         
         CGContextSetLineWidth(ctx, 1)
         CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(rose_diameter / 2.0), CGFloat(0.0), CGFloat(M_PI*2.0), Int32(1))
+        CGContextAddArc(ctx, center.x, center.y, CGFloat(rose_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
         CGContextStrokePath(ctx)
     
+        let heading_x = bounds.size.width / 2.0
+        let heading_y = (bounds.size.height / 2.0) - ((diameter / 2.0) + 5.0)
+        
+        
+        //this is the little 'heading' triangle on the top of the compass
+        _draw_triangle(ctx, x: heading_x, y: heading_y, compassDegrees: 180.0, altitude: 10.0, width: 10.0, fillColor: Themes.Current.PrimaryColor)
+        
         let textAttributes : Dictionary<NSObject, AnyObject> = [
             NSFontAttributeName : Themes.Current.PrimaryFont.fontWithSize(30.0) as AnyObject,
             NSForegroundColorAttributeName : Themes.Current.PrimaryFontColor as AnyObject,
@@ -102,27 +111,26 @@ class CompassControlView : UIView {
         let southwest : NSString = "SW"
         let southeast : NSString = "SE"
         
-        var north_radians = M_PI_2
+        var north_degrees = 0.0
     
         if nil != self.CurrentHeading {
             //adjust north by current heading
             
-            var north_theta = DistanceVector.CalculateBearingDifference(0.0, to: self.CurrentHeading)
-            //north_theta = north_theta - 90
+            var north_theta = CompassUtil.CalculateBearingDifference(0.0, to: self.CurrentHeading)
             if north_theta < 0.0 {
                 north_theta = north_theta + 360
             }
             
-            north_radians = DistanceVector.Radians(north_theta)
+            north_degrees = north_theta
         }
         
-        var northeast_radians = DistanceVector.AddRadians(north_radians, addition: -1*M_PI_4)
-        var northwest_radians = DistanceVector.AddRadians(north_radians, addition: M_PI_4)
-        var west_radians = DistanceVector.AddRadians(north_radians, addition: M_PI_2)
-        var east_radians = DistanceVector.AddRadians(north_radians, addition: -1*M_PI_2)
-        var south_radians = DistanceVector.AddRadians(north_radians, addition: M_PI)
-        var southeast_radians = DistanceVector.AddRadians(south_radians, addition: M_PI_4)
-        var southwest_radians = DistanceVector.AddRadians(south_radians, addition: -1*M_PI_4)
+        var northeast_degrees = CompassUtil.AddDegrees(north_degrees, addition: -45.0)
+        var northwest_degrees = CompassUtil.AddDegrees(north_degrees, addition: 45.0)
+        var west_degrees = CompassUtil.AddDegrees(north_degrees, addition: 90.0)
+        var east_degrees = CompassUtil.AddDegrees(north_degrees, addition: -90.0)
+        var south_degrees = CompassUtil.AddDegrees(north_degrees, addition: 180.0)
+        var southeast_degrees = CompassUtil.AddDegrees(south_degrees, addition: 45.0)
+        var southwest_degrees = CompassUtil.AddDegrees(south_degrees, addition: -45.0)
         
         let minor_rose_triangle_altitude = (110 * outer_ratio) * 2.0
         let major_rose_triangle_altitude = rose_diameter
@@ -131,37 +139,37 @@ class CompassControlView : UIView {
         let major_rose_width = 108 * outer_ratio
         
         //draw compass rose 
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: northeast_radians, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: northwest_radians, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: southeast_radians, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: southwest_radians, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: northeast_degrees, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: northwest_degrees, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: southeast_degrees, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: southwest_degrees, altitude: minor_rose_triangle_altitude, width: minor_rose_width, fillColor: Themes.Current.BorderColor)
         
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: north_radians, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: east_radians, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: west_radians, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
-        _draw_triangle(ctx, x: center.x, y: center.y, compassRadians: south_radians, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: north_degrees, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: east_degrees, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: west_degrees, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
+        _draw_triangle(ctx, x: center.x, y: center.y, compassDegrees: south_degrees, altitude: major_rose_triangle_altitude, width: major_rose_width, fillColor: Themes.Current.PrimaryColor)
         
         //draw direction labels
         
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: northeast_radians, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: northwest_radians, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: southeast_radians, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: southwest_radians, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: northeast_degrees, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: northwest_degrees, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: southeast_degrees, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: southwest_degrees, altitude: 18.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
         
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: north_radians, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: east_radians, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: west_radians, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
-        _draw_compass_check(ctx, x: center.x, y: center.y, compassRadians: south_radians, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: north_degrees, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: east_degrees, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: west_degrees, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
+        _draw_compass_check(ctx, x: center.x, y: center.y, compassDegrees: south_degrees, altitude: 20.0, diameter: inner_inner_diameter, color: Themes.Current.BorderColor)
         
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: northeast, textAttributes: textAttributes, compassRadians: northeast_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: northwest, textAttributes: textAttributes, compassRadians: northwest_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: southeast, textAttributes: textAttributes, compassRadians: southeast_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: southwest, textAttributes: textAttributes, compassRadians: southwest_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: northeast, textAttributes: textAttributes, compassDegrees: northeast_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: northwest, textAttributes: textAttributes, compassDegrees: northwest_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: southeast, textAttributes: textAttributes, compassDegrees: southeast_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: southwest, textAttributes: textAttributes, compassDegrees: southwest_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
         
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: north, textAttributes: textAttributes, compassRadians: north_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: east, textAttributes: textAttributes, compassRadians: east_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: west, textAttributes: textAttributes, compassRadians: west_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
-        _draw_compass_label(ctx, x: center.x, y: center.y, label: south, textAttributes: textAttributes, compassRadians: south_radians, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: north, textAttributes: textAttributes, compassDegrees: north_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: east, textAttributes: textAttributes, compassDegrees: east_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: west, textAttributes: textAttributes, compassDegrees: west_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
+        _draw_compass_label(ctx, x: center.x, y: center.y, label: south, textAttributes: textAttributes, compassDegrees: south_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
        
         CGContextSaveGState(ctx)
         CGContextSetFillColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
@@ -172,7 +180,7 @@ class CompassControlView : UIView {
         
         var distance_text : NSString = "Distance Unknown"
         if nil != self.DistanceMeters {
-            distance_text = DistanceVector.FormatDistance(self.DistanceMeters) + " away" as NSString
+            distance_text = CompassUtil.FormatDistance(self.DistanceMeters) + " away" as NSString
         }
         let distance_text_size = distance_text.sizeWithAttributes(textAttributes)
         
@@ -190,12 +198,12 @@ class CompassControlView : UIView {
         
         if nil != self.CurrentHeadingError {
             
-            var dest = self.CurrentHeadingError
-            if dest < 0.0 {
-                dest = dest + 360.0
+            var destination_bearing = self.CurrentHeadingError
+            if destination_bearing < 0.0 {
+                destination_bearing = destination_bearing + 360.0
             }
             
-            let destination_radians = DistanceVector.RadiansCompass(dest)
+            let destination_radians = CompassUtil.DegreesToCompassRadians(destination_bearing)
             
             let needle_radius = Double(inner_inner_diameter / 2.0) - 20.0
             
@@ -216,15 +224,11 @@ class CompassControlView : UIView {
             CGContextAddPath(ctx, needle_main_path)
             CGContextStrokePath(ctx)
             
-            let arrow_radians = DistanceVector.AddRadians(destination_radians, addition: M_PI)
             let arrow_height = CGFloat(outer_inner_diameter - inner_outer_diameter)
             
-            _draw_triangle(ctx, x: CGFloat(needle_top_x), y: CGFloat(needle_top_y), compassRadians: arrow_radians, altitude: arrow_height, width: 20.0, fillColor: Themes.Current.BorderColor)
+            let arrow_degrees = -1.0 * CompassUtil.AddDegrees(destination_bearing, addition: 180.0)
             
-            
-            let circletDegrees = DistanceVector.Degrees(destination_radians)
-            var circletRotation = -1.0 * (circletDegrees + 90.0)
-            let circletRadians = DistanceVector.Radians(circletRotation)
+            _draw_triangle(ctx, x: CGFloat(needle_top_x), y: CGFloat(needle_top_y), compassDegrees: arrow_degrees, altitude: arrow_height, width: 20.0, fillColor: Themes.Current.BorderColor)
             
             let circlet_diameter = Double(arrow_height / 2.0)
             
@@ -232,8 +236,12 @@ class CompassControlView : UIView {
             let circle_center_y = Double(center.y) + ((needle_radius + (circlet_diameter / 2.0)) * cos(destination_radians))
             
             //compute the normals for the angle.
-            let circle_normal_left_radians = DistanceVector.AddRadians(circletRadians, addition: M_PI_2)
-            let circle_normal_right_radians = DistanceVector.AddRadians(circletRadians, addition: -1*M_PI_2)
+            let arrow_dest = CompassUtil.AddDegrees(destination_bearing, addition: -90.0)
+            let circle_normal_left_degrees = CompassUtil.AddDegrees(arrow_dest, addition: 90.0)
+            let circle_normal_right_degrees = CompassUtil.AddDegrees(arrow_dest, addition: -1*90.0)
+            
+            let circle_normal_left_radians = CompassUtil.ToRadians(circle_normal_left_degrees)
+            let circle_normal_right_radians = CompassUtil.ToRadians(circle_normal_right_degrees)
             
             CGContextSaveGState(ctx)
             
@@ -245,15 +253,11 @@ class CompassControlView : UIView {
         
     }
     
-    func _c2r(compass_heading: Double) -> Double {
-        let radians : Double = DistanceVector.Radians(compass_heading)
-        let half_pi : Double = M_PI / 2.0
-        return radians - half_pi
-    }
-    
-    func _draw_compass_check(ctx: CGContext!, x: CGFloat, y: CGFloat, compassRadians: Double, altitude: CGFloat, diameter: CGFloat, color: UIColor) {
+    func _draw_compass_check(ctx: CGContext!, x: CGFloat, y: CGFloat, compassDegrees: Double, altitude: CGFloat, diameter: CGFloat, color: UIColor) {
         
         let radius = Double(diameter / 2.0)
+        
+        let compassRadians = CompassUtil.ToRadians(compassDegrees)
         
         let top_x = Double(x) + (radius * sin(compassRadians))
         let top_y = Double(y) + (radius * cos(compassRadians))
@@ -274,12 +278,10 @@ class CompassControlView : UIView {
         CGContextStrokePath(ctx)
     }
     
-    func _draw_compass_label(ctx: CGContext!, x: CGFloat, y: CGFloat, label: NSString, textAttributes: Dictionary<NSObject, AnyObject>, compassRadians: Double, diameter: CGFloat) {
+    func _draw_compass_label(ctx: CGContext!, x: CGFloat, y: CGFloat, label: NSString, textAttributes: Dictionary<NSObject, AnyObject>, compassDegrees: Double, diameter: CGFloat) {
         CGContextSaveGState(ctx)
-        
-        let compassDegrees = DistanceVector.Degrees(compassRadians)
-        var rotation = -1.0 * compassDegrees
-        let rotationRadians = DistanceVector.Radians(rotation)
+
+        let compassRadians = CompassUtil.DegreesToCompassRadians(compassDegrees)
         
         let radius = Double(diameter / 2.0)
         
@@ -289,7 +291,9 @@ class CompassControlView : UIView {
         let th = Double(textSize.height)
         let th2 = th / 2.0
         
-        let adjusted_compass_radians = DistanceVector.AddRadians(compassRadians, addition: M_PI)
+        let adjusted_compass_degrees = CompassUtil.AddDegrees(compassDegrees, addition: 180.0)
+        
+        let adjusted_compass_radians = CompassUtil.ToRadians(adjusted_compass_degrees)
         
         let tx =  Double(x) + (radius * sin(adjusted_compass_radians)) - tw2
         let ty =  Double(y) + (radius * cos(adjusted_compass_radians))
@@ -298,7 +302,7 @@ class CompassControlView : UIView {
         let ct_y = Double(y) + (radius * cos(adjusted_compass_radians))
         
         var xform = CGAffineTransformMakeTranslation(CGFloat(ct_x), CGFloat(ct_y))
-        xform = CGAffineTransformRotate(xform, CGFloat(rotationRadians))
+        xform = CGAffineTransformRotate(xform, CGFloat(compassRadians))
         xform = CGAffineTransformTranslate(xform, CGFloat(-1*ct_x), CGFloat(-1*ct_y))
         CGContextConcatCTM(ctx, xform)
 
@@ -308,7 +312,7 @@ class CompassControlView : UIView {
         CGContextRestoreGState(ctx)
     }
     
-    func _draw_triangle(ctx: CGContext!, x: CGFloat, y: CGFloat, compassRadians: Double, altitude: CGFloat, width: CGFloat, fillColor: UIColor) {
+    func _draw_triangle(ctx: CGContext!, x: CGFloat, y: CGFloat, compassDegrees: Double, altitude: CGFloat, width: CGFloat, fillColor: UIColor) {
         CGContextSaveGState(ctx)
         
         CGContextSetFillColorWithColor(ctx, fillColor.CGColor);
@@ -316,17 +320,22 @@ class CompassControlView : UIView {
         
         CGPathMoveToPoint(path, nil, x, y)
         
-        let compass_left = DistanceVector.AddRadians(compassRadians, addition: M_PI_2)
-        let compass_right = DistanceVector.AddRadians(compassRadians, addition: -1*M_PI_2)
+        let compass_radians = CompassUtil.ToRadians(compassDegrees)
         
-        let ll_x = Double(x) + (Double(width / 2.0) * sin(compass_left))
-        let ll_y = Double(y) + (Double(width / 2.0) * cos(compass_left))
+        let compass_left = CompassUtil.AddDegrees(compassDegrees, addition: 90.0)
+        let compass_right = CompassUtil.AddRadians(compassDegrees, addition: -90.0)
         
-        let lr_x = Double(x) + (Double(width / 2.0) * sin(compass_right))
-        let lr_y = Double(y) + (Double(width / 2.0) * cos(compass_right))
+        let compass_left_radians = CompassUtil.ToRadians(compass_left)
+        let compass_right_radians = CompassUtil.ToRadians(compass_right)
         
-        let t_x = Double(x) + (Double(altitude / 2.0) * sin(compassRadians))
-        let t_y = Double(y) + (Double(altitude / 2.0) * cos(compassRadians))
+        let ll_x = Double(x) + (Double(width / 2.0) * sin(compass_left_radians))
+        let ll_y = Double(y) + (Double(width / 2.0) * cos(compass_left_radians))
+        
+        let lr_x = Double(x) + (Double(width / 2.0) * sin(compass_right_radians))
+        let lr_y = Double(y) + (Double(width / 2.0) * cos(compass_right_radians))
+        
+        let t_x = Double(x) + (Double(altitude / 2.0) * sin(compass_radians))
+        let t_y = Double(y) + (Double(altitude / 2.0) * cos(compass_radians))
         
         CGPathAddLineToPoint(path, nil, CGFloat(ll_x), CGFloat(ll_y))
         CGPathAddLineToPoint(path, nil, CGFloat(t_x), CGFloat(t_y))
@@ -347,6 +356,7 @@ class CompassViewController: UIThemedViewController, PelorusNavUpdateReceiverDel
     @IBOutlet var setDestinationButton : UIBarButtonItem!
     
     @IBOutlet var destinationText : UILabel!
+    var destinationTextTapGesture : UITapGestureRecognizer!
     
     @IBAction func clearDestinationClicked(sender: AnyObject){
         _nav.ClearDestination()
@@ -358,6 +368,12 @@ class CompassViewController: UIThemedViewController, PelorusNavUpdateReceiverDel
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         _nav = appDelegate.NavManager
         
+        destinationTextTapGesture = UITapGestureRecognizer()
+        destinationTextTapGesture.numberOfTapsRequired = 1
+        destinationTextTapGesture.addTarget(self, action: "SetDestinationTransition")
+        destinationText.addGestureRecognizer(destinationTextTapGesture)
+        destinationText.userInteractionEnabled = true
+
         setDestinationButton.enabled = true
     }
     
@@ -369,11 +385,9 @@ class CompassViewController: UIThemedViewController, PelorusNavUpdateReceiverDel
 
         destinationText.textColor = Themes.Current.PrimaryFontColor
         
-        if(nil == _nav.CurrentDestination) {    
+        if nil == _nav.CurrentDestination {
             destinationText.text = "Hit \"Set\" to choose a destination."
         } else {
-            setDestinationButton.enabled = true
-            
             if nil != _nav.CurrentDestination.Label {
                 destinationText.text = _nav.CurrentDestination.Label
             } else {
@@ -384,6 +398,10 @@ class CompassViewController: UIThemedViewController, PelorusNavUpdateReceiverDel
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func SetDestinationTransition() {
+        self.performSegueWithIdentifier("selectDestinationSegue", sender: self.navigationController)
     }
     
     func HeadingUpdated(sender: PelorusNav) {

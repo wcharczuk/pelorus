@@ -256,7 +256,7 @@ class InterfaceView : UIView {
         CGContextSetLineWidth(ctx, 3)
         CGContextSetStrokeColorWithColor(ctx, primary_color.CGColor)
         
-        let distanceText = DistanceVector.FormatDistance(self.CurrentDistanceMeters) as NSString
+        let distanceText = CompassUtil.FormatDistance(self.CurrentDistanceMeters) as NSString
         let text_size = distanceText.sizeWithAttributes(textAttributes)
 
         if _isInView() {
