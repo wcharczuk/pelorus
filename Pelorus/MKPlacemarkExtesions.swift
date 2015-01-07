@@ -9,9 +9,10 @@
 import Foundation
 import CoreData
 import CoreLocation
+import MapKit
 
 extension CLPlacemark {
-    func ToLabelString() -> String {
+    func toLabelString() -> String {
         if nil != self.thoroughfare && nil != self.subThoroughfare {
             return "\(self.subThoroughfare) \(self.thoroughfare), \(self.locality), \(self.administrativeArea)"
         } else if nil != self.thoroughfare {

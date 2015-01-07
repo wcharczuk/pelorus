@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		B305C8551A51E505003564B5 /* CompassUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8541A51E505003564B5 /* CompassUtil.swift */; };
 		B305C8571A51E558003564B5 /* GPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8561A51E558003564B5 /* GPS.swift */; };
-		B305C8591A51E56C003564B5 /* CLPlacemarkExtesions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8581A51E56C003564B5 /* CLPlacemarkExtesions.swift */; };
+		B305C8591A51E56C003564B5 /* MKPlacemarkExtesions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8581A51E56C003564B5 /* MKPlacemarkExtesions.swift */; };
 		B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */; };
 		B329AEDF1A1D12AF00FCC3C0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B329AEDE1A1D12AF00FCC3C0 /* CoreGraphics.framework */; };
 		B3330A661A49CAF800E309C8 /* Pelorus_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3330A651A49CAF800E309C8 /* Pelorus_Tests.swift */; };
@@ -29,13 +29,19 @@
 		B3D7F8031A448AAE006F903F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3D7F7F31A448AAE006F903F /* Images.xcassets */; };
 		B3D7F8051A448AAE006F903F /* Pelorus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F51A448AAE006F903F /* Pelorus.xcdatamodeld */; };
 		B3D7F8061A448AAE006F903F /* PelorusNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F71A448AAE006F903F /* PelorusNav.swift */; };
-		B3D7F8071A448AAE006F903F /* RealityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F81A448AAE006F903F /* RealityViewController.swift */; };
+		B3D7F8071A448AAE006F903F /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F81A448AAE006F903F /* CameraViewController.swift */; };
 		B3D7F8081A448AAE006F903F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F91A448AAE006F903F /* SettingsViewController.swift */; };
 		B3D7F8091A448AAE006F903F /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FA1A448AAE006F903F /* Themes.swift */; };
-		B3D7F80A1A448AAE006F903F /* UIThemedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FB1A448AAE006F903F /* UIThemedViewController.swift */; };
+		B3D7F80A1A448AAE006F903F /* ThemedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FB1A448AAE006F903F /* ThemedViewController.swift */; };
 		B3D7F80B1A448AAE006F903F /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */; };
 		B3D7F8171A448DD7006F903F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3D7F7ED1A448AAE006F903F /* Main.storyboard */; };
 		B3DC95051A1933F9003F2B4A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3DC95041A1933F9003F2B4A /* CoreData.framework */; };
+		B3E018F71A5C547000A16553 /* GraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E018F61A5C547000A16553 /* GraphicsView.swift */; };
+		B3E018F91A5C5AB300A16553 /* CompassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E018F81A5C5AB300A16553 /* CompassView.swift */; };
+		B3F7D5781A5C768B004782F9 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F7D5771A5C768B004782F9 /* Launch Screen.xib */; };
+		B3F7D57B1A5C90E6004782F9 /* CurrentDestinationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7D57A1A5C90E6004782F9 /* CurrentDestinationDataManager.swift */; };
+		B3F7D57D1A5C95B7004782F9 /* RecentDestinationsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7D57C1A5C95B7004782F9 /* RecentDestinationsDataManager.swift */; };
+		B3F7D57E1A5CB7C1004782F9 /* MKPlacemarkExtesions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8581A51E56C003564B5 /* MKPlacemarkExtesions.swift */; };
 		B3FAED0B1A51E60500EC7EBB /* CompassUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8541A51E505003564B5 /* CompassUtil.swift */; };
 		B3FAED0C1A51EA2F00EC7EBB /* GPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8561A51E558003564B5 /* GPS.swift */; };
 /* End PBXBuildFile section */
@@ -53,7 +59,7 @@
 /* Begin PBXFileReference section */
 		B305C8541A51E505003564B5 /* CompassUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassUtil.swift; sourceTree = "<group>"; };
 		B305C8561A51E558003564B5 /* GPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPS.swift; sourceTree = "<group>"; };
-		B305C8581A51E56C003564B5 /* CLPlacemarkExtesions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLPlacemarkExtesions.swift; sourceTree = "<group>"; };
+		B305C8581A51E56C003564B5 /* MKPlacemarkExtesions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPlacemarkExtesions.swift; sourceTree = "<group>"; };
 		B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedQueue.swift; sourceTree = "<group>"; };
 		B329AEDE1A1D12AF00FCC3C0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B3330A611A49CAF800E309C8 /* Pelorus Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pelorus Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,14 +79,19 @@
 		B3D7F7F41A448AAE006F903F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3D7F7F61A448AAE006F903F /* Pelorus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pelorus.xcdatamodel; sourceTree = "<group>"; };
 		B3D7F7F71A448AAE006F903F /* PelorusNav.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PelorusNav.swift; sourceTree = "<group>"; };
-		B3D7F7F81A448AAE006F903F /* RealityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealityViewController.swift; sourceTree = "<group>"; };
+		B3D7F7F81A448AAE006F903F /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		B3D7F7F91A448AAE006F903F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B3D7F7FA1A448AAE006F903F /* Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
-		B3D7F7FB1A448AAE006F903F /* UIThemedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIThemedViewController.swift; sourceTree = "<group>"; };
+		B3D7F7FB1A448AAE006F903F /* ThemedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemedViewController.swift; sourceTree = "<group>"; };
 		B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		B3D7F80D1A448AB7006F903F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3D7F80E1A448AB7006F903F /* PelorusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PelorusTests.swift; sourceTree = "<group>"; };
 		B3DC95041A1933F9003F2B4A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		B3E018F61A5C547000A16553 /* GraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphicsView.swift; sourceTree = "<group>"; };
+		B3E018F81A5C5AB300A16553 /* CompassView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassView.swift; sourceTree = "<group>"; };
+		B3F7D5771A5C768B004782F9 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "../Launch Screen.xib"; sourceTree = "<group>"; };
+		B3F7D57A1A5C90E6004782F9 /* CurrentDestinationDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentDestinationDataManager.swift; sourceTree = "<group>"; };
+		B3F7D57C1A5C95B7004782F9 /* RecentDestinationsDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentDestinationsDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,11 +163,12 @@
 			children = (
 				B3D7F8111A448ABC006F903F /* Core */,
 				B3D7F7EC1A448AAE006F903F /* AppDelegate.swift */,
+				B3D7F7F81A448AAE006F903F /* CameraViewController.swift */,
 				B3D7F7EF1A448AAE006F903F /* CompassViewController.swift */,
 				B3D7F7F11A448AAE006F903F /* DestinationSelectorController.swift */,
-				B3D7F7F81A448AAE006F903F /* RealityViewController.swift */,
 				B3D7F7F91A448AAE006F903F /* SettingsViewController.swift */,
 				B3D7F7ED1A448AAE006F903F /* Main.storyboard */,
+				B3F7D5771A5C768B004782F9 /* Launch Screen.xib */,
 				B3D7F7F51A448AAE006F903F /* Pelorus.xcdatamodeld */,
 				B3D7F7F31A448AAE006F903F /* Images.xcassets */,
 				B3D7F7F41A448AAE006F903F /* Info.plist */,
@@ -176,18 +188,62 @@
 		B3D7F8111A448ABC006F903F /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				B305C8581A51E56C003564B5 /* CLPlacemarkExtesions.swift */,
+				B3F7D5791A5C90CF004782F9 /* Data */,
+				B3E018F51A5C543D00A16553 /* Base */,
+				B3E018F41A5C543200A16553 /* Collections */,
+				B3E018F31A5C542200A16553 /* Configuration */,
+				B3E018F21A5C540A00A16553 /* Models */,
+				B305C8581A51E56C003564B5 /* MKPlacemarkExtesions.swift */,
 				B305C8541A51E505003564B5 /* CompassUtil.swift */,
-				B3D7F7F01A448AAE006F903F /* Configuration.swift */,
-				B3D7F7F21A448AAE006F903F /* DistanceVector.swift */,
-				B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */,
-				B305C8561A51E558003564B5 /* GPS.swift */,
 				B3D7F7F71A448AAE006F903F /* PelorusNav.swift */,
-				B3D7F7FA1A448AAE006F903F /* Themes.swift */,
-				B3D7F7FB1A448AAE006F903F /* UIThemedViewController.swift */,
-				B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */,
+				B3E018F81A5C5AB300A16553 /* CompassView.swift */,
 			);
 			name = Core;
+			sourceTree = "<group>";
+		};
+		B3E018F21A5C540A00A16553 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B3D7F7F21A448AAE006F903F /* DistanceVector.swift */,
+				B305C8561A51E558003564B5 /* GPS.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		B3E018F31A5C542200A16553 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				B3D7F7F01A448AAE006F903F /* Configuration.swift */,
+				B3D7F7FA1A448AAE006F903F /* Themes.swift */,
+				B3D7F7FC1A448AAE006F903F /* UserPreferences.swift */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		B3E018F41A5C543200A16553 /* Collections */ = {
+			isa = PBXGroup;
+			children = (
+				B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */,
+			);
+			name = Collections;
+			sourceTree = "<group>";
+		};
+		B3E018F51A5C543D00A16553 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				B3D7F7FB1A448AAE006F903F /* ThemedViewController.swift */,
+				B3E018F61A5C547000A16553 /* GraphicsView.swift */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		B3F7D5791A5C90CF004782F9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				B3F7D57A1A5C90E6004782F9 /* CurrentDestinationDataManager.swift */,
+				B3F7D57C1A5C95B7004782F9 /* RecentDestinationsDataManager.swift */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +336,7 @@
 			files = (
 				B3D7F8031A448AAE006F903F /* Images.xcassets in Resources */,
 				B3D7F8171A448DD7006F903F /* Main.storyboard in Resources */,
+				B3F7D5781A5C768B004782F9 /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +353,7 @@
 				B3330A6F1A49CB1600E309C8 /* Themes.swift in Sources */,
 				B3330A661A49CAF800E309C8 /* Pelorus_Tests.swift in Sources */,
 				B3330A711A49CB1D00E309C8 /* FixedQueue.swift in Sources */,
+				B3F7D57E1A5CB7C1004782F9 /* MKPlacemarkExtesions.swift in Sources */,
 				B3FAED0C1A51EA2F00EC7EBB /* GPS.swift in Sources */,
 				B3FAED0B1A51E60500EC7EBB /* CompassUtil.swift in Sources */,
 			);
@@ -309,16 +367,20 @@
 				B3D7F8001A448AAE006F903F /* Configuration.swift in Sources */,
 				B3D7F80B1A448AAE006F903F /* UserPreferences.swift in Sources */,
 				B3D7F8011A448AAE006F903F /* DestinationSelectorController.swift in Sources */,
+				B3F7D57B1A5C90E6004782F9 /* CurrentDestinationDataManager.swift in Sources */,
 				B3D7F8051A448AAE006F903F /* Pelorus.xcdatamodeld in Sources */,
 				B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */,
-				B305C8591A51E56C003564B5 /* CLPlacemarkExtesions.swift in Sources */,
+				B305C8591A51E56C003564B5 /* MKPlacemarkExtesions.swift in Sources */,
 				B3D7F8091A448AAE006F903F /* Themes.swift in Sources */,
 				B3D7F7FD1A448AAE006F903F /* AppDelegate.swift in Sources */,
-				B3D7F80A1A448AAE006F903F /* UIThemedViewController.swift in Sources */,
+				B3D7F80A1A448AAE006F903F /* ThemedViewController.swift in Sources */,
 				B3D7F8021A448AAE006F903F /* DistanceVector.swift in Sources */,
+				B3E018F71A5C547000A16553 /* GraphicsView.swift in Sources */,
 				B3D7F7FF1A448AAE006F903F /* CompassViewController.swift in Sources */,
 				B3D7F8061A448AAE006F903F /* PelorusNav.swift in Sources */,
-				B3D7F8071A448AAE006F903F /* RealityViewController.swift in Sources */,
+				B3D7F8071A448AAE006F903F /* CameraViewController.swift in Sources */,
+				B3E018F91A5C5AB300A16553 /* CompassView.swift in Sources */,
+				B3F7D57D1A5C95B7004782F9 /* RecentDestinationsDataManager.swift in Sources */,
 				B3D7F8081A448AAE006F903F /* SettingsViewController.swift in Sources */,
 				B305C8571A51E558003564B5 /* GPS.swift in Sources */,
 			);

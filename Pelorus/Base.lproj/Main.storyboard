@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A388a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Nry-bg-fBQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Nry-bg-fBQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
+        <!--Custom Tab Bar Controller-->
         <scene sceneID="acN-wM-YXu">
             <objects>
-                <tabBarController id="Nry-bg-fBQ" sceneMemberID="viewController">
+                <tabBarController id="Nry-bg-fBQ" customClass="CustomTabBarController" customModule="Pelorus" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="ojX-ul-EGR"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="ADQ-Lf-Cyd">
@@ -343,11 +343,12 @@
             </objects>
             <point key="canvasLocation" x="1683" y="1291.9999999999998"/>
         </scene>
-        <!--Reality-->
+        <!--Camera-->
         <scene sceneID="b6E-Cp-u4K">
             <objects>
                 <navigationController id="tD0-lP-wVL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Reality" image="Radio-Tower" id="jP8-iH-igr"/>
+                    <tabBarItem key="tabBarItem" title="Camera" image="Panorama" id="jP8-iH-igr"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wDM-bm-ahk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -372,7 +373,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s1P-6i-c1E" customClass="CompassControlView" customModule="Pelorus" customModuleProvider="target">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s1P-6i-c1E" customClass="CompassView" customModule="Pelorus" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -413,10 +414,10 @@
             </objects>
             <point key="canvasLocation" x="257" y="1292"/>
         </scene>
-        <!--Reality View-->
+        <!--Camera View-->
         <scene sceneID="YCB-kT-jbL">
             <objects>
-                <viewController id="ubJ-xd-gUq" customClass="RealityViewController" customModule="Pelorus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ubJ-xd-gUq" userLabel="Camera View" customClass="CameraViewController" customModule="Pelorus" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="M8M-1K-P4g"/>
                         <viewControllerLayoutGuide type="bottom" id="t2Y-Kh-zZm"/>
@@ -446,7 +447,7 @@
                             <constraint firstItem="UbJ-lg-EhW" firstAttribute="leading" secondItem="udG-G6-UcT" secondAttribute="leading" id="zt3-v4-vDo"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Reality View" id="bXf-F0-i87">
+                    <navigationItem key="navigationItem" title="Camera View" id="bXf-F0-i87">
                         <barButtonItem key="rightBarButtonItem" title="Set" id="az3-fs-Hkg">
                             <connections>
                                 <segue destination="1qR-Ps-Kt4" kind="show" identifier="selectDestinationSegue" id="caB-JW-bZM"/>
@@ -454,6 +455,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="cameraFeedView" destination="UbJ-lg-EhW" id="CPR-PD-2BU"/>
                         <outlet property="interfaceView" destination="FKb-xa-3fI" id="753-R6-DvS"/>
@@ -467,10 +469,10 @@
     </scenes>
     <resources>
         <image name="Gear" width="20" height="20"/>
-        <image name="Radio-Tower" width="20" height="20"/>
+        <image name="Panorama" width="25" height="25"/>
         <image name="Scanner" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KpZ-GK-GYy"/>
+        <segue reference="caB-JW-bZM"/>
     </inferredMetricsTieBreakers>
 </document>

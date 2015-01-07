@@ -11,20 +11,16 @@ import CoreGraphics
 import AVFoundation
 import CoreMotion
 
-class CameraFeedView : UIView {
+class CameraFeedView : GraphicsView {
     
     var _session : AVCaptureSession!
     var _captureDevice : AVCaptureDevice!
     var _previewLayer : AVCaptureVideoPreviewLayer!
     
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    func BeginFeed() {
+    func beginFeed() {
         
         UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "HandleOrientationChange", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleOrientationChange", name: UIDeviceOrientationDidChangeNotification, object: nil)
         
         _session = AVCaptureSession()
         _session.sessionPreset = AVCaptureSessionPresetPhoto
@@ -61,11 +57,11 @@ class CameraFeedView : UIView {
                 _session.startRunning()
             }
             
-            HandleOrientationChange()
+            handleOrientationChange()
         }
     }
     
-    func HandleOrientationChange() {
+    func handleOrientationChange() {
         
         let frame_bounds = self.bounds
         _previewLayer.frame = frame_bounds
@@ -78,17 +74,19 @@ class CameraFeedView : UIView {
         switch(orientation) {
             case UIDeviceOrientation.LandscapeLeft:
                 _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.LandscapeRight
-                break
             case UIDeviceOrientation.LandscapeRight:
                 _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.LandscapeLeft
-                break
+            case UIDeviceOrientation.Portrait:
+                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.Portrait
+            case UIDeviceOrientation.PortraitUpsideDown:
+                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.PortraitUpsideDown
             default:
                 _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.LandscapeLeft
         }
     }
 }
 
-class InterfaceView : UIView {
+class InterfaceView : GraphicsView {
     
     var Destination : String!
     
@@ -147,28 +145,25 @@ class InterfaceView : UIView {
     var chevron_x : CGFloat = 0.0
     var chevron_y : CGFloat = 0.0
     
-    var chevronPointQueue : [(CGFloat, CGFloat)] = [(CGFloat, CGFloat)]()
-    
-    func enqueue( newPoint: (CGFloat, CGFloat) ) {
-        if chevronPointQueue.count >= 7 {
-            let newRange = chevronPointQueue[1 ... 6]
-            chevronPointQueue = Array(newRange)
-        }
-        chevronPointQueue = chevronPointQueue + [newPoint]
-    }
+    var chevronPointQueue : FixedQueue<(CGFloat, CGFloat)>!
     
     func averagePoints( newPoint: (CGFloat, CGFloat) ) -> (CGFloat, CGFloat) {
-        enqueue(newPoint)
+        
+        if nil == chevronPointQueue {
+            chevronPointQueue = FixedQueue<(CGFloat, CGFloat)>( maxLength: 5 )
+        }
+        
+        chevronPointQueue.Enqueue( newPoint )
         
         var avg_x = CGFloat(0.0)
         var avg_y = CGFloat(0.0)
         
-        for point in chevronPointQueue {
+        for point in chevronPointQueue.ToList() {
             avg_x = avg_x + point.0
             avg_y = avg_y + point.1
         }
         
-        return (avg_x / CGFloat(chevronPointQueue.count), avg_y / CGFloat(chevronPointQueue.count))
+        return (avg_x / CGFloat(chevronPointQueue.Length), avg_y / CGFloat(chevronPointQueue.Length))
     }
     
     func calculateChevronPosition() {
@@ -357,7 +352,7 @@ class InterfaceView : UIView {
     }
 }
 
-class RealityViewController: UIThemedViewController, UIGestureRecognizerDelegate, PelorusNavUpdateReceiverDelegate {
+class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, PelorusNavUpdateReceiverDelegate {
     
     var _motionManager: CMMotionManager!
     var _nav: PelorusNav!
@@ -371,15 +366,22 @@ class RealityViewController: UIThemedViewController, UIGestureRecognizerDelegate
     
     @IBOutlet var setDestinationButton : UIBarButtonItem!
     
+    override init() {
+        super.init()
+    }
+    
+    override init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-        _nav = appDelegate.NavManager
+        _nav = self.appDelegate.NavManager
         
         _motionManager = CMMotionManager()
         if (_motionManager.accelerometerAvailable) {
-            _motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue(), withHandler: MotionUpdate)
+            _motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue(), withHandler: motionUpdate)
         }
     }
     
@@ -392,18 +394,21 @@ class RealityViewController: UIThemedViewController, UIGestureRecognizerDelegate
         if nil != _nav.CurrentDestination {
             interfaceView.Destination = _nav.CurrentDestination.Label
         }
+        
         setDestinationButton.enabled = true
     }
     
     override func viewDidAppear(animated: Bool) {
-        cameraFeedView.BeginFeed()
+        cameraFeedView.beginFeed()
     }
 
     override func didReceiveMemoryWarning() {
-        NSLog("Reality View --> Received Memory Warning")
+        if nil != _motionManager {
+            _motionManager.stopDeviceMotionUpdates()
+        }
     }
     
-    func MotionUpdate(data: CMAccelerometerData!, error: NSError!) {
+    func motionUpdate(data: CMAccelerometerData!, error: NSError!) {
         if nil != data && nil == error {
             interfaceView.DevicePitch = data.acceleration.z
             interfaceView.DeviceRoll = data.acceleration.x
@@ -411,7 +416,7 @@ class RealityViewController: UIThemedViewController, UIGestureRecognizerDelegate
         }
     }
     
-    func HeadingUpdated(sender: PelorusNav) {
+    func headingUpdated(sender: PelorusNav) {
         interfaceView.CurrentHeadingError = sender.CurrentHeadingError
         interfaceView.CurrentHeading = sender.CurrentHeading
         interfaceView.CurrentDestinationHeading = sender.CurrentDestinationHeading
@@ -423,7 +428,7 @@ class RealityViewController: UIThemedViewController, UIGestureRecognizerDelegate
         interfaceView.setNeedsDisplay()
     }
     
-    func LocationUpdated(sender: PelorusNav) {
+    func locationUpdated(sender: PelorusNav) {
         interfaceView.CurrentHeadingError = sender.CurrentHeadingError
         interfaceView.CurrentHeading = sender.CurrentHeading
         interfaceView.CurrentDestinationHeading = sender.CurrentDestinationHeading

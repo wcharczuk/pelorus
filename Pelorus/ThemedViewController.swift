@@ -8,14 +8,13 @@
 
 import UIKit
 
-class UIThemedViewController : UIViewController {
+class ThemedViewController : UIViewController {
     
+    var appDelegate : AppDelegate!
+
     override func viewDidLoad() {
+        self.appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         super.viewDidLoad()
-    }
-    
-    override func prefersStatusBarHidden() -> Bool {
-        return Themes.Current.MenubarBackgroundColor != nil
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -27,11 +26,13 @@ class UIThemedViewController : UIViewController {
         if nil != Themes.Current.MenubarBackgroundColor {
             self.navigationController?.navigationBar.barTintColor = Themes.Current.MenubarBackgroundColor!
             self.tabBarController?.tabBar.barTintColor = Themes.Current.MenubarBackgroundColor!
+            
+            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
         } else {
             
             self.navigationController?.navigationBar.barTintColor = nil
             self.tabBarController?.tabBar.barTintColor = nil
-            
+            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         }
         
         if nil != Themes.Current.MenubarFontColor {

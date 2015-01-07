@@ -10,10 +10,12 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
 
     var window: UIWindow?
     private var _managedObjectModel: NSManagedObjectModel!
+    
+    var forcedOrientation : UIInterfaceOrientationMask!
     
     var NavManager: PelorusNav!
     
@@ -58,6 +60,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NavManager.Stop()
         }
         self.saveContext()
+    }
+    
+    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow) -> Int {
+        if nil != forcedOrientation {
+            return Int(forcedOrientation.rawValue)
+        } else {
+            return Int(UIInterfaceOrientationMask.All.rawValue)
+        }
     }
     
     lazy var applicationDocumentsDirectory: NSURL = {

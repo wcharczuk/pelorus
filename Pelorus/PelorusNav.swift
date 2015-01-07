@@ -12,8 +12,8 @@ import CoreMotion
 import CoreData
 
 protocol PelorusNavUpdateReceiverDelegate {
-    func HeadingUpdated(sender: PelorusNav)
-    func LocationUpdated(sender: PelorusNav)
+    func headingUpdated(sender: PelorusNav)
+    func locationUpdated(sender: PelorusNav)
 }
 
 class PelorusNav : NSObject, CLLocationManagerDelegate {
@@ -86,15 +86,15 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     
     func Start() {
         _startLocationSevices()
-        _currentDestination = FetchStorage()
+        _currentDestination = CurrentDestinationDataManager.Fetch()
     }
     
     func Stop() {
         _stopLocationServices()
-        if nil != CurrentDestination {
-            SaveStorage()
+        if nil != self.CurrentDestination {
+            CurrentDestinationDataManager.Save(self.CurrentDestination)
         } else {
-            PurgeStorage()
+            CurrentDestinationDataManager.Purge()
         }
     }
     
@@ -106,7 +106,8 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     func SetDestination(destination: GPS) {
         _currentDestination = destination
         
-        SaveStorage()
+        CurrentDestinationDataManager.Save(_currentDestination)
+        RecentDestinationsDataManager.AddNew(_currentDestination)
         
         if nil != _currentUserLocation {
             _currentDistance = DistanceVector(origin: _currentUserLocation, destination: _currentDestination)
@@ -155,7 +156,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
         
         if nil != Receiver {
-            Receiver.LocationUpdated(self)
+            Receiver.locationUpdated(self)
         }
     }
     
@@ -187,7 +188,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
         
         if nil != Receiver {
-            Receiver.HeadingUpdated(self)
+            Receiver.headingUpdated(self)
         }
     }
     
@@ -245,82 +246,6 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         if nil != _locationManager {
             _locationManager.stopUpdatingHeading()
             _locationManager.stopUpdatingLocation()
-        }
-    }
-    
-    /******* Interacting With Core Data *******/
-    
-    func FetchStorage() -> GPS! {
-        let managedContext = _appDelegate.managedObjectContext!
-        
-        let fetchRequest = NSFetchRequest(entityName:"Destination")
-        
-        var error: NSError?
-        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
-        
-        if fetchedResults != nil && fetchedResults?.count > 0 {
-            let firstResult = fetchedResults?[0]
-            return GPS(serialized: firstResult!)
-        } else {
-            return nil
-        }
-    }
-    
-    func PurgeStorage() -> Bool {
-        let managedContext = _appDelegate.managedObjectContext!
-        
-        let fetchRequest = NSFetchRequest(entityName:"Destination")
-        
-        var error: NSError?
-        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
-        
-        if error != nil {
-            return false
-        }
-        
-        if fetchedResults != nil && fetchedResults?.count > 0 {
-            let results :[NSManagedObject] = fetchedResults!
-            for result in results {
-                managedContext.deleteObject(result)
-            }
-            managedContext.save(&error)
-        }
-        
-        return true
-    }
-    
-    func SaveStorage() -> Bool {
-        
-        if nil == _currentDestination {
-            return false
-        }
-        
-        let managedContext = _appDelegate.managedObjectContext!
-        
-        let fetchRequest = NSFetchRequest(entityName:"Destination")
-        
-        var error: NSError?
-        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
-        
-        if nil != fetchedResults && fetchedResults!.count > 0 {
-            let firstResult = fetchedResults![0]
-            CurrentDestination.saveToManagedObject(firstResult)
-            
-            if !managedContext.save(&error) {
-                return false
-            }
-            
-            return true
-        } else {
-            let entity =  NSEntityDescription.entityForName("Destination", inManagedObjectContext:managedContext)
-            let stored_destination = NSManagedObject(entity: entity!, insertIntoManagedObjectContext:managedContext)
-            _currentDestination.saveToManagedObject(stored_destination)
-            
-            if !managedContext.save(&error) {
-                return false
-            }
-            
-            return true
         }
     }
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import MapKit
 
 struct GPS {
     
@@ -22,6 +23,15 @@ struct GPS {
         self.Longitude = serialized.valueForKey("longitude") as Double
         self.Elevation = serialized.valueForKey("elevation") as Double
         self.Label = serialized.valueForKey("label") as? String
+        self.SubLabel = serialized.valueForKey("subLabel") as? String
+    }
+    
+    init(fromPlacemark: MKMapItem) {
+        self.Elevation = 0.0
+        self.Latitude = fromPlacemark.placemark.location.coordinate.latitude
+        self.Longitude = fromPlacemark.placemark.location.coordinate.longitude
+        self.Label = fromPlacemark.name
+        self.SubLabel = fromPlacemark.placemark.toLabelString()
     }
     
     func saveToManagedObject(serialized: NSManagedObject) {
@@ -29,6 +39,7 @@ struct GPS {
         serialized.setValue(self.Longitude, forKey: "longitude")
         serialized.setValue(self.Elevation, forKey: "elevation")
         serialized.setValue(self.Label, forKey: "label")
+        serialized.setValue(self.SubLabel, forKey: "subLabel")
     }
     
     var Latitude : Double
@@ -36,4 +47,5 @@ struct GPS {
     var Elevation : Double
     
     var Label : String!
+    var SubLabel : String!
 }

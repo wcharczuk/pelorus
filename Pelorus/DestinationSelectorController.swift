@@ -25,7 +25,8 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     var _nav : PelorusNav!
     
     let _cellIdentifier = "searchResult"
-    var _searchResults : [AnyObject]!
+    var _recentResults : [GPS]!
+    var _searchResults : [GPS]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,10 +72,14 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
             mapView.addAnnotation(annot)
         }
         
+        _searchResults = nil
+        _recentResults = RecentDestinationsDataManager.Fetch()
+        
         zoomMapView()
     }
     
     @IBAction func doneButton(sender: UIBarButtonItem) {
+        
         if nil != _destination {
             _nav.SetDestination(_destination)
         }
@@ -84,18 +89,17 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         mapView.removeAnnotations(mapView.annotations)
         
-        let item = _searchResults[indexPath.row] as MKMapItem
+        let item = getItem(indexPath.row)
+        let coordinate = CLLocationCoordinate2D(latitude: item.Latitude, longitude: item.Longitude)
+        let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: [NSObject : AnyObject]())
         
-        let coord = item.placemark.coordinate
+        let annot = MKPointAnnotation()
+        annot.title = item.Label
+        annot.coordinate = coordinate
         
-        let elevation = getElevation(lat: coord.latitude, long: coord.longitude)
-        _destination = GPS(latitude: coord.latitude, longitude: coord.longitude, elevation: elevation)
-        _destination.Label = item.name
-        
-        mapView.addAnnotation(item.placemark)
+        mapView.addAnnotation(annot)
         
         doneButton.enabled = true
         
@@ -104,6 +108,8 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         searchBar.searchBarStyle = UISearchBarStyle.Default
+        
+        self._destination = item
         
         zoomMapView()
     }
@@ -115,23 +121,30 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if nil != _searchResults {
             return _searchResults.count
+        } else if nil != _recentResults {
+            return _recentResults.count
         } else {
             return 0
         }
     }
     
+    func getItem(atIndex: Int) -> GPS {
+        var item : GPS!
+        if nil != _searchResults {
+            item = _searchResults![atIndex]
+        } else {
+            item = _recentResults![atIndex]
+        }
+        return item
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let item = (_searchResults[indexPath.row] as MKMapItem)
         let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: _cellIdentifier)
         
-        let item_location = GPS(latitude: item.placemark.location.coordinate.latitude, longitude: item.placemark.location.coordinate.longitude, elevation: 0.0)
+        let item = getItem(indexPath.row)
         
-        if nil != _nav.CurrentUserLocation {
-            let item_distance = DistanceVector(origin: _nav.CurrentUserLocation, destination: item_location)
-        }
-        
-        cell.textLabel?.text = item.name
-        cell.detailTextLabel?.text = item.placemark.ToLabelString()
+        cell.textLabel?.text = item.Label
+        cell.detailTextLabel?.text = item.SubLabel
         return cell
     }
     
@@ -177,7 +190,16 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     
     func searchCompleteHandler(response: MKLocalSearchResponse!, error: NSError!) {
         if nil != response {
-            _searchResults = response.mapItems
+            
+            var items = [GPS]()
+            for result in response.mapItems {
+                if let mapItem = result as? MKMapItem {
+                    items.append(GPS(fromPlacemark: mapItem))
+                }
+            }
+            
+            _searchResults = items
+            
             tableView.reloadData()
         }
     }
@@ -250,15 +272,15 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         annot.coordinate = touch_point_coord
         annot.title = "Destination"
         
-        let elevation = getElevation(lat: touch_point_coord.latitude, long: touch_point_coord.longitude)
-        _destination = GPS(latitude: touch_point_coord.latitude, longitude: touch_point_coord.longitude, elevation: elevation)
+        self._destination = GPS(latitude: touch_point_coord.latitude, longitude: touch_point_coord.longitude, elevation: 0.0)
         
         CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: touch_point_coord.latitude, longitude: touch_point_coord.longitude), completionHandler: {
             (placemarks, error) in
             let pm = placemarks as? [CLPlacemark]
             if nil != pm && pm?.count > 0 {
                 if let p = placemarks[0] as? CLPlacemark {
-                    self._destination.Label = p.ToLabelString()
+                    self._destination.Label = p.name
+                    self._destination.SubLabel = p.toLabelString()
                     annot.title = self._destination.Label
                 }
             }
