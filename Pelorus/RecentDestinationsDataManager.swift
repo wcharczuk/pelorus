@@ -36,11 +36,28 @@ struct RecentDestinationsDataManager {
         
         var error: NSError?
         
-        //purge the older 'recent results'
+        //purge dupes && the older 'recent results'
         let fetchRequest = NSFetchRequest(entityName:"RecentDestinations")
-        let current = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+        var current = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+
+    
+        if nil == error {
+            
+            if nil != current && current!.count > 0 {
+                for item in current! {
+                    let typed = GPS(serialized: item)
+                    if typed.equals(destination) {
+                        managedContext.deleteObject(item)
+                    }
+                }
+                managedContext.save(&error)
+            }
+        }
+
+        current = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
         let max_recent = Configuration.MAXIMUM_RECENT
         if nil == error {
+
             if nil != current && current!.count > max_recent {
                 let overageCount = current!.count - max_recent
                 

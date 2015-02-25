@@ -224,10 +224,16 @@ class CompassView : GraphicsView {
     
     func _calculateDiameter() -> CGFloat {
         var diameter : CGFloat = 0.0
+        
+        var margin_ratio = 0.1
+        if UIScreen.mainScreen().bounds.height < 568 {
+            margin_ratio = 0.3
+        }
+        
         if bounds.size.width < bounds.size.height {
-            diameter = bounds.size.width - (bounds.size.width * 0.1)
+            diameter = bounds.size.width - (bounds.size.width * CGFloat(margin_ratio))
         } else {
-            diameter = bounds.size.height - (bounds.size.height * 0.1)
+            diameter = bounds.size.height - (bounds.size.height * CGFloat(margin_ratio))
         }
         
         return diameter

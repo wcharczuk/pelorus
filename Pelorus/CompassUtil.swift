@@ -19,9 +19,12 @@ struct CompassUtil {
                 return String(NSString(format:"%.2f m", distanceInMeters))
             }
         } else {
+            let distanceInMiles = distanceInMeters / 1609.34
             let distanceInFeet = distanceInMeters * 3.28084
-            if distanceInFeet > 5280.0 {
+            if distanceInFeet > 1000.0 {
                 return String(NSString(format:"%.2f mi", distanceInFeet / 5280.0))
+            } else if distanceInFeet > 5280.0 {
+                return String(NSString(format:"%.2f mi", distanceInMiles))
             } else {
                 return String(NSString(format:"%.2f ft", distanceInFeet))
             }

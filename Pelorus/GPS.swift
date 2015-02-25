@@ -48,4 +48,8 @@ struct GPS {
     
     var Label : String!
     var SubLabel : String!
+    
+    func equals(other: GPS) -> Bool {
+        return self.Label == other.Label && self.Latitude == other.Latitude && self.Longitude == other.Longitude
+    }
 }
