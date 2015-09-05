@@ -13,7 +13,7 @@ class ThemedViewController : UIViewController {
     var appDelegate : AppDelegate!
 
     override func viewDidLoad() {
-        self.appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        self.appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         super.viewDidLoad()
     }
     
@@ -44,14 +44,12 @@ class ThemedViewController : UIViewController {
             self.navigationController?.navigationBar.titleTextAttributes = textAttributes
             self.navigationController?.navigationBar.tintColor = color
 
-            self.tabBarController?.tabBar.selectedImageTintColor = color
             self.tabBarController?.tabBar.tintColor = color
 
         } else {
             self.navigationController?.navigationBar.titleTextAttributes = nil
             self.navigationController?.navigationBar.tintColor = nil
             
-            self.tabBarController?.tabBar.selectedImageTintColor = nil
             self.tabBarController?.tabBar.tintColor = nil
         }
     }

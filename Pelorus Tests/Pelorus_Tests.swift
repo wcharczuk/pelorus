@@ -66,7 +66,7 @@ class PelorusTests: XCTestCase {
             big_queue.Enqueue(i)
         }
         let big_queue_sum = big_queue.Reduce {
-            (total, elem) -> Int in nil != total ? total! + elem : elem
+            (total, elem) -> Int? in nil != total ? total! + elem : elem
         }
         XCTAssert(5050 == big_queue_sum, "Google tells me this is the right answer.")
         

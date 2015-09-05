@@ -12,20 +12,24 @@
 	<dict>
 		<key>87E83918DB5F103D31CDA4FB335E4C3417663D36</key>
 		<string>github.com:wcharczuk/Circuitis.git</string>
+		<key>9A191633CA13EF6CC63270FCF1E1BE989DF9C227</key>
+		<string>github.com:wcharczuk/pelorus.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Pelorus.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>87E83918DB5F103D31CDA4FB335E4C3417663D36</key>
+		<string>../../../Circuitis</string>
+		<key>9A191633CA13EF6CC63270FCF1E1BE989DF9C227</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>github.com:wcharczuk/Circuitis.git</string>
+	<string>github.com:wcharczuk/pelorus.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>87E83918DB5F103D31CDA4FB335E4C3417663D36</string>
+	<string>9A191633CA13EF6CC63270FCF1E1BE989DF9C227</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>87E83918DB5F103D31CDA4FB335E4C3417663D36</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Circuitis</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9A191633CA13EF6CC63270FCF1E1BE989DF9C227</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Pelorus</string>
 		</dict>
 	</array>
 </dict>

@@ -125,7 +125,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     //location updated
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locationArray = locations as NSArray
-        var locationObj = locationArray.lastObject as CLLocation
+        var locationObj = locationArray.lastObject as! CLLocation
         var coord = locationObj.coordinate
         
         let my_lat = coord.latitude

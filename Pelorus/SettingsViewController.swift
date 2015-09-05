@@ -21,6 +21,7 @@ class SettingsViewController: UITableViewController {
     @IBOutlet var light_red : UITableViewCell!
     @IBOutlet var dark_blue : UITableViewCell!
     @IBOutlet var dark_red : UITableViewCell!
+    @IBOutlet var hot_pink : UITableViewCell!
     
     var _nav : PelorusNav!
     
@@ -28,7 +29,7 @@ class SettingsViewController: UITableViewController {
         compassStepsToggle.stepValue = 1.0
         super.viewDidLoad()
         
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         _nav = appDelegate.NavManager
     }
     
@@ -86,6 +87,7 @@ class SettingsViewController: UITableViewController {
         light_red.accessoryType = UITableViewCellAccessoryType.None
         dark_blue.accessoryType = UITableViewCellAccessoryType.None
         dark_red.accessoryType = UITableViewCellAccessoryType.None
+        hot_pink.accessoryType = UITableViewCellAccessoryType.None
     }
     
     func selectTheme(theme_id : Int) {
@@ -102,6 +104,9 @@ class SettingsViewController: UITableViewController {
             break;
         case 3:
             dark_red.accessoryType = UITableViewCellAccessoryType.Checkmark
+            break;
+        case 4:
+            hot_pink.accessoryType = UITableViewCellAccessoryType.Checkmark
             break;
         default:
             light_blue.accessoryType = UITableViewCellAccessoryType.Checkmark

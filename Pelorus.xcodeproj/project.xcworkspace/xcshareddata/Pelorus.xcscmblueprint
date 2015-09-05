@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9A191633CA13EF6CC63270FCF1E1BE989DF9C227",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "9A191633CA13EF6CC63270FCF1E1BE989DF9C227" : 0,
+    "87E83918DB5F103D31CDA4FB335E4C3417663D36" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "16A4B3EC-6851-435B-89E3-CD8115655D3B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "9A191633CA13EF6CC63270FCF1E1BE989DF9C227" : "Pelorus\/",
+    "87E83918DB5F103D31CDA4FB335E4C3417663D36" : "Circuitis"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Pelorus",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Pelorus.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:wcharczuk\/Circuitis.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "87E83918DB5F103D31CDA4FB335E4C3417663D36"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:wcharczuk\/pelorus.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9A191633CA13EF6CC63270FCF1E1BE989DF9C227"
+    }
+  ]
+}

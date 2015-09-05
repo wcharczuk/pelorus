@@ -11,13 +11,13 @@ import CoreData
 
 struct RecentDestinationsDataManager {
     static func Fetch() -> Array<GPS> {
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         let fetchRequest = NSFetchRequest(entityName:"RecentDestinations")
         
         var error: NSError?
-        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as! [NSManagedObject]?
         
         if fetchedResults != nil && fetchedResults?.count > 0 {
             var results = Array<GPS>()
@@ -31,14 +31,14 @@ struct RecentDestinationsDataManager {
     }
     
     static func AddNew(destination : GPS) -> Bool {
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         var error: NSError?
         
         //purge dupes && the older 'recent results'
         let fetchRequest = NSFetchRequest(entityName:"RecentDestinations")
-        var current = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+        var current = managedContext.executeFetchRequest(fetchRequest, error: &error) as! [NSManagedObject]?
 
     
         if nil == error {
@@ -54,7 +54,7 @@ struct RecentDestinationsDataManager {
             }
         }
 
-        current = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+        current = managedContext.executeFetchRequest(fetchRequest, error: &error) as! [NSManagedObject]?
         let max_recent = Configuration.MAXIMUM_RECENT
         if nil == error {
 
@@ -80,13 +80,13 @@ struct RecentDestinationsDataManager {
     }
     
     static func Purge() -> Bool {
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         let fetchRequest = NSFetchRequest(entityName:"RecentDestinations")
         
         var error: NSError?
-        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as! [NSManagedObject]?
         
         if error != nil {
             return false

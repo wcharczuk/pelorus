@@ -259,8 +259,6 @@ class CompassView : GraphicsView {
         
         _drawCompass(rect, center: center, largeFontSize: large_font_size, smallFontSize: small_font_size, scale: outer_ratio)
         
-        if nil != self.interfaceOrientation && (self.interfaceOrientation! == UIInterfaceOrientation.Portrait || self.interfaceOrientation! == UIInterfaceOrientation.PortraitUpsideDown) {
-            _drawDistanceText(rect, fontSize: large_font_size, center: center)
-        }
+        _drawDistanceText(rect, fontSize: large_font_size, center: center)
     }
 }

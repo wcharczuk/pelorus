@@ -31,7 +31,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         _nav = appDelegate.NavManager
         
         mapView.delegate = self
@@ -180,6 +180,16 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     func performSearch() {
         if nil != searchBar.text && !searchBar.text.isEmpty {
             let request = MKLocalSearchRequest()
+            
+            if nil != mapView.userLocation && nil != mapView.userLocation.location  {
+                let user = mapView.userLocation.location.coordinate
+                
+                let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(user, 500, 500))
+                
+                request.region = adjustedRegion
+            }
+
+            
             request.naturalLanguageQuery = searchBar.text
             request.region = mapView.region
             
@@ -300,7 +310,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         let service_url = "http://maps.googleapis.com/maps/api/elevation/json?locations=\(lat),\(long)"
         let url = NSURL(string: service_url)
         let json = NSData(contentsOfURL: url!)
-        let data : NSDictionary = NSJSONSerialization.JSONObjectWithData(json!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+        let data : NSDictionary = NSJSONSerialization.JSONObjectWithData(json!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
         
         if let results = data["results"] as? NSArray {
             if let container = results[0] as? NSDictionary {

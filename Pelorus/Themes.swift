@@ -67,6 +67,8 @@ struct Themes {
                 return Themes.Dark_Blue
             case 3:
                 return Themes.Dark_Red
+            case 4:
+                return Themes.Hot_Pink
             default:
                 return Themes.Light_Blue
             }
@@ -137,6 +139,22 @@ struct Themes {
                 primaryFont: UIFont(name: "Avenir Next", size: CGFloat(18.0))!,
                 menubarBackgroundColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0), //black
                 menubarFontColor: UIColor(red: 0.74, green: 0.21, blue: 0.18, alpha: 1.0)
+            )
+        }
+    }
+    
+    static var Hot_Pink : Theme {
+        get {
+            return Theme(
+                id: 4,
+                name: "Hot Pink",
+                primaryColor: UIColor(red: 1.0, green: 0.0, blue: 0.42, alpha: 1.0), //darkish red
+                borderColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0), //black
+                secondaryColor: UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0), //dark grey
+                backgroundColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), //white
+                highlightColor: UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.8), //light grey
+                primaryFontColor: UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0),
+                primaryFont: UIFont(name: "Avenir Next", size: CGFloat(18.0))!
             )
         }
     }

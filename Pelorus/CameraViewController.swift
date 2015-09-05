@@ -366,11 +366,7 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
     
     @IBOutlet var setDestinationButton : UIBarButtonItem!
     
-    override init() {
-        super.init()
-    }
-    
-    override init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

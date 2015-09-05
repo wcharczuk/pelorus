@@ -23,11 +23,7 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
         _nav.ClearDestination()
     }
     
-    override init() {
-        super.init()
-    }
-    
-    override init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -52,8 +48,6 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
         super.viewWillAppear(animated)
         compassView.viewWillAppear(animated)
         
-        compassView.interfaceOrientation = self.interfaceOrientation
-        
         _nav.Receiver = self
 
         destinationText.textColor = Themes.Current.PrimaryFontColor
@@ -70,8 +64,6 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
     }
     
     func handleOrientationChange() {
-        compassView.interfaceOrientation = self.interfaceOrientation
-        destinationText.hidden = self.interfaceOrientation == UIInterfaceOrientation.LandscapeLeft || self.interfaceOrientation == UIInterfaceOrientation.LandscapeRight
         compassView.setNeedsDisplay()
     }
     
@@ -87,6 +79,7 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
         compassView.CurrentHeading = sender.CurrentHeading
         compassView.CurrentDestinationHeading = sender.CurrentDestinationHeading
         compassView.CurrentHeadingError = sender.CurrentHeadingError
+        
         self.compassView.setNeedsDisplay()
     }
     
@@ -95,6 +88,8 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
 
         if nil != sender.CurrentDistance {
             compassView.DistanceMeters = sender.CurrentDistance.DistanceMeters
+        } else {
+            compassView.DistanceMeters = nil
         }
     }
 }
