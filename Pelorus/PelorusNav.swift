@@ -123,7 +123,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     /******* Location Manager Specific Delegates *******/
     
     //location updated
-    func locationManager(_ manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    private func locationManager(_ manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         let locationArray = locations as NSArray
         let locationObj = locationArray.lastObject as! CLLocation
         let coord = locationObj.coordinate
@@ -161,7 +161,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     }
     
     //heading updated
-    func locationManager(_ manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         
         self._currentRawHeading = newHeading.trueHeading
         
@@ -193,7 +193,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     }
     
     // authorization status
-    func locationManager (_ manager: CLLocationManager!, didChangeAuthorization status: CLAuthorizationStatus) {
+    func locationManager (_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         var shouldAllow = false
         var locationStatus : String = ""
         

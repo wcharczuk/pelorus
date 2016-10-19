@@ -1,4 +1,4 @@
- //
+//
 //  AppDelegate.swift
 //  Pelorus
 //
@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+import MagicalRecord
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             NavManager = PelorusNav(appDelegate: self)
             NavManager.Start()
         }
+        MagicalRecord.setupCoreDataStack()
         return true
     }
 
@@ -37,9 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        if nil == NavManager {
+        if nil != NavManager {
             NavManager.Stop()
         }
+        MagicalRecord.cleanUp();
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -56,9 +58,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:
-        if nil == NavManager {
+        if nil != NavManager {
             NavManager.Stop()
         }
+        
+        MagicalRecord.cleanUp();
     }
     
     private func application(_ application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> Int {
@@ -68,11 +72,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             return Int(UIInterfaceOrientationMask.all.rawValue)
         }
     }
-    
-    lazy var applicationDocumentsDirectory: URL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "InverseTechnologies.COREDATUMS" in the application's documents Application Support directory.
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return urls[urls.count-1] 
-        }()
 }
 

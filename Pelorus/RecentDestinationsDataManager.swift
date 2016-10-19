@@ -7,18 +7,18 @@
 //
 
 import UIKit
-import CoreData
+import MagicalRecord
 
 struct RecentDestinationsDataManager {
+    
     static func Fetch() -> Array<GPS> {
        return Array<GPS>()
     }
     
-    static func AddNew(_ destination : GPS) -> Bool {
-        return false
+    static func AddNew(_ destination : GPS) {
     }
     
-    static func Purge() -> Bool {
-        return false
+    static func Purge() {
     }
+    
 }

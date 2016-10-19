@@ -37,18 +37,13 @@ class CameraFeedView : GraphicsView {
         
         if _captureDevice != nil {
             
-            var err : NSError? = nil
-            _session.addInput(AVCaptureDeviceInput(device: _captureDevice, error: &err))
-            
-            if err != nil {
-                NSLog("Camera Error: \(err?.localizedDescription)")
-            }
+            try! _session.addInput(AVCaptureDeviceInput(device: _captureDevice))
             
             _previewLayer = AVCaptureVideoPreviewLayer(session: _session)
             self.layer.addSublayer(_previewLayer)
             
             if let device = _captureDevice {
-                device.lockForConfiguration(nil)
+                try! device.lockForConfiguration()
                 device.focusMode = .continuousAutoFocus
                 device.unlockForConfiguration()
             }
@@ -174,9 +169,7 @@ class InterfaceView : GraphicsView {
         
         let absolute_heading_error = abs(self.CurrentHeadingError)
         let error_pct = CGFloat(absolute_heading_error / PelorusNav.CameraViewAngle)
-        let camera_angle = CGFloat(PelorusNav.CameraViewAngle)
         
-        let vertical_camera_angle = camera_angle / aspect
         
         if CurrentHeadingError < 0 {
             chevron_x = (bounds.size.width / 2.0) - (error_pct * bounds.size.width)
@@ -231,18 +224,17 @@ class InterfaceView : GraphicsView {
         let font : UIFont = Themes.Current.PrimaryFont
         
         let primary_color = Themes.Current.PrimaryColor
-        let secondary_color = Themes.Current.SecondaryColor
         
-        let textAttributes : Dictionary<NSObject, AnyObject> = [
-            NSFontAttributeName as NSObject : font as AnyObject,
-            NSForegroundColorAttributeName as NSObject : primary_color as AnyObject,
+        let textAttributes : [String : Any] = [
+            NSFontAttributeName : font,
+            NSForegroundColorAttributeName: primary_color,
         ]
         
         let min_dim = min(bounds.size.height, bounds.size.width)
-        let max_dim = max(bounds.size.height, bounds.size.width)
+
         
         let chevron_max_height = min_dim / 4.0
-        let chevron_max_width = max_dim / 4.0
+        
         
         let chevron_height = chevron_max_height / 2.0
         let chevron_width = chevron_max_height / 2.0
@@ -252,15 +244,17 @@ class InterfaceView : GraphicsView {
         ctx?.setStrokeColor(primary_color.cgColor)
         
         let distanceText = CompassUtil.FormatDistance(self.CurrentDistanceMeters) as NSString
-        let text_size = distanceText.sizeWithAttributes(textAttributes)
+        let text_size = distanceText.size(attributes: textAttributes)
 
         if _isInView() {
 
             let path = CGMutablePath()
-            CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
-            CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y - chevron_height)
-            CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
-            CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y - chevron_height)
+            
+            path.move(to: CGPoint(x: chevron_x, y: chevron_y))
+            path.addLine(to: CGPoint(x: chevron_x - chevron_width, y: chevron_y - chevron_height))
+            path.move(to: CGPoint(x: chevron_x-1, y: chevron_y+1))
+            path.addLine(to: CGPoint(x: chevron_x + chevron_width, y: chevron_y - chevron_height))
+            
             path.closeSubpath()
             ctx?.addPath(path)
             ctx?.strokePath()
@@ -269,15 +263,17 @@ class InterfaceView : GraphicsView {
             let text_x = chevron_x - (text_size.width / 2.0)
             let text_y = chevron_y + 5.0
             let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
-            distanceText.drawInRect(text_rect, withAttributes: textAttributes)
+            distanceText.draw(in: text_rect, withAttributes: textAttributes)
             
         } else if _isAboveCamera() {
 
             let path = CGMutablePath()
-            CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
-            CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y + chevron_height)
-            CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
-            CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y + chevron_height)
+            
+            path.move(to: CGPoint(x: chevron_x, y: chevron_y))
+            path.addLine(to: CGPoint(x: chevron_x - chevron_width, y: chevron_y + chevron_height))
+            path.move(to: CGPoint(x: chevron_x-1, y: chevron_y+1))
+            path.addLine(to: CGPoint(x: chevron_x + chevron_width, y: chevron_y + chevron_height))
+            
             path.closeSubpath()
             ctx?.addPath(path)
             ctx?.strokePath()
@@ -287,15 +283,17 @@ class InterfaceView : GraphicsView {
             let text_x = chevron_x - (text_size.width / 2.0)
             let text_y = chevron_y + 5.0 + chevron_height
             let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
-            distanceText.drawInRect(text_rect, withAttributes: textAttributes)
+            distanceText.draw(in: text_rect, withAttributes: textAttributes)
             
         } else if _isBelowCamera() {
             
             let path = CGMutablePath()
-            CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
-            CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y - chevron_height)
-            CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
-            CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y - chevron_height)
+            
+            path.move(to: CGPoint(x: chevron_x, y: chevron_y))
+            path.addLine(to: CGPoint(x: chevron_x - chevron_width, y: chevron_y - chevron_height))
+            path.move(to: CGPoint(x: chevron_x-1, y: chevron_y+1))
+            path.addLine(to: CGPoint(x: chevron_x + chevron_width, y: chevron_y - chevron_height))
+            
             path.closeSubpath()
             ctx?.addPath(path)
             ctx?.strokePath()
@@ -305,14 +303,16 @@ class InterfaceView : GraphicsView {
             let text_x = chevron_x - (text_size.width / 2.0)
             let text_y = chevron_y - (chevron_height + 5.0 + (text_size.width / 2.0))
             let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
-            distanceText.drawInRect(text_rect, withAttributes: textAttributes)
+            distanceText.draw(in: text_rect, withAttributes: textAttributes)
             
         } else if _isLeftOfCamera() {
             let path = CGMutablePath()
-            CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
-            CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y + chevron_height)
-            CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
-            CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y - chevron_height)
+            
+            path.move(to: CGPoint(x: chevron_x, y: chevron_y))
+            path.addLine(to: CGPoint(x: chevron_x + chevron_width, y: chevron_y + chevron_height))
+            path.move(to: CGPoint(x: chevron_x-1, y: chevron_y+1))
+            path.addLine(to: CGPoint(x: chevron_x + chevron_width, y: chevron_y - chevron_height))
+            
             path.closeSubpath()
             ctx?.addPath(path)
             ctx?.strokePath()
@@ -322,15 +322,17 @@ class InterfaceView : GraphicsView {
             let text_x = chevron_x + (chevron_width + 10)
             let text_y = chevron_y - (text_size.height / 2.0)
             let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
-            distanceText.drawInRect(text_rect, withAttributes: textAttributes)
+            distanceText.draw(in: text_rect, withAttributes: textAttributes)
             
         } else if _isRightOfCamera() {
             
             let path = CGMutablePath()
-            CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
-            CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y + chevron_height)
-            CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
-            CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y - chevron_height)
+            
+            path.move(to: CGPoint(x: chevron_x, y: chevron_y))
+            path.addLine(to: CGPoint(x: chevron_x - chevron_width, y: chevron_y + chevron_height))
+            path.move(to: CGPoint(x: chevron_x-1, y: chevron_y+1))
+            path.addLine(to: CGPoint(x: chevron_x + chevron_width, y: chevron_y - chevron_height))
+            
             path.closeSubpath()
             ctx?.addPath(path)
             ctx?.strokePath()
@@ -340,14 +342,14 @@ class InterfaceView : GraphicsView {
             let text_x = chevron_x - (chevron_width + 10 + text_size.width)
             let text_y = chevron_y - (text_size.height / 2.0)
             let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
-            distanceText.drawInRect(text_rect, withAttributes: textAttributes)
+            distanceText.draw(in: text_rect, withAttributes: textAttributes)
         }
         
         if nil != Destination {
             let destination_text = Destination as NSString
-            let destination_text_size = destination_text.sizeWithAttributes(textAttributes)
+            let destination_text_size = destination_text.size(attributes: textAttributes)
             let destination_text_rect = CGRect(x: CGFloat(10.0), y: CGFloat(10.0), width: destination_text_size.width, height: destination_text_size.height)
-            destination_text.drawInRect(destination_text_rect, withAttributes: textAttributes)
+            destination_text.draw(in: destination_text_rect, withAttributes: textAttributes)
         }
     }
 }
@@ -367,7 +369,7 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
     @IBOutlet var setDestinationButton : UIBarButtonItem!
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     override func viewDidLoad() {

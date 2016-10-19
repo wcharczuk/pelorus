@@ -51,8 +51,6 @@ class FixedQueue<T> {
     func Filter(_ predicate: (T) -> Bool) -> FixedQueue<T> {
         var filtered = Array<T>()
         
-        var test_filtered = _queue.filter {(val) -> Bool in nil != val}
-        
         for value : T in _queue {
             if predicate(value) {
                 filtered.append(value)
@@ -113,7 +111,7 @@ class FixedQueue<T> {
         if nil != _maxLength {
             if _queue.count > _maxLength! {
                 let numberToRemove = _queue.count - _maxLength!
-                for i in 1 ... numberToRemove {
+                for _ in 1 ... numberToRemove {
                     _queue.remove(at: 0)
                 }
             }

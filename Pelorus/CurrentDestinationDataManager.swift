@@ -10,15 +10,15 @@ import UIKit
 import CoreData
 
 struct CurrentDestinationDataManager {
+    
     static func Fetch() -> GPS! {
         return nil
     }
     
-    static func Save(_ destination: GPS!) -> Bool {
-        return true
+    static func Save(_ destination: GPS!) {
     }
     
-    static func Purge() -> Bool {
-        return false
-    } 
+    static func Purge() {
+    }
+    
 }
