@@ -16,51 +16,51 @@ class CompassView : GraphicsView {
     var CurrentHeadingError : Double!
     var CurrentDestinationHeading: Double!
     
-    func viewWillAppear(animated: Bool) {
+    func viewWillAppear(_ animated: Bool) {
         self.backgroundColor = Themes.Current.BackgroundColor
     }
     
-    func _drawCompass(rect: CGRect, center: CGPoint, largeFontSize: CGFloat, smallFontSize: CGFloat, scale: CGFloat) {
+    func _drawCompass(_ rect: CGRect, center: CGPoint, largeFontSize: CGFloat, smallFontSize: CGFloat, scale: CGFloat) {
         let ctx = UIGraphicsGetCurrentContext()
         
         let diameter = _calculateDiameter()
         
-        let _2_pi = 2 * M_PI
+        let _2_pi = CGFloat(2 * M_PI)
         
         //draw compass and compass rose
         //draw circle
-        CGContextSetLineWidth(ctx, 2)
-        CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
-        CGContextStrokePath(ctx)
+        ctx?.setLineWidth(2)
+        ctx?.setStrokeColor(Themes.Current.BorderColor.cgColor)
+        ctx?.addArc(center: center, radius: diameter / 2.0, startAngle: 0.0, endAngle: _2_pi, clockwise: true)
+        ctx?.strokePath()
         
         let outer_inner_diameter = 775 * scale
         
-        CGContextSetLineWidth(ctx, 1)
-        CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(outer_inner_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
-        CGContextStrokePath(ctx)
+        ctx?.setLineWidth(1)
+        ctx?.setStrokeColor(Themes.Current.BorderColor.cgColor)
+        ctx?.addArc(center: center, radius: outer_inner_diameter / 2.0, startAngle: 0.0, endAngle: _2_pi, clockwise: true)
+        ctx?.strokePath()
         
         let inner_outer_diameter = 675.0 * scale
         
-        CGContextSetLineWidth(ctx, 1)
-        CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(inner_outer_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
-        CGContextStrokePath(ctx)
+        ctx?.setLineWidth(1)
+        ctx?.setStrokeColor(Themes.Current.BorderColor.cgColor)
+        ctx?.addArc(center: center, radius: inner_outer_diameter / 2.0, startAngle: 0.0, endAngle: _2_pi, clockwise: true)
+        ctx?.strokePath()
         
         let inner_inner_diameter = 648.0 * scale
         
-        CGContextSetLineWidth(ctx, 1)
-        CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(inner_inner_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
-        CGContextStrokePath(ctx)
+        ctx?.setLineWidth(1)
+        ctx?.setStrokeColor(Themes.Current.BorderColor.cgColor)
+        ctx?.addArc(center: center, radius: inner_inner_diameter / 2.0, startAngle: 0.0, endAngle: _2_pi, clockwise: true)
+        ctx?.strokePath()
         
         let rose_diameter = 315 * scale
         
-        CGContextSetLineWidth(ctx, 1)
-        CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(rose_diameter / 2.0), CGFloat(0.0), CGFloat(_2_pi), Int32(1))
-        CGContextStrokePath(ctx)
+        ctx?.setLineWidth(1)
+        ctx?.setStrokeColor(Themes.Current.BorderColor.cgColor)
+        ctx?.addArc(center: center, radius: rose_diameter / 2.0, startAngle: 0.0, endAngle: _2_pi, clockwise: true)
+        ctx?.strokePath()
         
         let heading_x = bounds.size.width / 2.0
         let heading_y = (bounds.size.height / 2.0) - ((diameter / 2.0) + 5.0)
@@ -74,9 +74,6 @@ class CompassView : GraphicsView {
         let west  : NSString = "W"
         
         let large_text = createTextAttributes(largeFontSize)
-        let small_text = createTextAttributes(smallFontSize)
-        
-        let major_size = west.sizeWithAttributes(large_text)
         
         let northwest : NSString = "NW"
         let northeast : NSString = "NE"
@@ -88,7 +85,7 @@ class CompassView : GraphicsView {
         if nil != self.CurrentHeading {
             //adjust north by current heading
             
-            var north_theta = CompassUtil.CalculateBearingDifference(0.0, to: self.CurrentHeading)
+            var north_theta = CompassUtil.CalculateBearingDifference(0.0, self.CurrentHeading)
             if north_theta < 0.0 {
                 north_theta = north_theta + 360
             }
@@ -96,13 +93,13 @@ class CompassView : GraphicsView {
             north_degrees = north_theta
         }
         
-        var northeast_degrees = CompassUtil.AddDegrees(north_degrees, addition: -45.0)
-        var northwest_degrees = CompassUtil.AddDegrees(north_degrees, addition: 45.0)
-        var west_degrees = CompassUtil.AddDegrees(north_degrees, addition: 90.0)
-        var east_degrees = CompassUtil.AddDegrees(north_degrees, addition: -90.0)
-        var south_degrees = CompassUtil.AddDegrees(north_degrees, addition: 180.0)
-        var southeast_degrees = CompassUtil.AddDegrees(south_degrees, addition: 45.0)
-        var southwest_degrees = CompassUtil.AddDegrees(south_degrees, addition: -45.0)
+        let northeast_degrees = CompassUtil.AddDegrees(north_degrees, addition: -45.0)
+        let northwest_degrees = CompassUtil.AddDegrees(north_degrees, addition: 45.0)
+        let west_degrees = CompassUtil.AddDegrees(north_degrees, addition: 90.0)
+        let east_degrees = CompassUtil.AddDegrees(north_degrees, addition: -90.0)
+        let south_degrees = CompassUtil.AddDegrees(north_degrees, addition: 180.0)
+        let southeast_degrees = CompassUtil.AddDegrees(south_degrees, addition: 45.0)
+        let southwest_degrees = CompassUtil.AddDegrees(south_degrees, addition: -45.0)
         
         let minor_rose_triangle_altitude = (110 * scale) * 2.0
         let major_rose_triangle_altitude = rose_diameter
@@ -143,16 +140,16 @@ class CompassView : GraphicsView {
         drawCompassLabel(ctx, x: center.x, y: center.y, label: west, textAttributes: large_text, compassDegrees: west_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
         drawCompassLabel(ctx, x: center.x, y: center.y, label: south, textAttributes: large_text, compassDegrees: south_degrees, diameter: CGFloat(inner_inner_diameter - 30.0))
         
-        CGContextSaveGState(ctx)
-        CGContextSetFillColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-        CGContextAddArc(ctx, center.x, center.y, CGFloat(20.0 * scale), CGFloat(0.0), CGFloat(M_PI*2.0), Int32(1))
-        CGContextFillPath(ctx)
+        ctx?.saveGState()
+        ctx?.setFillColor(Themes.Current.BorderColor.cgColor)
+        ctx?.addArc(center: center, radius:  CGFloat(20.0 * scale), startAngle: 0.0, endAngle: CGFloat(M_PI*2.0), clockwise: true)
+        ctx?.fillPath()
         
         //draw the destination compass needle
         
         if nil != self.CurrentHeadingError {
             
-            var destination_bearing = self.CurrentHeadingError
+            var destination_bearing = self.CurrentHeadingError!
             if destination_bearing < 0.0 {
                 destination_bearing = destination_bearing + 360.0
             }
@@ -167,16 +164,16 @@ class CompassView : GraphicsView {
             let needle_bottom_x = Double(center.x) + (needle_radius * sin(destination_radians))
             let needle_bottom_y = Double(center.y) + (needle_radius * cos(destination_radians))
             
-            CGContextSaveGState(ctx)
-            CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-            CGContextSetLineWidth(ctx, 3)
+            ctx?.saveGState()
+            ctx?.setStrokeColor(Themes.Current.BorderColor.cgColor)
+            ctx?.setLineWidth(3)
             
-            var needle_main_path = CGPathCreateMutable()
-            CGPathMoveToPoint(needle_main_path, nil, CGFloat(needle_top_x), CGFloat(needle_top_y))
-            CGPathAddLineToPoint(needle_main_path, nil, CGFloat(needle_bottom_x), CGFloat(needle_bottom_y))
-            CGPathCloseSubpath(needle_main_path)
-            CGContextAddPath(ctx, needle_main_path)
-            CGContextStrokePath(ctx)
+            let needle_main_path = CGMutablePath()
+            needle_main_path.move(to: CGPoint(x: needle_top_x, y: needle_top_y))
+            needle_main_path.addLine(to: CGPoint(x: needle_bottom_x, y: needle_bottom_y))
+            needle_main_path.closeSubpath()
+            ctx?.addPath(needle_main_path)
+            ctx?.strokePath()
             
             let arrow_height = CGFloat(outer_inner_diameter - inner_outer_diameter)
             
@@ -189,6 +186,8 @@ class CompassView : GraphicsView {
             let circle_center_x = Double(center.x) + ((needle_radius + (circlet_diameter / 2.0)) * sin(destination_radians))
             let circle_center_y = Double(center.y) + ((needle_radius + (circlet_diameter / 2.0)) * cos(destination_radians))
             
+            let circle_center = CGPoint(x: circle_center_x, y: circle_center_y)
+            
             //compute the normals for the angle.
             let arrow_dest = CompassUtil.AddDegrees(destination_bearing, addition: -90.0)
             let circle_normal_left_degrees = CompassUtil.AddDegrees(arrow_dest, addition: 90.0)
@@ -197,36 +196,36 @@ class CompassView : GraphicsView {
             let circle_normal_left_radians = CompassUtil.ToRadians(circle_normal_left_degrees)
             let circle_normal_right_radians = CompassUtil.ToRadians(circle_normal_right_degrees)
             
-            CGContextSaveGState(ctx)
+            ctx?.saveGState()
             
-            CGContextSetLineWidth(ctx, 3)
-            CGContextSetStrokeColorWithColor(ctx, Themes.Current.BorderColor.CGColor)
-            CGContextAddArc(ctx, CGFloat(circle_center_x), CGFloat(circle_center_y), CGFloat(circlet_diameter / 2.0), CGFloat(circle_normal_left_radians), CGFloat(circle_normal_right_radians), Int32(1))
-            CGContextStrokePath(ctx)
+            ctx?.setLineWidth(3)
+            ctx?.setStrokeColor(Themes.Current.BorderColor.cgColor)
+            ctx?.addArc(center: circle_center, radius:  CGFloat(circlet_diameter / 2.0), startAngle: CGFloat(circle_normal_left_radians), endAngle: CGFloat(circle_normal_right_radians), clockwise: true)
+            ctx?.strokePath()
         }
     }
     
-    func _drawDistanceText(rect: CGRect, fontSize: CGFloat, center: CGPoint) {
+    func _drawDistanceText(_ rect: CGRect, fontSize: CGFloat, center: CGPoint) {
         let text_attributes = createTextAttributes(fontSize)
         var distance_text : NSString = "Distance Unknown"
         if nil != self.DistanceMeters {
             distance_text = CompassUtil.FormatDistance(self.DistanceMeters) + " away" as NSString
         }
         
-        let distance_text_size = distance_text.sizeWithAttributes(text_attributes)
+        let distance_text_size = distance_text.size(attributes: text_attributes)
         
-        var dt_x = (bounds.size.width / 2.0) - (distance_text_size.width / 2.0)
-        var dt_y = (bounds.size.height / 10.0)
+        let dt_x = (bounds.size.width / 2.0) - (distance_text_size.width / 2.0)
+        let dt_y = (bounds.size.height / 10.0)
         
-        let distance_text_rect = CGRectMake(CGFloat(dt_x), CGFloat(dt_y), CGFloat(distance_text_size.width), CGFloat(distance_text_size.height))
-        distance_text.drawInRect(distance_text_rect, withAttributes: text_attributes)
+        let distance_text_rect = CGRect(x: CGFloat(dt_x), y: CGFloat(dt_y), width: CGFloat(distance_text_size.width), height: CGFloat(distance_text_size.height))
+        distance_text.draw(in: distance_text_rect, withAttributes: text_attributes)
     }
     
     func _calculateDiameter() -> CGFloat {
         var diameter : CGFloat = 0.0
         
         var margin_ratio = 0.1
-        if UIScreen.mainScreen().bounds.height < 568 {
+        if UIScreen.main.bounds.height < 568 {
             margin_ratio = 0.3
         }
         
@@ -239,7 +238,7 @@ class CompassView : GraphicsView {
         return diameter
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         self.backgroundColor = Themes.Current.BackgroundColor
         

@@ -10,8 +10,8 @@ import Foundation
 
 struct CompassUtil {
     
-    //Uses user preferences to format a distance in appropriate major / minor units.
-    static func FormatDistance(distanceInMeters: Double) -> String {
+    // FormatDistance uses user preferences to format a distance in appropriate major / minor units.
+    static func FormatDistance(_ distanceInMeters: Double) -> String {
         if UserPreferences.UseMetric {
             if(distanceInMeters > 1000) {
                 return String(NSString(format:"%.2f km", distanceInMeters / 1000.0))
@@ -31,10 +31,10 @@ struct CompassUtil {
         }
     }
     
-    //Uses the Haversine formula to work with the curvature of the earth etc.
-    static func CalculateDistanceMeters(#point1: GPS, point2: GPS) -> Double {
-        
-        var R : Double = 6371 * 1000; //meters
+    //CalculateDistanceMeters uses the Haversine formula to calculate the lateral distance between two GPS coordinates.
+    static func CalculateDistanceMeters(_ point1: GPS, _ point2: GPS) -> Double {
+
+        let r : Double = 6371 * 1000; //meters
         
         let theta_1 = ToRadians(point1.Latitude)
         let theta_2 = ToRadians(point2.Latitude)
@@ -46,19 +46,20 @@ struct CompassUtil {
             + (cos(theta_1) * cos(theta_2) * sin(d_lambda / 2.0) * sin(d_lambda / 2.0))
         let c = 2 * atan2(sqrt(a), sqrt(1.0 - a))
         
-        return R * c
+        return r * c
     }
     
-    static func CalculateElevationAngle(#point1: GPS, point2: GPS) -> Double {
-        let d = CalculateDistanceMeters(point1: point1, point2: point2)
+    // CalculateElevationAngle calculates the angle (in radians) of elevation betwen two GPS coordinates.
+    static func CalculateElevationAngle(_ point1: GPS, _ point2: GPS) -> Double {
+        let distance = CalculateDistanceMeters(point1, point2)
         
         let delta_elev = point1.Elevation - point2.Elevation
         
-        return sin(delta_elev / d)
+        return sin(delta_elev / distance)
     }
     
-    //Again, uses orthodrome path to determine bearing
-    static func CalculateCompassHeading(#point1: GPS, point2: GPS) -> Double {
+    // CalculateCompassHeading uses the orthodrome path to determine bearing
+    static func CalculateCompassHeading(_ point1: GPS, _ point2: GPS) -> Double {
         let theta_1 = ToRadians(point1.Latitude)
         let theta_2 = ToRadians(point2.Latitude)
         
@@ -78,7 +79,7 @@ struct CompassUtil {
         }
     }
     
-    static func CalculateBearingDifference(from: Double, to: Double) -> Double {
+    static func CalculateBearingDifference(_ from: Double, _ to: Double) -> Double {
         
         if from == to {
             return 0.0
@@ -113,7 +114,7 @@ struct CompassUtil {
         }
     }
     
-    static func CalculateBearingDifferenceRadians(from: Double, to: Double) -> Double {
+    static func CalculateBearingDifferenceRadians(_ from: Double, to: Double) -> Double {
         if from == to {
             return 0.0
         }
@@ -148,7 +149,7 @@ struct CompassUtil {
         
     }
     
-    static func CalculateAverageBearing(bearings: [Double]) -> Double {
+    static func CalculateAverageBearing(_ bearings: [Double]) -> Double {
         var x = 0.0
         var y = 0.0
         
@@ -167,7 +168,7 @@ struct CompassUtil {
         return bearing_average
     }
     
-    static func AddRadians(base:Double, addition:Double) -> Double {
+    static func AddRadians(_ base:Double, addition:Double) -> Double {
         let new_base = base + addition
         if new_base > (2*M_PI) {
             return new_base - (2*M_PI)
@@ -178,7 +179,7 @@ struct CompassUtil {
         }
     }
     
-    static func AddDegrees(base: Double, addition: Double) -> Double {
+    static func AddDegrees(_ base: Double, addition: Double) -> Double {
         let new_base = base + addition
         if new_base > 360.0 {
             return new_base - 360.0
@@ -189,20 +190,20 @@ struct CompassUtil {
         }
     }
     
-    static func ToRadians(value:Double) -> Double {
+    static func ToRadians(_ value:Double) -> Double {
         return value * M_PI / 180.0
     }
     
-    static func DegreesToCompassRadians(value: Double) -> Double {
+    static func DegreesToCompassRadians(_ value: Double) -> Double {
         let inverted = 360.0 - value
         return ToRadians(inverted)
     }
     
-    static func RadiansToCompassRadians(value: Double) -> Double {
+    static func RadiansToCompassRadians(_ value: Double) -> Double {
         return (2.0 * M_PI) - value
     }
     
-    static func ToDegrees(value:Double) -> Double {
+    static func ToDegrees(_ value:Double) -> Double {
         return value * 180.0 / M_PI
     }
 

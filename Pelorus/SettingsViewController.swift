@@ -29,11 +29,11 @@ class SettingsViewController: UITableViewController {
         compassStepsToggle.stepValue = 1.0
         super.viewDidLoad()
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         _nav = appDelegate.NavManager
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         self.tabBarController?.tabBar.barTintColor = nil
         self.tabBarController?.tabBar.tintColor = nil
@@ -47,13 +47,13 @@ class SettingsViewController: UITableViewController {
             units.selectedSegmentIndex = 0
         }
         
-        shouldSmoothCompass.on = UserPreferences.ShouldSmoothCompass
-        shouldSmoothLocation.on = UserPreferences.ShouldSmoothLocation
+        shouldSmoothCompass.isOn = UserPreferences.ShouldSmoothCompass
+        shouldSmoothLocation.isOn = UserPreferences.ShouldSmoothLocation
         
         selectTheme(UserPreferences.Theme)
     }
     
-    @IBAction func compassSmoothingValueChanged(sender: AnyObject) {
+    @IBAction func compassSmoothingValueChanged(_ sender: AnyObject) {
         if compassStepsToggle.value > 0 {
             UserPreferences.SensorSmoothing = Int(compassStepsToggle.value)
             compassStepsDisplay.text = String(UserPreferences.SensorSmoothing) + " Steps"
@@ -64,7 +64,7 @@ class SettingsViewController: UITableViewController {
         _nav.ChangeQueueLengths(UserPreferences.SensorSmoothing)
     }
     
-    @IBAction func unitsValueChanged(sender: AnyObject) {
+    @IBAction func unitsValueChanged(_ sender: AnyObject) {
         if units.selectedSegmentIndex == 1 {
             UserPreferences.UseMetric = true
         } else {
@@ -72,50 +72,50 @@ class SettingsViewController: UITableViewController {
         }
     }
     
-    @IBAction func shouldSmoothCompassChanged(sender: AnyObject) {
-        let value = shouldSmoothCompass.on
+    @IBAction func shouldSmoothCompassChanged(_ sender: AnyObject) {
+        let value = shouldSmoothCompass.isOn
         UserPreferences.ShouldSmoothCompass = value
     }
     
-    @IBAction func shouldSmoothLocationChanged(sender: AnyObject) {
-        let value = shouldSmoothLocation.on
+    @IBAction func shouldSmoothLocationChanged(_ sender: AnyObject) {
+        let value = shouldSmoothLocation.isOn
         UserPreferences.ShouldSmoothLocation = value
     }
 
     func resetAllThemeRows() {
-        light_blue.accessoryType = UITableViewCellAccessoryType.None
-        light_red.accessoryType = UITableViewCellAccessoryType.None
-        dark_blue.accessoryType = UITableViewCellAccessoryType.None
-        dark_red.accessoryType = UITableViewCellAccessoryType.None
-        hot_pink.accessoryType = UITableViewCellAccessoryType.None
+        light_blue.accessoryType = UITableViewCellAccessoryType.none
+        light_red.accessoryType = UITableViewCellAccessoryType.none
+        dark_blue.accessoryType = UITableViewCellAccessoryType.none
+        dark_red.accessoryType = UITableViewCellAccessoryType.none
+        hot_pink.accessoryType = UITableViewCellAccessoryType.none
     }
     
-    func selectTheme(theme_id : Int) {
+    func selectTheme(_ theme_id : Int) {
         resetAllThemeRows()
         switch theme_id {
         case 0:
-            light_blue.accessoryType = UITableViewCellAccessoryType.Checkmark
+            light_blue.accessoryType = UITableViewCellAccessoryType.checkmark
             break;
         case 1:
-            light_red.accessoryType = UITableViewCellAccessoryType.Checkmark
+            light_red.accessoryType = UITableViewCellAccessoryType.checkmark
             break;
         case 2:
-            dark_blue.accessoryType = UITableViewCellAccessoryType.Checkmark
+            dark_blue.accessoryType = UITableViewCellAccessoryType.checkmark
             break;
         case 3:
-            dark_red.accessoryType = UITableViewCellAccessoryType.Checkmark
+            dark_red.accessoryType = UITableViewCellAccessoryType.checkmark
             break;
         case 4:
-            hot_pink.accessoryType = UITableViewCellAccessoryType.Checkmark
+            hot_pink.accessoryType = UITableViewCellAccessoryType.checkmark
             break;
         default:
-            light_blue.accessoryType = UITableViewCellAccessoryType.Checkmark
+            light_blue.accessoryType = UITableViewCellAccessoryType.checkmark
             break;
         }
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selectTheme(indexPath.row)
-        UserPreferences.Theme = indexPath.row
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectTheme((indexPath as NSIndexPath).row)
+        UserPreferences.Theme = (indexPath as NSIndexPath).row
     }
 }

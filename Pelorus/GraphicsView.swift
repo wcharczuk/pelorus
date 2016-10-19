@@ -13,16 +13,16 @@ class GraphicsView : UIView {
 
     var interfaceOrientation : UIInterfaceOrientation!
     
-    func createTextAttributes(fontSize: CGFloat) -> Dictionary<NSObject, AnyObject> {
-        let textAttributes : Dictionary<NSObject, AnyObject> = [
-            NSFontAttributeName : Themes.Current.PrimaryFont.fontWithSize(fontSize) as AnyObject,
-            NSForegroundColorAttributeName : Themes.Current.PrimaryFontColor as AnyObject,
+    func createTextAttributes(_ fontSize: CGFloat) -> [String : Any] {
+        let textAttributes : [String : Any] = [
+            NSFontAttributeName : Themes.Current.PrimaryFont.withSize(fontSize),
+            NSForegroundColorAttributeName : Themes.Current.PrimaryFontColor,
         ]
         return textAttributes
     }
     
-    func drawText(text: NSString, textAttributes: Dictionary<NSObject, AnyObject>, withinRect: CGRect, alignCenter: Bool) {
-        let metrics = text.sizeWithAttributes(textAttributes)
+    func drawText(_ text: NSString, textAttributes: [String : Any]?, withinRect: CGRect, alignCenter: Bool) {
+        let metrics = text.size(attributes: textAttributes)
         
         if alignCenter {
             let text_width = metrics.width
@@ -32,15 +32,15 @@ class GraphicsView : UIView {
             let corner_x = (rect_width / 2.0) - (text_width / 2.0)
             let corner_y = withinRect.origin.y
             
-            let adjusted_rect = CGRectMake(CGFloat(corner_x), CGFloat(corner_y), CGFloat(text_width), CGFloat(text_height))
-            text.drawInRect(adjusted_rect, withAttributes: textAttributes)
+            let adjusted_rect = CGRect(x: CGFloat(corner_x), y: CGFloat(corner_y), width: CGFloat(text_width), height: CGFloat(text_height))
+            text.draw(in:adjusted_rect, withAttributes: textAttributes)
         } else {
-            text.drawInRect(withinRect, withAttributes: textAttributes)
+            text.draw(in:withinRect, withAttributes: textAttributes)
         }
     }
     
     
-    func drawCompassCheck(ctx: CGContext!, x: CGFloat, y: CGFloat, compassDegrees: Double, altitude: CGFloat, diameter: CGFloat, color: UIColor) {
+    func drawCompassCheck(_ ctx: CGContext!, x: CGFloat, y: CGFloat, compassDegrees: Double, altitude: CGFloat, diameter: CGFloat, color: UIColor) {
         
         let radius = Double(diameter / 2.0)
         
@@ -52,32 +52,31 @@ class GraphicsView : UIView {
         let bottom_x = Double(x) + ((radius - Double(altitude)) * sin(compassRadians))
         let bottom_y = Double(y) + ((radius - Double(altitude)) * cos(compassRadians))
         
-        CGContextSaveGState(ctx)
-        CGContextSetLineWidth(ctx, 1)
-        CGContextSetStrokeColorWithColor(ctx, color.CGColor)
-        var path = CGPathCreateMutable()
-        CGPathMoveToPoint(path, nil, CGFloat(top_x), CGFloat(top_y))
+        ctx.saveGState()
+        ctx.setLineWidth(1)
+        ctx.setStrokeColor(color.cgColor)
+        let path = CGMutablePath()
         
-        CGPathAddLineToPoint(path, nil, CGFloat(bottom_x), CGFloat(bottom_y))
+        path.move(to: CGPoint(x: top_x, y:  top_y))
         
-        CGPathCloseSubpath(path)
-        CGContextAddPath(ctx, path)
-        CGContextStrokePath(ctx)
+        path.addLine(to: CGPoint(x: bottom_x, y: bottom_y))
+        
+        path.closeSubpath()
+        ctx.addPath(path)
+        ctx.strokePath()
     }
     
     
-    func drawCompassLabel(ctx: CGContext!, x: CGFloat, y: CGFloat, label: NSString, textAttributes: Dictionary<NSObject, AnyObject>, compassDegrees: Double, diameter: CGFloat) {
-        CGContextSaveGState(ctx)
+    func drawCompassLabel(_ ctx: CGContext!, x: CGFloat, y: CGFloat, label: NSString, textAttributes: [String: Any], compassDegrees: Double, diameter: CGFloat) {
+        ctx.saveGState()
         
         let compassRadians = CompassUtil.DegreesToCompassRadians(compassDegrees)
         
         let radius = Double(diameter / 2.0)
         
-        let textSize = label.sizeWithAttributes(textAttributes)
+        let textSize = label.size(attributes: textAttributes)
         
         let tw2 = Double(textSize.width / 2.0)
-        let th = Double(textSize.height)
-        let th2 = th / 2.0
         
         let adjusted_compass_degrees = CompassUtil.AddDegrees(compassDegrees, addition: 180.0)
         
@@ -89,24 +88,25 @@ class GraphicsView : UIView {
         let ct_x = Double(x) + (radius * sin(adjusted_compass_radians))
         let ct_y = Double(y) + (radius * cos(adjusted_compass_radians))
         
-        var xform = CGAffineTransformMakeTranslation(CGFloat(ct_x), CGFloat(ct_y))
-        xform = CGAffineTransformRotate(xform, CGFloat(compassRadians))
-        xform = CGAffineTransformTranslate(xform, CGFloat(-1*ct_x), CGFloat(-1*ct_y))
-        CGContextConcatCTM(ctx, xform)
+        var xform = CGAffineTransform(translationX: CGFloat(ct_x), y: CGFloat(ct_y))
+        xform = xform.rotated(by: CGFloat(compassRadians))
+        xform = xform.translatedBy(x: CGFloat(-1*ct_x), y: CGFloat(-1*ct_y))
+        ctx.concatenate(xform)
         
-        let textRect = CGRectMake(CGFloat(tx), CGFloat(ty), CGFloat(textSize.width), CGFloat(textSize.height))
-        label.drawInRect(textRect, withAttributes: textAttributes)
+        let textRect = CGRect(x: CGFloat(tx), y: CGFloat(ty), width: CGFloat(textSize.width), height: CGFloat(textSize.height))
+        label.draw(in: textRect, withAttributes: textAttributes)
         
-        CGContextRestoreGState(ctx)
+        ctx.restoreGState()
     }
     
-    func drawCompassTriangle(ctx: CGContext!, x: CGFloat, y: CGFloat, compassDegrees: Double, altitude: CGFloat, width: CGFloat, fillColor: UIColor) {
-        CGContextSaveGState(ctx)
+    func drawCompassTriangle(_ ctx: CGContext!, x: CGFloat, y: CGFloat, compassDegrees: Double, altitude: CGFloat, width: CGFloat, fillColor: UIColor) {
+        ctx.saveGState()
         
-        CGContextSetFillColorWithColor(ctx, fillColor.CGColor);
-        var path = CGPathCreateMutable()
+        ctx.setFillColor(fillColor.cgColor);
         
-        CGPathMoveToPoint(path, nil, x, y)
+        let path = CGMutablePath()
+        
+        path.move(to: CGPoint(x: x, y: y))
         
         let compass_radians = CompassUtil.ToRadians(compassDegrees)
         
@@ -125,14 +125,15 @@ class GraphicsView : UIView {
         let t_x = Double(x) + (Double(altitude / 2.0) * sin(compass_radians))
         let t_y = Double(y) + (Double(altitude / 2.0) * cos(compass_radians))
         
-        CGPathAddLineToPoint(path, nil, CGFloat(ll_x), CGFloat(ll_y))
-        CGPathAddLineToPoint(path, nil, CGFloat(t_x), CGFloat(t_y))
-        CGPathAddLineToPoint(path, nil, CGFloat(lr_x), CGFloat(lr_y))
-        CGPathAddLineToPoint(path, nil, CGFloat(x), CGFloat(y))
+        path.addLine(to: CGPoint(x: ll_x, y: ll_y))
+        path.addLine(to: CGPoint(x: t_x, y: t_y))
+        path.addLine(to: CGPoint(x: lr_x, y: lr_y))
+        path.addLine(to: CGPoint(x: x, y: y))
         
-        CGPathCloseSubpath(path)
-        CGContextAddPath(ctx, path)
-        CGContextFillPath(ctx)
+
+        path.closeSubpath()
+        ctx.addPath(path)
+        (ctx).fillPath()
     }
 
 }

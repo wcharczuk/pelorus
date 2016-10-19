@@ -19,11 +19,11 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
     @IBOutlet var destinationText : UILabel!
     var destinationTextTapGesture : UITapGestureRecognizer!
     
-    @IBAction func clearDestinationClicked(sender: AnyObject){
+    @IBAction func clearDestinationClicked(_ sender: AnyObject){
         _nav.ClearDestination()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -34,17 +34,17 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
         
         destinationTextTapGesture = UITapGestureRecognizer()
         destinationTextTapGesture.numberOfTapsRequired = 1
-        destinationTextTapGesture.addTarget(self, action: "setDestinationTransition")
+        destinationTextTapGesture.addTarget(self, action: #selector(CompassViewController.setDestinationTransition))
         destinationText.addGestureRecognizer(destinationTextTapGesture)
-        destinationText.userInteractionEnabled = true
+        destinationText.isUserInteractionEnabled = true
         
-        UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleOrientationChange", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(self, selector: #selector(CompassViewController.handleOrientationChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
-        setDestinationButton.enabled = true
+        setDestinationButton.isEnabled = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         compassView.viewWillAppear(animated)
         
@@ -72,10 +72,10 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
     }
     
     func setDestinationTransition() {
-        self.performSegueWithIdentifier("selectDestinationSegue", sender: self.navigationController)
+        self.performSegue(withIdentifier: "selectDestinationSegue", sender: self.navigationController)
     }
     
-    func headingUpdated(sender: PelorusNav) {
+    func headingUpdated(_ sender: PelorusNav) {
         compassView.CurrentHeading = sender.CurrentHeading
         compassView.CurrentDestinationHeading = sender.CurrentDestinationHeading
         compassView.CurrentHeadingError = sender.CurrentHeadingError
@@ -83,8 +83,8 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
         self.compassView.setNeedsDisplay()
     }
     
-    func locationUpdated(sender: PelorusNav) {
-        setDestinationButton.enabled = true
+    func locationUpdated(_ sender: PelorusNav) {
+        setDestinationButton.isEnabled = true
 
         if nil != sender.CurrentDistance {
             compassView.DistanceMeters = sender.CurrentDistance.DistanceMeters

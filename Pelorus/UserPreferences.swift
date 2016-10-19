@@ -12,24 +12,24 @@ struct UserPreferences {
     
     static var UseMetric : Bool {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            if nil != defaults.objectForKey("units") {
-                return defaults.boolForKey("units")
+            let defaults = UserDefaults.standard
+            if nil != defaults.object(forKey: "units") {
+                return defaults.bool(forKey: "units")
             } else {
                 return Configuration.UNITS_USE_METRIC
             }
         }
         set(value) {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setBool(value, forKey: "units")
+            let defaults = UserDefaults.standard
+            defaults.set(value, forKey: "units")
         }
     }
     
     static var SensorSmoothing : Int {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            if nil != defaults.objectForKey("units") {
-                let value = defaults.integerForKey("sensor_smoothing")
+            let defaults = UserDefaults.standard
+            if nil != defaults.object(forKey: "units") {
+                let value = defaults.integer(forKey: "sensor_smoothing")
                 if value < 1 {
                     return 1
                 } else {
@@ -46,53 +46,53 @@ struct UserPreferences {
                 newValue = 1
             }
             
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setInteger(newValue, forKey: "sensor_smoothing")
+            let defaults = UserDefaults.standard
+            defaults.set(newValue, forKey: "sensor_smoothing")
         }
     }
     
     static var ShouldSmoothLocation : Bool {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            if nil != defaults.objectForKey("should_smooth_location") {
-                return defaults.boolForKey("should_smooth_location")
+            let defaults = UserDefaults.standard
+            if nil != defaults.object(forKey: "should_smooth_location") {
+                return defaults.bool(forKey: "should_smooth_location")
             } else {
                 return Configuration.SHOULD_SMOOTH_LOCATION
             }
         }
         set(value) {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setBool(value, forKey: "should_smooth_location")
+            let defaults = UserDefaults.standard
+            defaults.set(value, forKey: "should_smooth_location")
         }
     }
     
     static var ShouldSmoothCompass : Bool {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            if nil != defaults.objectForKey("should_smooth_compass") {
-                return defaults.boolForKey("should_smooth_compass")
+            let defaults = UserDefaults.standard
+            if nil != defaults.object(forKey: "should_smooth_compass") {
+                return defaults.bool(forKey: "should_smooth_compass")
             } else {
                 return Configuration.SHOULD_SMOOTH_COMPASS
             }
         }
         set(value) {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setBool(value, forKey: "should_smooth_compass")
+            let defaults = UserDefaults.standard
+            defaults.set(value, forKey: "should_smooth_compass")
         }
     }
     
     static var Theme : Int {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            if nil != defaults.objectForKey("theme") {
-                return defaults.integerForKey("theme")
+            let defaults = UserDefaults.standard
+            if nil != defaults.object(forKey: "theme") {
+                return defaults.integer(forKey: "theme")
             } else {
                 return Configuration.THEME
             }
         }
         set(value) {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setInteger(value, forKey: "theme")
+            let defaults = UserDefaults.standard
+            defaults.set(value, forKey: "theme")
         }
     }
 }

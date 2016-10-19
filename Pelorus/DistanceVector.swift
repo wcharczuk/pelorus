@@ -13,9 +13,9 @@ struct DistanceVector {
         self.Origin = origin
         self.Destination = destination
         
-        self.DistanceMeters = CompassUtil.CalculateDistanceMeters(point1: origin, point2: destination)
-        self.ElevationAngle = CompassUtil.CalculateElevationAngle(point1: origin, point2: destination)
-        self.CompassHeading = CompassUtil.CalculateCompassHeading(point1: origin, point2: destination)
+        self.DistanceMeters = CompassUtil.CalculateDistanceMeters(origin, destination)
+        self.ElevationAngle = CompassUtil.CalculateElevationAngle(origin, destination)
+        self.CompassHeading = CompassUtil.CalculateCompassHeading(origin, destination)
     }
     
     var Origin : GPS

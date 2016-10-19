@@ -19,17 +19,17 @@ class CameraFeedView : GraphicsView {
     
     func beginFeed() {
         
-        UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleOrientationChange", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraFeedView.handleOrientationChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
         _session = AVCaptureSession()
         _session.sessionPreset = AVCaptureSessionPresetPhoto
         
         let devices = AVCaptureDevice.devices()
-        for device in devices {
+        for device in devices! {
             // Make sure this particular device supports video
-            if (device.hasMediaType(AVMediaTypeVideo)) {
-                if(device.position == AVCaptureDevicePosition.Back) {
+            if ((device as AnyObject).hasMediaType(AVMediaTypeVideo)) {
+                if((device as AnyObject).position == AVCaptureDevicePosition.back) {
                     _captureDevice = device as? AVCaptureDevice
                 }
             }
@@ -49,11 +49,11 @@ class CameraFeedView : GraphicsView {
             
             if let device = _captureDevice {
                 device.lockForConfiguration(nil)
-                device.focusMode = .ContinuousAutoFocus
+                device.focusMode = .continuousAutoFocus
                 device.unlockForConfiguration()
             }
             
-            if !_session.running {
+            if !_session.isRunning {
                 _session.startRunning()
             }
             
@@ -67,21 +67,21 @@ class CameraFeedView : GraphicsView {
         _previewLayer.frame = frame_bounds
         _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
         _previewLayer.contentsGravity = kCAGravityResizeAspectFill
-        _previewLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
+        _previewLayer.position = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
         
-        let orientation = UIDevice.currentDevice().orientation
+        let orientation = UIDevice.current.orientation
         
         switch(orientation) {
-            case UIDeviceOrientation.LandscapeLeft:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.LandscapeRight
-            case UIDeviceOrientation.LandscapeRight:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.LandscapeLeft
-            case UIDeviceOrientation.Portrait:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.Portrait
-            case UIDeviceOrientation.PortraitUpsideDown:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.PortraitUpsideDown
+            case UIDeviceOrientation.landscapeLeft:
+                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+            case UIDeviceOrientation.landscapeRight:
+                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+            case UIDeviceOrientation.portrait:
+                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.portrait
+            case UIDeviceOrientation.portraitUpsideDown:
+                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
             default:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.LandscapeLeft
+                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
         }
     }
 }
@@ -147,7 +147,7 @@ class InterfaceView : GraphicsView {
     
     var chevronPointQueue : FixedQueue<(CGFloat, CGFloat)>!
     
-    func averagePoints( newPoint: (CGFloat, CGFloat) ) -> (CGFloat, CGFloat) {
+    func averagePoints( _ newPoint: (CGFloat, CGFloat) ) -> (CGFloat, CGFloat) {
         
         if nil == chevronPointQueue {
             chevronPointQueue = FixedQueue<(CGFloat, CGFloat)>( maxLength: 5 )
@@ -170,7 +170,7 @@ class InterfaceView : GraphicsView {
         
         let bounds = self.bounds
         
-        var aspect = CGFloat(bounds.size.width / bounds.size.height)
+        let aspect = CGFloat(bounds.size.width / bounds.size.height)
         
         let absolute_heading_error = abs(self.CurrentHeadingError)
         let error_pct = CGFloat(absolute_heading_error / PelorusNav.CameraViewAngle)
@@ -217,7 +217,7 @@ class InterfaceView : GraphicsView {
         chevron_y = averaged.1
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         if nil == CurrentHeadingError || nil == CurrentDistanceMeters {
             return
@@ -234,8 +234,8 @@ class InterfaceView : GraphicsView {
         let secondary_color = Themes.Current.SecondaryColor
         
         let textAttributes : Dictionary<NSObject, AnyObject> = [
-            NSFontAttributeName : font as AnyObject,
-            NSForegroundColorAttributeName : primary_color as AnyObject,
+            NSFontAttributeName as NSObject : font as AnyObject,
+            NSForegroundColorAttributeName as NSObject : primary_color as AnyObject,
         ]
         
         let min_dim = min(bounds.size.height, bounds.size.width)
@@ -247,106 +247,106 @@ class InterfaceView : GraphicsView {
         let chevron_height = chevron_max_height / 2.0
         let chevron_width = chevron_max_height / 2.0
         
-        CGContextSaveGState(ctx)
-        CGContextSetLineWidth(ctx, 3)
-        CGContextSetStrokeColorWithColor(ctx, primary_color.CGColor)
+        ctx?.saveGState()
+        ctx?.setLineWidth(3)
+        ctx?.setStrokeColor(primary_color.cgColor)
         
         let distanceText = CompassUtil.FormatDistance(self.CurrentDistanceMeters) as NSString
         let text_size = distanceText.sizeWithAttributes(textAttributes)
 
         if _isInView() {
 
-            let path = CGPathCreateMutable()
+            let path = CGMutablePath()
             CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
             CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y - chevron_height)
             CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
             CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y - chevron_height)
-            CGPathCloseSubpath(path)
-            CGContextAddPath(ctx, path)
-            CGContextStrokePath(ctx)
+            path.closeSubpath()
+            ctx?.addPath(path)
+            ctx?.strokePath()
             
-            CGContextSaveGState(ctx)
+            ctx?.saveGState()
             let text_x = chevron_x - (text_size.width / 2.0)
             let text_y = chevron_y + 5.0
-            let text_rect = CGRectMake(CGFloat(text_x), CGFloat(text_y), text_size.width, text_size.height)
+            let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
             distanceText.drawInRect(text_rect, withAttributes: textAttributes)
             
         } else if _isAboveCamera() {
 
-            let path = CGPathCreateMutable()
+            let path = CGMutablePath()
             CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
             CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y + chevron_height)
             CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
             CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y + chevron_height)
-            CGPathCloseSubpath(path)
-            CGContextAddPath(ctx, path)
-            CGContextStrokePath(ctx)
+            path.closeSubpath()
+            ctx?.addPath(path)
+            ctx?.strokePath()
             
-            CGContextSaveGState(ctx)
+            ctx?.saveGState()
             
             let text_x = chevron_x - (text_size.width / 2.0)
             let text_y = chevron_y + 5.0 + chevron_height
-            let text_rect = CGRectMake(CGFloat(text_x), CGFloat(text_y), text_size.width, text_size.height)
+            let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
             distanceText.drawInRect(text_rect, withAttributes: textAttributes)
             
         } else if _isBelowCamera() {
             
-            let path = CGPathCreateMutable()
+            let path = CGMutablePath()
             CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
             CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y - chevron_height)
             CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
             CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y - chevron_height)
-            CGPathCloseSubpath(path)
-            CGContextAddPath(ctx, path)
-            CGContextStrokePath(ctx)
+            path.closeSubpath()
+            ctx?.addPath(path)
+            ctx?.strokePath()
             
-            CGContextSaveGState(ctx)
+            ctx?.saveGState()
             
             let text_x = chevron_x - (text_size.width / 2.0)
             let text_y = chevron_y - (chevron_height + 5.0 + (text_size.width / 2.0))
-            let text_rect = CGRectMake(CGFloat(text_x), CGFloat(text_y), text_size.width, text_size.height)
+            let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
             distanceText.drawInRect(text_rect, withAttributes: textAttributes)
             
         } else if _isLeftOfCamera() {
-            let path = CGPathCreateMutable()
+            let path = CGMutablePath()
             CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
             CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y + chevron_height)
             CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
             CGPathAddLineToPoint(path, nil, chevron_x + chevron_width, chevron_y - chevron_height)
-            CGPathCloseSubpath(path)
-            CGContextAddPath(ctx, path)
-            CGContextStrokePath(ctx)
+            path.closeSubpath()
+            ctx?.addPath(path)
+            ctx?.strokePath()
             
-            CGContextSaveGState(ctx)
+            ctx?.saveGState()
             
             let text_x = chevron_x + (chevron_width + 10)
             let text_y = chevron_y - (text_size.height / 2.0)
-            let text_rect = CGRectMake(CGFloat(text_x), CGFloat(text_y), text_size.width, text_size.height)
+            let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
             distanceText.drawInRect(text_rect, withAttributes: textAttributes)
             
         } else if _isRightOfCamera() {
             
-            let path = CGPathCreateMutable()
+            let path = CGMutablePath()
             CGPathMoveToPoint(path, nil, chevron_x, chevron_y)
             CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y + chevron_height)
             CGPathMoveToPoint(path, nil, chevron_x - 1, chevron_y + 1)
             CGPathAddLineToPoint(path, nil, chevron_x - chevron_width, chevron_y - chevron_height)
-            CGPathCloseSubpath(path)
-            CGContextAddPath(ctx, path)
-            CGContextStrokePath(ctx)
+            path.closeSubpath()
+            ctx?.addPath(path)
+            ctx?.strokePath()
             
-            CGContextSaveGState(ctx)
+            ctx?.saveGState()
             
             let text_x = chevron_x - (chevron_width + 10 + text_size.width)
             let text_y = chevron_y - (text_size.height / 2.0)
-            let text_rect = CGRectMake(CGFloat(text_x), CGFloat(text_y), text_size.width, text_size.height)
+            let text_rect = CGRect(x: CGFloat(text_x), y: CGFloat(text_y), width: text_size.width, height: text_size.height)
             distanceText.drawInRect(text_rect, withAttributes: textAttributes)
         }
         
         if nil != Destination {
             let destination_text = Destination as NSString
             let destination_text_size = destination_text.sizeWithAttributes(textAttributes)
-            let destination_text_rect = CGRectMake(CGFloat(10.0), CGFloat(10.0), destination_text_size.width, destination_text_size.height)
+            let destination_text_rect = CGRect(x: CGFloat(10.0), y: CGFloat(10.0), width: destination_text_size.width, height: destination_text_size.height)
             destination_text.drawInRect(destination_text_rect, withAttributes: textAttributes)
         }
     }
@@ -376,12 +376,12 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
         _nav = self.appDelegate.NavManager
         
         _motionManager = CMMotionManager()
-        if (_motionManager.accelerometerAvailable) {
-            _motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue(), withHandler: motionUpdate)
+        if (_motionManager.isAccelerometerAvailable) {
+            _motionManager.startAccelerometerUpdates(to: OperationQueue(), withHandler: motionUpdate as! CMAccelerometerHandler)
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         _nav.Receiver = self
@@ -391,10 +391,10 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
             interfaceView.Destination = _nav.CurrentDestination.Label
         }
         
-        setDestinationButton.enabled = true
+        setDestinationButton.isEnabled = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         cameraFeedView.beginFeed()
     }
 
@@ -404,7 +404,7 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
         }
     }
     
-    func motionUpdate(data: CMAccelerometerData!, error: NSError!) {
+    func motionUpdate(_ data: CMAccelerometerData!, error: NSError!) {
         if nil != data && nil == error {
             interfaceView.DevicePitch = data.acceleration.z
             interfaceView.DeviceRoll = data.acceleration.x
@@ -412,7 +412,7 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
         }
     }
     
-    func headingUpdated(sender: PelorusNav) {
+    func headingUpdated(_ sender: PelorusNav) {
         interfaceView.CurrentHeadingError = sender.CurrentHeadingError
         interfaceView.CurrentHeading = sender.CurrentHeading
         interfaceView.CurrentDestinationHeading = sender.CurrentDestinationHeading
@@ -424,7 +424,7 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
         interfaceView.setNeedsDisplay()
     }
     
-    func locationUpdated(sender: PelorusNav) {
+    func locationUpdated(_ sender: PelorusNav) {
         interfaceView.CurrentHeadingError = sender.CurrentHeadingError
         interfaceView.CurrentHeading = sender.CurrentHeading
         interfaceView.CurrentDestinationHeading = sender.CurrentDestinationHeading

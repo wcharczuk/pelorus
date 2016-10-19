@@ -13,32 +13,32 @@ class ThemedViewController : UIViewController {
     var appDelegate : AppDelegate!
 
     override func viewDidLoad() {
-        self.appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBar.translucent = false
-        self.tabBarController?.tabBar.translucent = false
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.tabBarController?.tabBar.isTranslucent = false
         
         if nil != Themes.Current.MenubarBackgroundColor {
             self.navigationController?.navigationBar.barTintColor = Themes.Current.MenubarBackgroundColor!
             self.tabBarController?.tabBar.barTintColor = Themes.Current.MenubarBackgroundColor!
             
-            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
+            UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.none)
         } else {
             
             self.navigationController?.navigationBar.barTintColor = nil
             self.tabBarController?.tabBar.barTintColor = nil
-            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+            UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.none)
         }
         
         if nil != Themes.Current.MenubarFontColor {
             let color = Themes.Current.MenubarFontColor!
-            let textAttributes : Dictionary<NSObject, AnyObject> = [
-                NSForegroundColorAttributeName : color as AnyObject
+            let textAttributes : [String: Any]? = [
+                NSForegroundColorAttributeName : color
             ]
             
             self.navigationController?.navigationBar.titleTextAttributes = textAttributes

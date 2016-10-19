@@ -31,20 +31,20 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         _nav = appDelegate.NavManager
         
         mapView.delegate = self
 
         mapView.showsUserLocation = true
-        mapView.zoomEnabled = true
-        mapView.scrollEnabled = true
+        mapView.isZoomEnabled = true
+        mapView.isScrollEnabled = true
         
         searchBar.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: _cellIdentifier)
+        tableView?.register(UITableViewCell.self, forCellReuseIdentifier: _cellIdentifier)
         
         let long_press = UILongPressGestureRecognizer()
         long_press.minimumPressDuration = 1.0
@@ -53,14 +53,14 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         mapView.addGestureRecognizer(long_press)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.title = "Choose a Destination"
         
         didZoomToUserLocation = false
         _destination = _nav.CurrentDestination
         
-        tableView.hidden = true
+        tableView.isHidden = true
         
         if nil != _nav.CurrentDestination {
             mapView.removeAnnotations(mapView.annotations)
@@ -78,47 +78,46 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         zoomMapView()
     }
     
-    @IBAction func doneButton(sender: UIBarButtonItem) {
+    @IBAction func doneButton(_ sender: UIBarButtonItem) {
         
         if nil != _destination {
             _nav.SetDestination(_destination)
         }
         
         let nc = self.navigationController
-        nc?.popToRootViewControllerAnimated(true)
+        let _ = nc?.popToRootViewController(animated: true)
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         mapView.removeAnnotations(mapView.annotations)
         
-        let item = getItem(indexPath.row)
+        let item = getItem((indexPath as NSIndexPath).row)
         let coordinate = CLLocationCoordinate2D(latitude: item.Latitude, longitude: item.Longitude)
-        let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: [NSObject : AnyObject]())
-        
+
         let annot = MKPointAnnotation()
         annot.title = item.Label
         annot.coordinate = coordinate
         
         mapView.addAnnotation(annot)
         
-        doneButton.enabled = true
+        doneButton.isEnabled = true
         
-        tableView.hidden = true
+        tableView.isHidden = true
         searchBar.text = ""
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
-        searchBar.searchBarStyle = UISearchBarStyle.Default
+        searchBar.searchBarStyle = UISearchBarStyle.default
         
         self._destination = item
         
         zoomMapView()
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if nil != _searchResults {
             return _searchResults.count
         } else if nil != _recentResults {
@@ -128,7 +127,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         }
     }
     
-    func getItem(atIndex: Int) -> GPS {
+    func getItem(_ atIndex: Int) -> GPS {
         var item : GPS!
         if nil != _searchResults {
             item = _searchResults![atIndex]
@@ -138,53 +137,53 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         return item
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: _cellIdentifier)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: _cellIdentifier)
         
-        let item = getItem(indexPath.row)
+        let item = getItem((indexPath as NSIndexPath).row)
         
         cell.textLabel?.text = item.Label
         cell.detailTextLabel?.text = item.SubLabel
         return cell
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         performSearch()
     }
     
-    func searchBarResultsListButtonClicked(searchBar: UISearchBar) {
+    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
         performSearch()
     }
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        tableView.hidden = false
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        tableView.isHidden = false
         searchBar.showsCancelButton = true
-        searchBar.searchBarStyle = UISearchBarStyle.Default
+        searchBar.searchBarStyle = UISearchBarStyle.default
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        tableView.hidden = false
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        tableView.isHidden = false
         searchBar.showsCancelButton = true
-        searchBar.searchBarStyle = UISearchBarStyle.Default
+        searchBar.searchBarStyle = UISearchBarStyle.default
         performSearch()
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        tableView.hidden = true
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        tableView.isHidden = true
         searchBar.showsCancelButton = false
         searchBar.text = ""
-        searchBar.searchBarStyle = UISearchBarStyle.Minimal
+        searchBar.searchBarStyle = UISearchBarStyle.minimal
         searchBar.resignFirstResponder()
     }
     
     func performSearch() {
-        if nil != searchBar.text && !searchBar.text.isEmpty {
+        if nil != searchBar.text && !(searchBar.text?.isEmpty)! {
             let request = MKLocalSearchRequest()
             
-            if nil != mapView.userLocation && nil != mapView.userLocation.location  {
-                let user = mapView.userLocation.location.coordinate
+            if nil != mapView.userLocation.location  {
+                let user = mapView.userLocation.location?.coordinate
                 
-                let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(user, 500, 500))
+                let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(user!, 500, 500))
                 
                 request.region = adjustedRegion
             }
@@ -194,18 +193,17 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
             request.region = mapView.region
             
             let search = MKLocalSearch(request: request)
-            search.startWithCompletionHandler(searchCompleteHandler)
+            search.start(completionHandler: searchCompleteHandler as! MKLocalSearchCompletionHandler)
         }
     }
     
-    func searchCompleteHandler(response: MKLocalSearchResponse!, error: NSError!) {
+    func searchCompleteHandler(_ response: MKLocalSearchResponse!, error: NSError!) {
         if nil != response {
             
             var items = [GPS]()
             for result in response.mapItems {
-                if let mapItem = result as? MKMapItem {
-                    items.append(GPS(fromPlacemark: mapItem))
-                }
+                let mapItem = result as MKMapItem
+                items.append(GPS(fromPlacemark: mapItem))
             }
             
             _searchResults = items
@@ -216,7 +214,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     
     // ******************** Map View Stuff ****************************** /
     
-    func mapView(mapView: MKMapView, didUpdateUserLocation: MKUserLocation) {
+    func mapView(_ mapView: MKMapView, didUpdate didUpdateUserLocation: MKUserLocation) {
         if !didZoomToUserLocation {
             zoomMapView()
             didZoomToUserLocation = true
@@ -224,12 +222,12 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     }
     
     func zoomMapView() {
-        if nil != _destination && nil != mapView.userLocation && nil != mapView.userLocation.location {
+        if nil != _destination {
             //set zoom such that the users location and the destination are in frame plus a nominal margin of 10%
-            let user = mapView.userLocation.location.coordinate
+            let user = mapView.userLocation.location?.coordinate
             let destination = CLLocationCoordinate2D(latitude: _destination.Latitude, longitude: _destination.Longitude)
             
-            let userPoint = MKMapPointForCoordinate(user)
+            let userPoint = MKMapPointForCoordinate(user!)
             let destinationPoint = MKMapPointForCoordinate(destination)
             
             let userRect = MKMapRectMake(userPoint.x, userPoint.y, 100, 100)
@@ -244,39 +242,39 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
             let location = CLLocationCoordinate2D(latitude: _destination.Latitude, longitude: _destination.Longitude)
             let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(location, 500, 500))
             mapView.setRegion(adjustedRegion, animated: false)
-        } else if mapView.userLocation != nil && mapView.userLocation.location != nil {
-            let location = mapView.userLocation.location.coordinate
-            let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(location, 500, 500))
+        } else if mapView.userLocation.location != nil {
+            let location = mapView.userLocation.location?.coordinate
+            let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(location!, 500, 500))
             mapView.setRegion(adjustedRegion, animated: false)
         }
     }
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if !(annotation is MKPointAnnotation) {
             return nil
         }
         
         let reuseId = "destination_annotation_view"
-        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        var anView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
         if anView == nil {
             anView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            anView.enabled = true
-            anView.canShowCallout = true
-            anView.draggable = true
+            anView?.isEnabled = true
+            anView?.canShowCallout = true
+            anView?.isDraggable = true
         }
         else {
             //we are re-using a view, update its annotation reference...
-            anView.annotation = annotation
+            anView?.annotation = annotation
         }
         
         return anView
     }
     
-    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         mapView.removeAnnotations(mapView.annotations)
-        let touch_point = gestureRecognizer.locationInView(mapView)
-        let touch_point_coord = mapView.convertPoint(touch_point, toCoordinateFromView: self.mapView)
+        let touch_point = gestureRecognizer.location(in: mapView)
+        let touch_point_coord = mapView.convert(touch_point, toCoordinateFrom: self.mapView)
         
         let annot = MKPointAnnotation()
         annot.coordinate = touch_point_coord
@@ -286,9 +284,9 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         
         CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: touch_point_coord.latitude, longitude: touch_point_coord.longitude), completionHandler: {
             (placemarks, error) in
-            let pm = placemarks as? [CLPlacemark]
-            if nil != pm && pm?.count > 0 {
-                if let p = placemarks[0] as? CLPlacemark {
+            let pm = placemarks as [CLPlacemark]!
+            if pm!.count > 0 {
+                if let p = placemarks?[0] as CLPlacemark! {
                     self._destination.Label = p.name
                     self._destination.SubLabel = p.toLabelString()
                     annot.title = self._destination.Label
@@ -298,19 +296,17 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         
         mapView.addAnnotation(annot)
         
-        doneButton.enabled = true
+        doneButton.isEnabled = true
         
         return true
     }
 
-    private func getElevation(#lat: Double, long:Double) -> Double {
-        
-        var error: NSError?
-        
+    fileprivate func getElevation(lat: Double, _ long:Double) -> Double {
         let service_url = "http://maps.googleapis.com/maps/api/elevation/json?locations=\(lat),\(long)"
-        let url = NSURL(string: service_url)
-        let json = NSData(contentsOfURL: url!)
-        let data : NSDictionary = NSJSONSerialization.JSONObjectWithData(json!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
+        let url = URL(string: service_url)
+        let json = try! Data(contentsOf: url!)
+        
+        let data : NSDictionary = try! JSONSerialization.jsonObject(with: json, options: .mutableContainers) as! NSDictionary
         
         if let results = data["results"] as? NSArray {
             if let container = results[0] as? NSDictionary {

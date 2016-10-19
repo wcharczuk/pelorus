@@ -12,8 +12,8 @@ import CoreMotion
 import CoreData
 
 protocol PelorusNavUpdateReceiverDelegate {
-    func headingUpdated(sender: PelorusNav)
-    func locationUpdated(sender: PelorusNav)
+    func headingUpdated(_ sender: PelorusNav)
+    func locationUpdated(_ sender: PelorusNav)
 }
 
 class PelorusNav : NSObject, CLLocationManagerDelegate {
@@ -25,18 +25,18 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     
     var _appDelegate : AppDelegate!
     
-    private var _motionManager : CMMotionManager!
-    private var _locationManager : CLLocationManager!
+    fileprivate var _motionManager : CMMotionManager!
+    fileprivate var _locationManager : CLLocationManager!
     
-    private var _headingQueue = FixedQueue<Double>()
-    private var _locationQueue = FixedQueue<GPS>()
+    fileprivate var _headingQueue = FixedQueue<Double>()
+    fileprivate var _locationQueue = FixedQueue<GPS>()
     
-    private var _motionQueue : NSOperationQueue = NSOperationQueue()
+    fileprivate var _motionQueue : OperationQueue = OperationQueue()
     
-    private var _currentUserLocationRaw : GPS!
-    private var _currentUserLocation : GPS!
-    private var _currentDestination : GPS!
-    private var _currentDistance : DistanceVector!
+    fileprivate var _currentUserLocationRaw : GPS!
+    fileprivate var _currentUserLocation : GPS!
+    fileprivate var _currentDestination : GPS!
+    fileprivate var _currentDistance : DistanceVector!
     
     var CurrentUserLocation : GPS! {
         get { return _currentUserLocation }
@@ -50,10 +50,10 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         get { return _currentDistance }
     }
     
-    private var _currentRawHeading : Double!
-    private var _currentHeading : Double!
-    private var _currentDestinationHeading: Double!
-    private var _currentHeadingError : Double!
+    fileprivate var _currentRawHeading : Double!
+    fileprivate var _currentHeading : Double!
+    fileprivate var _currentDestinationHeading: Double!
+    fileprivate var _currentHeadingError : Double!
     
     var CurrentHeading : Double! {
         get { return _currentHeading }
@@ -65,7 +65,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         get { return _currentDestinationHeading }
     }
     
-    private var _receiver : PelorusNavUpdateReceiverDelegate!
+    fileprivate var _receiver : PelorusNavUpdateReceiverDelegate!
     var Receiver : PelorusNavUpdateReceiverDelegate! {
         get {
             return _receiver
@@ -74,7 +74,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
     }
     
-    private var _status : String!
+    fileprivate var _status : String!
     var Status : String {
         get {
             return _status
@@ -103,7 +103,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         _currentDistance = nil
     }
     
-    func SetDestination(destination: GPS) {
+    func SetDestination(_ destination: GPS) {
         _currentDestination = destination
         
         CurrentDestinationDataManager.Save(_currentDestination)
@@ -115,7 +115,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
     }
     
-    func ChangeQueueLengths(length: Int) {
+    func ChangeQueueLengths(_ length: Int) {
         _headingQueue.MaxLength = length
         _locationQueue.MaxLength = length
     }
@@ -123,10 +123,10 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     /******* Location Manager Specific Delegates *******/
     
     //location updated
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        var locationArray = locations as NSArray
-        var locationObj = locationArray.lastObject as! CLLocation
-        var coord = locationObj.coordinate
+    func locationManager(_ manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        let locationArray = locations as NSArray
+        let locationObj = locationArray.lastObject as! CLLocation
+        let coord = locationObj.coordinate
         
         let my_lat = coord.latitude
         let my_long = coord.longitude
@@ -161,7 +161,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     }
     
     //heading updated
-    func locationManager(manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
+    func locationManager(_ manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
         
         self._currentRawHeading = newHeading.trueHeading
         
@@ -173,8 +173,8 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
             self._currentHeading = self._currentRawHeading
         }
         
-        let orientation = UIDevice.currentDevice().orientation
-        if orientation == UIDeviceOrientation.LandscapeLeft || orientation == UIDeviceOrientation.LandscapeRight {
+        let orientation = UIDevice.current.orientation
+        if orientation == UIDeviceOrientation.landscapeLeft || orientation == UIDeviceOrientation.landscapeRight {
             _currentHeading = CurrentHeading + 90.0
             
             if _currentHeading > 360.0 {
@@ -184,7 +184,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         
         if _currentDestination != nil && _currentDistance != nil {
             _currentDestinationHeading = _currentDistance.CompassHeading
-            _currentHeadingError = CompassUtil.CalculateBearingDifference(_currentHeading, to: _currentDestinationHeading)
+            _currentHeadingError = CompassUtil.CalculateBearingDifference(_currentHeading, _currentDestinationHeading)
         }
         
         if nil != Receiver {
@@ -193,18 +193,18 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     }
     
     // authorization status
-    func locationManager (manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager (_ manager: CLLocationManager!, didChangeAuthorization status: CLAuthorizationStatus) {
         var shouldAllow = false
         var locationStatus : String = ""
         
         switch status {
-            case CLAuthorizationStatus.Restricted:
+            case CLAuthorizationStatus.restricted:
                 locationStatus = "Restricted Access to location"
                 break;
-            case CLAuthorizationStatus.Denied:
+            case CLAuthorizationStatus.denied:
                 locationStatus = "User denied access to location"
                 break;
-            case CLAuthorizationStatus.NotDetermined:
+            case CLAuthorizationStatus.notDetermined:
                 locationStatus = "Status not determined"
                 _locationManager.requestAlwaysAuthorization();
                 break;
@@ -222,7 +222,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
     }
 
-    private func _startLocationSevices() {
+    fileprivate func _startLocationSevices() {
         if CLLocationManager.locationServicesEnabled() {
             if nil == _locationManager {
                 _locationManager = CLLocationManager()
@@ -242,7 +242,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
     }
     
-    private func _stopLocationServices() {
+    fileprivate func _stopLocationServices() {
         if nil != _locationManager {
             _locationManager.stopUpdatingHeading()
             _locationManager.stopUpdatingLocation()
