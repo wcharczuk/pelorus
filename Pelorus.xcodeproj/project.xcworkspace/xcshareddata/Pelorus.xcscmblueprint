@@ -12,7 +12,6 @@
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "9A191633CA13EF6CC63270FCF1E1BE989DF9C227" : "pelorus\/",
     "87E83918DB5F103D31CDA4FB335E4C3417663D36" : "Circuitis",
-    "958932E9D08E4465709D54DB1E7CECF23B0F442E" : "pelorus\/Vendor\/MagicalRecord\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Pelorus",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -22,11 +21,6 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:wcharczuk\/Circuitis.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "87E83918DB5F103D31CDA4FB335E4C3417663D36"
-    },
-    {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:magicalpanda\/MagicalRecord.git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "958932E9D08E4465709D54DB1E7CECF23B0F442E"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:wcharczuk\/pelorus.git",

@@ -96,7 +96,7 @@
             startingLineNumber = "77"
             endingLineNumber = "77"
             landmarkName = "shouldSmoothCompassChanged(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -112,7 +112,7 @@
             startingLineNumber = "82"
             endingLineNumber = "82"
             landmarkName = "shouldSmoothLocationChanged(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -128,7 +128,7 @@
             startingLineNumber = "57"
             endingLineNumber = "57"
             landmarkName = "UserPreferences"
-            landmarkType = "3">
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -144,7 +144,7 @@
             startingLineNumber = "72"
             endingLineNumber = "72"
             landmarkName = "UserPreferences"
-            landmarkType = "3">
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pelorus/DestinationSelectorController.swift"
-            timestampString = "463166499.820807"
+            timestampString = "498796609.07323"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "zoomMapView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pelorus/DestinationSelectorController.swift"
-            timestampString = "463166499.820807"
+            timestampString = "498796609.07323"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
             landmarkName = "zoomMapView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pelorus/DestinationSelectorController.swift"
-            timestampString = "463166499.820807"
+            timestampString = "498796609.07323"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "zoomMapView()"
             landmarkType = "7">
          </BreakpointContent>

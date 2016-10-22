@@ -12,13 +12,21 @@ import CoreData
 struct CurrentDestinationDataManager {
     
     static func Fetch() -> GPS! {
+        let defaults = UserDefaults.standard
+        if nil != defaults.object(forKey: "current_destination") {
+            return defaults.object(forKey: "current_destination") as! GPS
+        }
         return nil
     }
     
     static func Save(_ destination: GPS!) {
+        let defaults = UserDefaults.standard
+        defaults.set(destination, forKey: "current_destination")
     }
     
     static func Purge() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "current_destination")
     }
     
 }

@@ -7,13 +7,11 @@
 //
 
 import UIKit
-import MagicalRecord
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
 
     var window: UIWindow?
-    fileprivate var _managedObjectModel: NSManagedObjectModel!
     
     var forcedOrientation : UIInterfaceOrientationMask!
     
@@ -26,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             NavManager = PelorusNav(appDelegate: self)
             NavManager.Start()
         }
-        MagicalRecord.setupCoreDataStack()
         return true
     }
 
@@ -41,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if nil != NavManager {
             NavManager.Stop()
         }
-        MagicalRecord.cleanUp();
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -61,8 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if nil != NavManager {
             NavManager.Stop()
         }
-        
-        MagicalRecord.cleanUp();
     }
     
     private func application(_ application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> Int {

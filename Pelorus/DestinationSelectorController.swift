@@ -193,15 +193,28 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
             request.region = mapView.region
             
             let search = MKLocalSearch(request: request)
-            search.start(completionHandler: searchCompleteHandler as! MKLocalSearchCompletionHandler)
+            search.start(completionHandler: { response, error in
+                guard let response = response else {
+                    print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
+                    return
+                }
+                var items = [GPS]()
+                for result in response.mapItems {
+                    let mapItem = result as MKMapItem
+                    items.append(GPS(fromPlacemark: mapItem))
+                }
+                self._searchResults = items
+                
+                self.tableView.reloadData()
+            })
         }
     }
     
-    func searchCompleteHandler(_ response: MKLocalSearchResponse!, error: NSError!) {
+    func searchCompleteHandler(_ response: MKLocalSearchResponse?, error: NSError?) {
         if nil != response {
             
             var items = [GPS]()
-            for result in response.mapItems {
+            for result in response!.mapItems {
                 let mapItem = result as MKMapItem
                 items.append(GPS(fromPlacemark: mapItem))
             }

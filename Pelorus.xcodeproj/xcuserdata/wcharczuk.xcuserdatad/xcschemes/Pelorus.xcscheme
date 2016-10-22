@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B389402A1A12DC4C0022E281"
+               BlueprintIdentifier = "B36689DD1DB72D8600BD2BA2"
                BuildableName = "PelorusTests.xctest"
                BlueprintName = "PelorusTests"
                ReferencedContainer = "container:Pelorus.xcodeproj">
@@ -60,7 +60,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B389402A1A12DC4C0022E281"
+               BlueprintIdentifier = "B36689DD1DB72D8600BD2BA2"
                BuildableName = "PelorusTests.xctest"
                BlueprintName = "PelorusTests"
                ReferencedContainer = "container:Pelorus.xcodeproj">

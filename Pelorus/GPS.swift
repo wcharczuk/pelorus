@@ -26,8 +26,8 @@ struct GPS {
         self.Elevation = 0.0
         self.Latitude = (fromPlacemark.placemark.location?.coordinate.latitude)!
         self.Longitude = (fromPlacemark.placemark.location?.coordinate.longitude)!
-        self.Label = fromPlacemark.name
-        self.SubLabel = fromPlacemark.placemark.toLabelString()
+        self.Label = fromPlacemark.name!
+        self.SubLabel = fromPlacemark.placemark.title
     }
     
     var Label : String!
