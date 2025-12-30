@@ -1,0 +1,3 @@
+[submodule "Vendor/sqlite"]
+	path = Vendor/sqlite
+	url = https://github.com/stephencelis/SQLite.swift

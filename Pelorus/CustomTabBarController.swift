@@ -9,48 +9,44 @@
 import UIKit
 
 class CustomTabBarController : UITabBarController, UITabBarControllerDelegate {
-    
-    override init() {
-        super.init()
+
+    var forcedOrientation : UIInterfaceOrientationMask?
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.delegate = self
     }
-    
-    var forcedOrientation : UIInterfaceOrientationMask!
-    
-    required init(coder aDecoder: NSCoder) {
+
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.delegate = self
     }
-    
-    override func supportedInterfaceOrientations() -> Int {
-        if nil != self.forcedOrientation {
-            return Int(self.forcedOrientation.rawValue)
-        } else {
-            return Int(UIInterfaceOrientationMask.All.rawValue)
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if let selected = selectedViewController {
+            if let navController = selected as? UINavigationController,
+               let topVC = navController.topViewController {
+                return topVC.supportedInterfaceOrientations
+            }
+            return selected.supportedInterfaceOrientations
         }
+        return .all
     }
-    
-    override func shouldAutorotate() -> Bool {
+
+    override var shouldAutorotate: Bool {
         return true
     }
-    
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        let themed_view_controller = viewController as? ThemedViewController
-        let app_delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        
-        if nil != themed_view_controller {
-            self.forcedOrientation = themed_view_controller!.forcedOrientation
-            app_delegate.forcedOrientation = themed_view_controller!.forcedOrientation
-        } else {
-            let nav_controller = viewController as? UINavigationController
-            
-            if nil != nav_controller {
-                let themed_view_controller_sub = nav_controller!.viewControllers.first as? ThemedViewController
-                if nil != themed_view_controller_sub {
-                    self.forcedOrientation = themed_view_controller_sub!.forcedOrientation
-                    app_delegate.forcedOrientation = themed_view_controller_sub!.forcedOrientation
-                }
-            }
+
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        if let themedViewController = viewController as? ThemedViewController {
+            self.forcedOrientation = themedViewController.forcedOrientation
+            appDelegate.forcedOrientation = themedViewController.forcedOrientation
+        } else if let navController = viewController as? UINavigationController,
+                  let themedViewController = navController.viewControllers.first as? ThemedViewController {
+            self.forcedOrientation = themedViewController.forcedOrientation
+            appDelegate.forcedOrientation = themedViewController.forcedOrientation
         }
     }
 }

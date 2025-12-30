@@ -121,7 +121,7 @@ struct CompassUtil {
         
         if(from < to) {
             //if from is less than to, to is either clockwise (right) or anti-clockwise to zero (left
-            let to_to_zero = (2*M_PI) - to
+            let to_to_zero = (2*Double.pi) - to
             let from_to_zero = from
             
             let cw = to - from
@@ -135,7 +135,7 @@ struct CompassUtil {
         } else {
             //here, from is ahead of to. the 'to zero' for from will be 360 - from
             let to_to_zero = to
-            let from_to_zero = (2*M_PI) - from
+            let from_to_zero = (2*Double.pi) - from
             
             let cw = to - from //this will be negative!!
             let acw = to_to_zero + from_to_zero
@@ -170,10 +170,10 @@ struct CompassUtil {
     
     static func AddRadians(_ base:Double, addition:Double) -> Double {
         let new_base = base + addition
-        if new_base > (2*M_PI) {
-            return new_base - (2*M_PI)
+        if new_base > (2*Double.pi) {
+            return new_base - (2*Double.pi)
         } else if new_base < 0 {
-            return new_base + (2*M_PI)
+            return new_base + (2*Double.pi)
         } else {
             return new_base
         }
@@ -191,7 +191,7 @@ struct CompassUtil {
     }
     
     static func ToRadians(_ value:Double) -> Double {
-        return value * M_PI / 180.0
+        return value * Double.pi / 180.0
     }
     
     static func DegreesToCompassRadians(_ value: Double) -> Double {
@@ -200,11 +200,11 @@ struct CompassUtil {
     }
     
     static func RadiansToCompassRadians(_ value: Double) -> Double {
-        return (2.0 * M_PI) - value
+        return (2.0 * Double.pi) - value
     }
     
     static func ToDegrees(_ value:Double) -> Double {
-        return value * 180.0 / M_PI
+        return value * 180.0 / Double.pi
     }
 
 }

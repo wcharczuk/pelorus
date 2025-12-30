@@ -12,71 +12,84 @@ import AVFoundation
 import CoreMotion
 
 class CameraFeedView : GraphicsView {
-    
+
     var _session : AVCaptureSession!
     var _captureDevice : AVCaptureDevice!
     var _previewLayer : AVCaptureVideoPreviewLayer!
-    
+
     func beginFeed() {
-        
         UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-        NotificationCenter.default.addObserver(self, selector: #selector(CameraFeedView.handleOrientationChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraFeedView.handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
+
         _session = AVCaptureSession()
-        _session.sessionPreset = AVCaptureSessionPresetPhoto
-        
-        let devices = AVCaptureDevice.devices()
-        for device in devices! {
-            // Make sure this particular device supports video
-            if ((device as AnyObject).hasMediaType(AVMediaTypeVideo)) {
-                if((device as AnyObject).position == AVCaptureDevicePosition.back) {
-                    _captureDevice = device as? AVCaptureDevice
+        _session.sessionPreset = .photo
+
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back)
+        if let device = discoverySession.devices.first {
+            _captureDevice = device
+        }
+
+        if _captureDevice != nil {
+            do {
+                try _session.addInput(AVCaptureDeviceInput(device: _captureDevice))
+            } catch {
+                NSLog("Failed to add capture device input: \(error.localizedDescription)")
+                return
+            }
+
+            _previewLayer = AVCaptureVideoPreviewLayer(session: _session)
+            _previewLayer.videoGravity = .resizeAspectFill
+            self.layer.addSublayer(_previewLayer)
+
+            if let device = _captureDevice {
+                do {
+                    try device.lockForConfiguration()
+                    device.focusMode = .continuousAutoFocus
+                    device.unlockForConfiguration()
+                } catch {
+                    NSLog("Failed to lock device for configuration: \(error.localizedDescription)")
                 }
             }
-        }
-        
-        if _captureDevice != nil {
-            
-            try! _session.addInput(AVCaptureDeviceInput(device: _captureDevice))
-            
-            _previewLayer = AVCaptureVideoPreviewLayer(session: _session)
-            self.layer.addSublayer(_previewLayer)
-            
-            if let device = _captureDevice {
-                try! device.lockForConfiguration()
-                device.focusMode = .continuousAutoFocus
-                device.unlockForConfiguration()
-            }
-            
+
             if !_session.isRunning {
                 _session.startRunning()
             }
-            
-            handleOrientationChange()
+
+            updatePreviewLayerFrame()
+            updatePreviewLayerOrientation()
         }
     }
-    
-    func handleOrientationChange() {
-        
-        let frame_bounds = self.bounds
-        _previewLayer.frame = frame_bounds
-        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-        _previewLayer.contentsGravity = kCAGravityResizeAspectFill
-        _previewLayer.position = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-        
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updatePreviewLayerFrame()
+    }
+
+    func updatePreviewLayerFrame() {
+        guard _previewLayer != nil else { return }
+        _previewLayer.frame = self.bounds
+    }
+
+    @objc func handleOrientationChange() {
+        updatePreviewLayerOrientation()
+    }
+
+    func updatePreviewLayerOrientation() {
+        guard _previewLayer != nil else { return }
+
         let orientation = UIDevice.current.orientation
-        
+
         switch(orientation) {
-            case UIDeviceOrientation.landscapeLeft:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
-            case UIDeviceOrientation.landscapeRight:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
-            case UIDeviceOrientation.portrait:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.portrait
-            case UIDeviceOrientation.portraitUpsideDown:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
+            case .landscapeLeft:
+                _previewLayer.connection?.videoRotationAngle = 0
+            case .landscapeRight:
+                _previewLayer.connection?.videoRotationAngle = 180
+            case .portrait:
+                _previewLayer.connection?.videoRotationAngle = 90
+            case .portraitUpsideDown:
+                _previewLayer.connection?.videoRotationAngle = 270
             default:
-                _previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+                _previewLayer.connection?.videoRotationAngle = 90
         }
     }
 }
@@ -225,16 +238,14 @@ class InterfaceView : GraphicsView {
         
         let primary_color = Themes.Current.PrimaryColor
         
-        let textAttributes : [String : Any] = [
-            NSFontAttributeName : font,
-            NSForegroundColorAttributeName: primary_color,
+        let textAttributes : [NSAttributedString.Key : Any] = [
+            .font : font,
+            .foregroundColor: primary_color,
         ]
         
         let min_dim = min(bounds.size.height, bounds.size.width)
-
         
         let chevron_max_height = min_dim / 4.0
-        
         
         let chevron_height = chevron_max_height / 2.0
         let chevron_width = chevron_max_height / 2.0
@@ -244,7 +255,7 @@ class InterfaceView : GraphicsView {
         ctx?.setStrokeColor(primary_color.cgColor)
         
         let distanceText = CompassUtil.FormatDistance(self.CurrentDistanceMeters) as NSString
-        let text_size = distanceText.size(attributes: textAttributes)
+        let text_size = distanceText.size(withAttributes: textAttributes)
 
         if _isInView() {
 
@@ -347,7 +358,7 @@ class InterfaceView : GraphicsView {
         
         if nil != Destination {
             let destination_text = Destination as NSString
-            let destination_text_size = destination_text.size(attributes: textAttributes)
+            let destination_text_size = destination_text.size(withAttributes: textAttributes)
             let destination_text_rect = CGRect(x: CGFloat(10.0), y: CGFloat(10.0), width: destination_text_size.width, height: destination_text_size.height)
             destination_text.draw(in: destination_text_rect, withAttributes: textAttributes)
         }
@@ -355,32 +366,61 @@ class InterfaceView : GraphicsView {
 }
 
 class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, PelorusNavUpdateReceiverDelegate {
-    
+
     var _motionManager: CMMotionManager!
     var _nav: PelorusNav!
 
     var _navigationShowing = false
-    
+
     var _tapRecognizer : UITapGestureRecognizer!
-    
+
     @IBOutlet var cameraFeedView : CameraFeedView!
     @IBOutlet var interfaceView : InterfaceView!
-    
-    @IBOutlet var setDestinationButton : UIBarButtonItem!
-    
+
+    var setDestinationButton : UIBarButtonItem!
+
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         _nav = self.appDelegate.NavManager
-        
+
+        setDestinationButton = UIBarButtonItem(title: "Set", style: .plain, target: self, action: #selector(setDestinationTransition))
+        navigationItem.rightBarButtonItem = setDestinationButton
+
         _motionManager = CMMotionManager()
         if (_motionManager.isAccelerometerAvailable) {
-            _motionManager.startAccelerometerUpdates(to: OperationQueue(), withHandler: motionUpdate as! CMAccelerometerHandler)
+            _motionManager.startAccelerometerUpdates(to: OperationQueue(), withHandler: motionUpdate)
         }
+
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+
+    @objc func handleOrientationChange() {
+        interfaceView.setNeedsDisplay()
+    }
+
+    // Adjust heading for landscape orientation (camera view rotates with device)
+    func adjustHeadingForOrientation(_ heading: Double?) -> Double? {
+        guard let heading = heading else { return nil }
+
+        let orientation = UIDevice.current.orientation
+        if orientation == .landscapeLeft || orientation == .landscapeRight {
+            var adjusted = heading + 90.0
+            if adjusted > 360.0 {
+                adjusted = adjusted - 360.0
+            }
+            return adjusted
+        }
+        return heading
+    }
+
+    @objc func setDestinationTransition() {
+        self.performSegue(withIdentifier: "selectDestinationSegue", sender: self.navigationController)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -406,36 +446,65 @@ class CameraViewController: ThemedViewController, UIGestureRecognizerDelegate, P
         }
     }
     
-    func motionUpdate(_ data: CMAccelerometerData!, error: NSError!) {
+    func motionUpdate(_ data: CMAccelerometerData?, error: Error?) {
         if nil != data && nil == error {
-            interfaceView.DevicePitch = data.acceleration.z
-            interfaceView.DeviceRoll = data.acceleration.x
-            interfaceView.setNeedsDisplay()
+            let pitch = data?.acceleration.z
+            let roll = data?.acceleration.x
+
+            Task { @MainActor in
+                self.interfaceView.DevicePitch = pitch
+                self.interfaceView.DeviceRoll = roll
+                self.interfaceView.setNeedsDisplay()
+            }
         }
     }
-    
+
     func headingUpdated(_ sender: PelorusNav) {
-        interfaceView.CurrentHeadingError = sender.CurrentHeadingError
-        interfaceView.CurrentHeading = sender.CurrentHeading
-        interfaceView.CurrentDestinationHeading = sender.CurrentDestinationHeading
-        
-        if nil != sender.CurrentDistance {
-            interfaceView.CurrentDistanceMeters = sender.CurrentDistance.DistanceMeters
+        let currentHeading = sender.CurrentHeading
+        let destHeading = sender.CurrentDestinationHeading
+        let headingError = sender.CurrentHeadingError
+        let distanceMeters = sender.CurrentDistance?.DistanceMeters
+
+        Task { @MainActor in
+            let adjustedHeading = self.adjustHeadingForOrientation(currentHeading)
+            self.interfaceView.CurrentHeading = adjustedHeading
+
+            // Recalculate heading error with adjusted heading
+            if let heading = adjustedHeading, let dest = destHeading {
+                self.interfaceView.CurrentHeadingError = CompassUtil.CalculateBearingDifference(heading, dest)
+            } else {
+                self.interfaceView.CurrentHeadingError = headingError
+            }
+
+            self.interfaceView.CurrentDestinationHeading = destHeading
+            self.interfaceView.CurrentDistanceMeters = distanceMeters
+
+            self.interfaceView.setNeedsDisplay()
         }
-        
-        interfaceView.setNeedsDisplay()
     }
-    
+
     func locationUpdated(_ sender: PelorusNav) {
-        interfaceView.CurrentHeadingError = sender.CurrentHeadingError
-        interfaceView.CurrentHeading = sender.CurrentHeading
-        interfaceView.CurrentDestinationHeading = sender.CurrentDestinationHeading
-        
-        if nil != sender.CurrentDistance {
-            interfaceView.CurrentDistanceMeters = sender.CurrentDistance.DistanceMeters
+        let currentHeading = sender.CurrentHeading
+        let destHeading = sender.CurrentDestinationHeading
+        let headingError = sender.CurrentHeadingError
+        let distanceMeters = sender.CurrentDistance?.DistanceMeters
+
+        Task { @MainActor in
+            let adjustedHeading = self.adjustHeadingForOrientation(currentHeading)
+            self.interfaceView.CurrentHeading = adjustedHeading
+
+            // Recalculate heading error with adjusted heading
+            if let heading = adjustedHeading, let dest = destHeading {
+                self.interfaceView.CurrentHeadingError = CompassUtil.CalculateBearingDifference(heading, dest)
+            } else {
+                self.interfaceView.CurrentHeadingError = headingError
+            }
+
+            self.interfaceView.CurrentDestinationHeading = destHeading
+            self.interfaceView.CurrentDistanceMeters = distanceMeters
+
+            self.interfaceView.setNeedsDisplay()
         }
-        
-        interfaceView.setNeedsDisplay()
     }
 }
     

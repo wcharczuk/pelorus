@@ -25,7 +25,7 @@ class CompassView : GraphicsView {
         
         let diameter = _calculateDiameter()
         
-        let _2_pi = CGFloat(2 * M_PI)
+        let _2_pi = CGFloat(2 * Double.pi)
         
         //draw compass and compass rose
         //draw circle
@@ -142,7 +142,7 @@ class CompassView : GraphicsView {
         
         ctx?.saveGState()
         ctx?.setFillColor(Themes.Current.BorderColor.cgColor)
-        ctx?.addArc(center: center, radius:  CGFloat(20.0 * scale), startAngle: 0.0, endAngle: CGFloat(M_PI*2.0), clockwise: true)
+        ctx?.addArc(center: center, radius:  CGFloat(20.0 * scale), startAngle: 0.0, endAngle: CGFloat(Double.pi*2.0), clockwise: true)
         ctx?.fillPath()
         
         //draw the destination compass needle
@@ -212,7 +212,7 @@ class CompassView : GraphicsView {
             distance_text = CompassUtil.FormatDistance(self.DistanceMeters) + " away" as NSString
         }
         
-        let distance_text_size = distance_text.size(attributes: text_attributes)
+        let distance_text_size = distance_text.size(withAttributes: text_attributes)
         
         let dt_x = (bounds.size.width / 2.0) - (distance_text_size.width / 2.0)
         let dt_y = (bounds.size.height / 10.0)

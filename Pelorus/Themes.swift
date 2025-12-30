@@ -54,7 +54,7 @@ class Theme {
 }
 
 struct Themes {
-    
+
     static var Current : Theme {
         get {
             let theme_id = UserPreferences.Theme
@@ -69,9 +69,27 @@ struct Themes {
                 return Themes.Dark_Red
             case 4:
                 return Themes.Hot_Pink
+            case 5:
+                return Themes.System
             default:
-                return Themes.Light_Blue
+                return Themes.System
             }
+        }
+    }
+
+    static var System : Theme {
+        get {
+            return Theme(
+                id: 5,
+                name: "System",
+                primaryColor: UIColor.systemBlue,
+                borderColor: UIColor.label,
+                secondaryColor: UIColor.secondaryLabel,
+                backgroundColor: UIColor.systemBackground,
+                highlightColor: UIColor.systemGray5,
+                primaryFontColor: UIColor.label,
+                primaryFont: UIFont(name: "Avenir Next", size: CGFloat(18.0))!
+            )
         }
     }
     

@@ -13,16 +13,16 @@ class GraphicsView : UIView {
 
     var interfaceOrientation : UIInterfaceOrientation!
     
-    func createTextAttributes(_ fontSize: CGFloat) -> [String : Any] {
-        let textAttributes : [String : Any] = [
-            NSFontAttributeName : Themes.Current.PrimaryFont.withSize(fontSize),
-            NSForegroundColorAttributeName : Themes.Current.PrimaryFontColor,
+    func createTextAttributes(_ fontSize: CGFloat) -> [NSAttributedString.Key : Any] {
+        let textAttributes : [NSAttributedString.Key : Any] = [
+            .font : Themes.Current.PrimaryFont.withSize(fontSize),
+            .foregroundColor : Themes.Current.PrimaryFontColor,
         ]
         return textAttributes
     }
-    
-    func drawText(_ text: NSString, textAttributes: [String : Any]?, withinRect: CGRect, alignCenter: Bool) {
-        let metrics = text.size(attributes: textAttributes)
+
+    func drawText(_ text: NSString, textAttributes: [NSAttributedString.Key : Any]?, withinRect: CGRect, alignCenter: Bool) {
+        let metrics = text.size(withAttributes: textAttributes)
         
         if alignCenter {
             let text_width = metrics.width
@@ -67,14 +67,14 @@ class GraphicsView : UIView {
     }
     
     
-    func drawCompassLabel(_ ctx: CGContext!, x: CGFloat, y: CGFloat, label: NSString, textAttributes: [String: Any], compassDegrees: Double, diameter: CGFloat) {
+    func drawCompassLabel(_ ctx: CGContext!, x: CGFloat, y: CGFloat, label: NSString, textAttributes: [NSAttributedString.Key: Any], compassDegrees: Double, diameter: CGFloat) {
         ctx.saveGState()
         
         let compassRadians = CompassUtil.DegreesToCompassRadians(compassDegrees)
         
         let radius = Double(diameter / 2.0)
         
-        let textSize = label.size(attributes: textAttributes)
+        let textSize = label.size(withAttributes: textAttributes)
         
         let tw2 = Double(textSize.width / 2.0)
         

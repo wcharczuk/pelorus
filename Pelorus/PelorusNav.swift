@@ -17,7 +17,7 @@ protocol PelorusNavUpdateReceiverDelegate {
 }
 
 class PelorusNav : NSObject, CLLocationManagerDelegate {
-    class var CameraViewAngle : Double { get { return 50.9 } } //degrees
+    static var CameraViewAngle : Double { return 50.9 } //degrees
     
     init(appDelegate: AppDelegate) {
         _appDelegate = appDelegate
@@ -105,9 +105,9 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     
     func SetDestination(_ destination: GPS) {
         _currentDestination = destination
-        
-        CurrentDestinationDataManager.Save(_currentDestination)
-        RecentDestinationsDataManager.AddNew(_currentDestination)
+
+        CurrentDestinationDataManager.Save(destination)
+        RecentDestinationsDataManager.AddNew(destination)
         
         if nil != _currentUserLocation {
             _currentDistance = DistanceVector(origin: _currentUserLocation, destination: _currentDestination)
@@ -123,7 +123,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     /******* Location Manager Specific Delegates *******/
     
     //location updated
-    private func locationManager(_ manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locationArray = locations as NSArray
         let locationObj = locationArray.lastObject as! CLLocation
         let coord = locationObj.coordinate
@@ -150,7 +150,7 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
             self._currentUserLocation = self._currentUserLocationRaw
         }
         
-        if(_currentDestination != nil) {
+        if nil != _currentDestination {
             _currentDistance = DistanceVector(origin: CurrentUserLocation, destination: CurrentDestination)
             _currentDestinationHeading = _currentDistance.CompassHeading
         }
@@ -167,21 +167,12 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         
         if UserPreferences.ShouldSmoothCompass {
             self._headingQueue.Enqueue(self._currentRawHeading)
-            
+
             self._currentHeading = CompassUtil.CalculateAverageBearing( self._headingQueue.ToList() )
         } else {
             self._currentHeading = self._currentRawHeading
         }
-        
-        let orientation = UIDevice.current.orientation
-        if orientation == UIDeviceOrientation.landscapeLeft || orientation == UIDeviceOrientation.landscapeRight {
-            _currentHeading = CurrentHeading + 90.0
-            
-            if _currentHeading > 360.0 {
-                _currentHeading = _currentHeading - 360.0
-            }
-        }
-        
+
         if _currentDestination != nil && _currentDistance != nil {
             _currentDestinationHeading = _currentDistance.CompassHeading
             _currentHeadingError = CompassUtil.CalculateBearingDifference(_currentHeading, _currentDestinationHeading)
@@ -192,27 +183,26 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
         }
     }
     
-    // authorization status
-    func locationManager (_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    // authorization status changed (modern iOS 14+ delegate method)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         var shouldAllow = false
         var locationStatus : String = ""
-        
-        switch status {
-            case CLAuthorizationStatus.restricted:
+
+        switch manager.authorizationStatus {
+            case .restricted:
                 locationStatus = "Restricted Access to location"
-                break;
-            case CLAuthorizationStatus.denied:
+            case .denied:
                 locationStatus = "User denied access to location"
-                break;
-            case CLAuthorizationStatus.notDetermined:
+            case .notDetermined:
                 locationStatus = "Status not determined"
-                _locationManager.requestAlwaysAuthorization();
-                break;
-            default:
+                _locationManager.requestWhenInUseAuthorization()
+            case .authorizedAlways, .authorizedWhenInUse:
                 locationStatus = "Allowed to location Access"
                 shouldAllow = true
+            @unknown default:
+                locationStatus = "Unknown authorization status"
         }
-        
+
         if shouldAllow {
             _status = "Access to Location Allowed."
             _locationManager.startUpdatingLocation()
@@ -223,22 +213,29 @@ class PelorusNav : NSObject, CLLocationManagerDelegate {
     }
 
     fileprivate func _startLocationSevices() {
-        if CLLocationManager.locationServicesEnabled() {
-            if nil == _locationManager {
-                _locationManager = CLLocationManager()
+        let isNewLocationManager = (nil == _locationManager)
+
+        if isNewLocationManager {
+            _locationManager = CLLocationManager()
+        }
+
+        _locationManager.delegate = self
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
+        _status = "Location Services starting..."
+
+        _headingQueue = FixedQueue<Double>(maxLength: UserPreferences.SensorSmoothing)
+        _locationQueue = FixedQueue<GPS>(maxLength: UserPreferences.SensorSmoothing)
+
+        // For new location managers, authorization will be checked in locationManagerDidChangeAuthorization delegate.
+        // For existing location managers (resuming from background), we need to restart updates explicitly
+        // since the authorization delegate won't be called again.
+        if !isNewLocationManager {
+            let status = _locationManager.authorizationStatus
+            if status == .authorizedAlways || status == .authorizedWhenInUse {
+                _locationManager.startUpdatingLocation()
+                _locationManager.startUpdatingHeading()
             }
-            
-            _locationManager.delegate = self
-            _locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            _locationManager.startUpdatingLocation()
-            _locationManager.startUpdatingHeading()
-            
-            _status = "Location Services started."
-            
-            _headingQueue = FixedQueue<Double>(maxLength: UserPreferences.SensorSmoothing)
-            _locationQueue = FixedQueue<GPS>(maxLength: UserPreferences.SensorSmoothing)
-        } else {
-            _status = "Location Services are disabled."
         }
     }
     

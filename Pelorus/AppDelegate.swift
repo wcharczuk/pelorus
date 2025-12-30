@@ -17,9 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     var NavManager: PelorusNav!
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        do {
+            try Database.Initialize()
+        } catch {
+            NSLog(error.localizedDescription)
+            return false;
+        }
+
         if nil == NavManager {
             NavManager = PelorusNav(appDelegate: self)
             NavManager.Start()
@@ -46,8 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
-        if nil == NavManager {
+
+        if nil != NavManager {
             NavManager.Start()
         }
     }
@@ -65,6 +70,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         } else {
             return Int(UIInterfaceOrientationMask.all.rawValue)
         }
+    }
+
+    // MARK: UISceneSession Lifecycle
+
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
     }
 }
 

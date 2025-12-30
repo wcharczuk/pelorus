@@ -12,17 +12,23 @@
 		B305C8591A51E56C003564B5 /* MKPlacemarkExtesions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B305C8581A51E56C003564B5 /* MKPlacemarkExtesions.swift */; };
 		B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3083A431A49B7DD00C5D9F1 /* FixedQueue.swift */; };
 		B329AEDF1A1D12AF00FCC3C0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B329AEDE1A1D12AF00FCC3C0 /* CoreGraphics.framework */; };
+		B3337A321DBBE5BD0095DDB6 /* SQLite.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B3702DA01DBBCAC800F15777 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B33DB3DA1A1EB3E0000EDA88 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B33DB3D91A1EB3E0000EDA88 /* AVKit.framework */; };
 		B36689E11DB72D8600BD2BA2 /* PelorusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36689E01DB72D8600BD2BA2 /* PelorusTests.swift */; };
+		B3702DAD1DBBCAD900F15777 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3702DA01DBBCAC800F15777 /* SQLite.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		B3702DAF1DBBCB7500F15777 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3702DAE1DBBCB7500F15777 /* Database.swift */; };
+		B3702DB11DBBE21700F15777 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3702DB01DBBE21700F15777 /* Date.swift */; };
 		B389403C1A12DC5C0022E281 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B389403B1A12DC5C0022E281 /* CoreLocation.framework */; };
 		B3B913BF1A13D685004D1019 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B913BE1A13D685004D1019 /* CoreMotion.framework */; };
 		B3D7F7FD1A448AAE006F903F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7EC1A448AAE006F903F /* AppDelegate.swift */; };
+		B3D7F7FE1A448AAE006F903A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7ED1A448AAE006F903A /* SceneDelegate.swift */; };
+		B3D7F7FE1A448AAE006F903B /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7ED1A448AAE006F903B /* CustomTabBarController.swift */; };
+		B3D7F7FE1A448AAE006F903C /* OrientationAwareNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7ED1A448AAE006F903C /* OrientationAwareNavigationController.swift */; };
 		B3D7F7FF1A448AAE006F903F /* CompassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7EF1A448AAE006F903F /* CompassViewController.swift */; };
 		B3D7F8001A448AAE006F903F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F01A448AAE006F903F /* Configuration.swift */; };
 		B3D7F8011A448AAE006F903F /* DestinationSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F11A448AAE006F903F /* DestinationSelectorController.swift */; };
 		B3D7F8021A448AAE006F903F /* DistanceVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F21A448AAE006F903F /* DistanceVector.swift */; };
 		B3D7F8031A448AAE006F903F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3D7F7F31A448AAE006F903F /* Images.xcassets */; };
-		B3D7F8051A448AAE006F903F /* Pelorus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F51A448AAE006F903F /* Pelorus.xcdatamodeld */; };
 		B3D7F8061A448AAE006F903F /* PelorusNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F71A448AAE006F903F /* PelorusNav.swift */; };
 		B3D7F8071A448AAE006F903F /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F81A448AAE006F903F /* CameraViewController.swift */; };
 		B3D7F8081A448AAE006F903F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7F7F91A448AAE006F903F /* SettingsViewController.swift */; };
@@ -38,6 +44,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B3337A2F1DBBE59E0095DDB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EE247AD21C3F04ED00AE3E12;
+			remoteInfo = "SQLite iOS";
+		};
 		B36689E31DB72D8600BD2BA2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B389400E1A12DC4B0022E281 /* Project object */;
@@ -45,7 +58,83 @@
 			remoteGlobalIDString = B38940151A12DC4B0022E281;
 			remoteInfo = Pelorus;
 		};
+		B3702D9F1DBBCAC800F15777 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247AD31C3F04ED00AE3E12;
+			remoteInfo = "SQLite iOS";
+		};
+		B3702DA11DBBCAC800F15777 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247ADD1C3F04ED00AE3E12;
+			remoteInfo = "SQLiteTests iOS";
+		};
+		B3702DA31DBBCAC800F15777 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247B3C1C3F3ED000AE3E12;
+			remoteInfo = "SQLite Mac";
+		};
+		B3702DA51DBBCAC800F15777 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247B451C3F3ED000AE3E12;
+			remoteInfo = "SQLiteTests Mac";
+		};
+		B3702DA71DBBCAC800F15777 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03A65E5A1C6BB0F50062603F;
+			remoteInfo = "SQLite tvOS";
+		};
+		B3702DA91DBBCAC800F15777 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03A65E631C6BB0F60062603F;
+			remoteInfo = "SQLiteTests tvOS";
+		};
+		B3702DAB1DBBCAC800F15777 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A121AC451CA35C79005A31D1;
+			remoteInfo = "SQLite watchOS";
+		};
+		BE17F2232F01963500D23D63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DEB306E52B61CEF500F9D46B;
+			remoteInfo = "SQLite visionOS";
+		};
+		BE17F2252F01963500D23D63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DEB307112B61CF9500F9D46B;
+			remoteInfo = "SQLiteTests visionOS";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B3337A311DBBE5AC0095DDB6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B3337A321DBBE5BD0095DDB6 /* SQLite.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B305C8541A51E505003564B5 /* CompassUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassUtil.swift; sourceTree = "<group>"; };
@@ -57,10 +146,16 @@
 		B36689DE1DB72D8600BD2BA2 /* PelorusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PelorusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B36689E01DB72D8600BD2BA2 /* PelorusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PelorusTests.swift; sourceTree = "<group>"; };
 		B36689E21DB72D8600BD2BA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = Vendor/sqlite/SQLite.xcodeproj; sourceTree = "<group>"; };
+		B3702DAE1DBBCB7500F15777 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		B3702DB01DBBE21700F15777 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		B38940161A12DC4B0022E281 /* Pelorus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pelorus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B389403B1A12DC5C0022E281 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B3B913BE1A13D685004D1019 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		B3D7F7EC1A448AAE006F903F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B3D7F7ED1A448AAE006F903A /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		B3D7F7ED1A448AAE006F903B /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		B3D7F7ED1A448AAE006F903C /* OrientationAwareNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrientationAwareNavigationController.swift; sourceTree = "<group>"; };
 		B3D7F7EE1A448AAE006F903F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B3D7F7EF1A448AAE006F903F /* CompassViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassViewController.swift; sourceTree = "<group>"; };
 		B3D7F7F01A448AAE006F903F /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -68,7 +163,6 @@
 		B3D7F7F21A448AAE006F903F /* DistanceVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceVector.swift; sourceTree = "<group>"; };
 		B3D7F7F31A448AAE006F903F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B3D7F7F41A448AAE006F903F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B3D7F7F61A448AAE006F903F /* Pelorus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pelorus.xcdatamodel; sourceTree = "<group>"; };
 		B3D7F7F71A448AAE006F903F /* PelorusNav.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PelorusNav.swift; sourceTree = "<group>"; };
 		B3D7F7F81A448AAE006F903F /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		B3D7F7F91A448AAE006F903F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +192,7 @@
 				B329AEDF1A1D12AF00FCC3C0 /* CoreGraphics.framework in Frameworks */,
 				B3B913BF1A13D685004D1019 /* CoreMotion.framework in Frameworks */,
 				B389403C1A12DC5C0022E281 /* CoreLocation.framework in Frameworks */,
+				B3702DAD1DBBCAD900F15777 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +208,22 @@
 			path = PelorusTests;
 			sourceTree = "<group>";
 		};
+		B3702D961DBBCAC800F15777 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B3702DA01DBBCAC800F15777 /* SQLite.framework */,
+				B3702DA21DBBCAC800F15777 /* SQLiteTests iOS.xctest */,
+				B3702DA41DBBCAC800F15777 /* SQLite.framework */,
+				B3702DA61DBBCAC800F15777 /* SQLiteTests Mac.xctest */,
+				B3702DA81DBBCAC800F15777 /* SQLite.framework */,
+				B3702DAA1DBBCAC800F15777 /* SQLiteTests tvOS.xctest */,
+				B3702DAC1DBBCAC800F15777 /* SQLite.framework */,
+				BE17F2242F01963500D23D63 /* SQLite.framework */,
+				BE17F2262F01963500D23D63 /* SQLiteTests visionOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B389400D1A12DC4B0022E281 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +234,7 @@
 				B3D7F7EB1A448AAE006F903F /* Pelorus */,
 				B36689DF1DB72D8600BD2BA2 /* PelorusTests */,
 				B38940171A12DC4B0022E281 /* Products */,
+				B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -140,13 +252,15 @@
 			children = (
 				B3D7F8111A448ABC006F903F /* Core */,
 				B3D7F7EC1A448AAE006F903F /* AppDelegate.swift */,
+				B3D7F7ED1A448AAE006F903A /* SceneDelegate.swift */,
+				B3D7F7ED1A448AAE006F903B /* CustomTabBarController.swift */,
+				B3D7F7ED1A448AAE006F903C /* OrientationAwareNavigationController.swift */,
 				B3D7F7F81A448AAE006F903F /* CameraViewController.swift */,
 				B3D7F7EF1A448AAE006F903F /* CompassViewController.swift */,
 				B3D7F7F11A448AAE006F903F /* DestinationSelectorController.swift */,
 				B3D7F7F91A448AAE006F903F /* SettingsViewController.swift */,
 				B3D7F7ED1A448AAE006F903F /* Main.storyboard */,
 				B3F7D5771A5C768B004782F9 /* Launch Screen.xib */,
-				B3D7F7F51A448AAE006F903F /* Pelorus.xcdatamodeld */,
 				B3D7F7F31A448AAE006F903F /* Images.xcassets */,
 				B3D7F7F41A448AAE006F903F /* Info.plist */,
 			);
@@ -208,8 +322,10 @@
 		B3F7D5791A5C90CF004782F9 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				B3702DB01DBBE21700F15777 /* Date.swift */,
 				B3F7D57A1A5C90E6004782F9 /* CurrentDestinationDataManager.swift */,
 				B3F7D57C1A5C95B7004782F9 /* RecentDestinationsDataManager.swift */,
+				B3702DAE1DBBCB7500F15777 /* Database.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -242,10 +358,12 @@
 				B38940121A12DC4B0022E281 /* Sources */,
 				B38940131A12DC4B0022E281 /* Frameworks */,
 				B38940141A12DC4B0022E281 /* Resources */,
+				B3337A311DBBE5AC0095DDB6 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B3337A301DBBE59E0095DDB6 /* PBXTargetDependency */,
 			);
 			name = Pelorus;
 			productName = Goggles;
@@ -279,12 +397,19 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
 			mainGroup = B389400D1A12DC4B0022E281;
 			productRefGroup = B38940171A12DC4B0022E281 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B3702D961DBBCAC800F15777 /* Products */;
+					ProjectRef = B3702D951DBBCAC800F15777 /* SQLite.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B38940151A12DC4B0022E281 /* Pelorus */,
@@ -292,6 +417,72 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B3702DA01DBBCAC800F15777 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = B3702D9F1DBBCAC800F15777 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B3702DA21DBBCAC800F15777 /* SQLiteTests iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests iOS.xctest";
+			remoteRef = B3702DA11DBBCAC800F15777 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B3702DA41DBBCAC800F15777 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = B3702DA31DBBCAC800F15777 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B3702DA61DBBCAC800F15777 /* SQLiteTests Mac.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests Mac.xctest";
+			remoteRef = B3702DA51DBBCAC800F15777 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B3702DA81DBBCAC800F15777 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = B3702DA71DBBCAC800F15777 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B3702DAA1DBBCAC800F15777 /* SQLiteTests tvOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests tvOS.xctest";
+			remoteRef = B3702DA91DBBCAC800F15777 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B3702DAC1DBBCAC800F15777 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = B3702DAB1DBBCAC800F15777 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BE17F2242F01963500D23D63 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = BE17F2232F01963500D23D63 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BE17F2262F01963500D23D63 /* SQLiteTests visionOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests visionOS.xctest";
+			remoteRef = BE17F2252F01963500D23D63 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B36689DC1DB72D8600BD2BA2 /* Resources */ = {
@@ -331,11 +522,13 @@
 				B3D7F80B1A448AAE006F903F /* UserPreferences.swift in Sources */,
 				B3D7F8011A448AAE006F903F /* DestinationSelectorController.swift in Sources */,
 				B3F7D57B1A5C90E6004782F9 /* CurrentDestinationDataManager.swift in Sources */,
-				B3D7F8051A448AAE006F903F /* Pelorus.xcdatamodeld in Sources */,
 				B3083A441A49B7DD00C5D9F1 /* FixedQueue.swift in Sources */,
 				B305C8591A51E56C003564B5 /* MKPlacemarkExtesions.swift in Sources */,
 				B3D7F8091A448AAE006F903F /* Themes.swift in Sources */,
 				B3D7F7FD1A448AAE006F903F /* AppDelegate.swift in Sources */,
+				B3D7F7FE1A448AAE006F903A /* SceneDelegate.swift in Sources */,
+				B3D7F7FE1A448AAE006F903B /* CustomTabBarController.swift in Sources */,
+				B3D7F7FE1A448AAE006F903C /* OrientationAwareNavigationController.swift in Sources */,
 				B3D7F80A1A448AAE006F903F /* ThemedViewController.swift in Sources */,
 				B3D7F8021A448AAE006F903F /* DistanceVector.swift in Sources */,
 				B3E018F71A5C547000A16553 /* GraphicsView.swift in Sources */,
@@ -343,8 +536,10 @@
 				B3D7F8061A448AAE006F903F /* PelorusNav.swift in Sources */,
 				B3D7F8071A448AAE006F903F /* CameraViewController.swift in Sources */,
 				B3E018F91A5C5AB300A16553 /* CompassView.swift in Sources */,
+				B3702DB11DBBE21700F15777 /* Date.swift in Sources */,
 				B3F7D57D1A5C95B7004782F9 /* RecentDestinationsDataManager.swift in Sources */,
 				B3D7F8081A448AAE006F903F /* SettingsViewController.swift in Sources */,
+				B3702DAF1DBBCB7500F15777 /* Database.swift in Sources */,
 				B305C8571A51E558003564B5 /* GPS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,6 +547,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B3337A301DBBE59E0095DDB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SQLite iOS";
+			targetProxy = B3337A2F1DBBE59E0095DDB6 /* PBXContainerItemProxy */;
+		};
 		B36689E41DB72D8600BD2BA2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B38940151A12DC4B0022E281 /* Pelorus */;
@@ -380,12 +580,12 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = PelorusTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charczuk.PelorusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pelorus.app/Pelorus";
 			};
 			name = Debug;
@@ -400,11 +600,11 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = PelorusTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charczuk.PelorusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pelorus.app/Pelorus";
 			};
 			name = Release;
@@ -447,7 +647,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -487,7 +687,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -502,13 +702,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9Q2FWBTLSX;
 				INFOPLIST_FILE = "$(SRCROOT)/Pelorus/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charczuk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Pelorus;
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -519,13 +720,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9Q2FWBTLSX;
 				INFOPLIST_FILE = "$(SRCROOT)/Pelorus/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charczuk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Pelorus;
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -561,19 +763,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		B3D7F7F51A448AAE006F903F /* Pelorus.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				B3D7F7F61A448AAE006F903F /* Pelorus.xcdatamodel */,
-			);
-			currentVersion = B3D7F7F61A448AAE006F903F /* Pelorus.xcdatamodel */;
-			path = Pelorus.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = B389400E1A12DC4B0022E281 /* Project object */;
 }

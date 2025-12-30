@@ -10,12 +10,20 @@ import UIKit
 import CoreGraphics
 
 class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDelegate {
-    
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+
     var _nav: PelorusNav!
     
     @IBOutlet var compassView : CompassView!
-    @IBOutlet var setDestinationButton : UIBarButtonItem!
-    
+    var setDestinationButton : UIBarButtonItem!
+
     @IBOutlet var destinationText : UILabel!
     var destinationTextTapGesture : UITapGestureRecognizer!
     
@@ -29,18 +37,19 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        forcedOrientation = .portrait
         _nav = self.appDelegate.NavManager
-        
+
+        setDestinationButton = UIBarButtonItem(title: "Set", style: .plain, target: self, action: #selector(setDestinationTransition))
+        navigationItem.rightBarButtonItem = setDestinationButton
+
         destinationTextTapGesture = UITapGestureRecognizer()
         destinationTextTapGesture.numberOfTapsRequired = 1
         destinationTextTapGesture.addTarget(self, action: #selector(CompassViewController.setDestinationTransition))
         destinationText.addGestureRecognizer(destinationTextTapGesture)
         destinationText.isUserInteractionEnabled = true
-        
-        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-        NotificationCenter.default.addObserver(self, selector: #selector(CompassViewController.handleOrientationChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        
+
         setDestinationButton.isEnabled = true
     }
     
@@ -55,41 +64,44 @@ class CompassViewController: ThemedViewController, PelorusNavUpdateReceiverDeleg
         if nil == _nav.CurrentDestination {
             destinationText.text = "Hit \"Set\" to choose a destination."
         } else {
-            if nil != _nav.CurrentDestination.Label {
-                destinationText.text = _nav.CurrentDestination.Label
+            if nil != _nav.CurrentDestination.Label && nil != _nav.CurrentDestination.SubLabel {
+                destinationText.text = "\(_nav.CurrentDestination.Label!)\n\(_nav.CurrentDestination.SubLabel!)"
+            } else if nil != _nav.CurrentDestination.Label {
+                destinationText.text = "\(_nav.CurrentDestination.Label!)"
             } else {
                 destinationText.text = "\(_nav.CurrentDestination.Latitude), \(_nav.CurrentDestination.Longitude)"
             }
         }
     }
-    
-    func handleOrientationChange() {
-        compassView.setNeedsDisplay()
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func setDestinationTransition() {
+    @objc func setDestinationTransition() {
         self.performSegue(withIdentifier: "selectDestinationSegue", sender: self.navigationController)
     }
     
     func headingUpdated(_ sender: PelorusNav) {
-        compassView.CurrentHeading = sender.CurrentHeading
-        compassView.CurrentDestinationHeading = sender.CurrentDestinationHeading
-        compassView.CurrentHeadingError = sender.CurrentHeadingError
-        
-        self.compassView.setNeedsDisplay()
-    }
-    
-    func locationUpdated(_ sender: PelorusNav) {
-        setDestinationButton.isEnabled = true
+        let heading = sender.CurrentHeading
+        let destHeading = sender.CurrentDestinationHeading
+        let headingError = sender.CurrentHeadingError
 
-        if nil != sender.CurrentDistance {
-            compassView.DistanceMeters = sender.CurrentDistance.DistanceMeters
-        } else {
-            compassView.DistanceMeters = nil
+        Task { @MainActor in
+            self.compassView.CurrentHeading = heading
+            self.compassView.CurrentDestinationHeading = destHeading
+            self.compassView.CurrentHeadingError = headingError
+
+            self.compassView.setNeedsDisplay()
+        }
+    }
+
+    func locationUpdated(_ sender: PelorusNav) {
+        let distanceMeters = sender.CurrentDistance?.DistanceMeters
+
+        Task { @MainActor in
+            self.setDestinationButton.isEnabled = true
+            self.compassView.DistanceMeters = distanceMeters
         }
     }
 }

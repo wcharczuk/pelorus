@@ -15,7 +15,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     
     var didZoomToUserLocation = false
     
-    @IBOutlet var doneButton : UIBarButtonItem!
+    var doneButton : UIBarButtonItem!
     @IBOutlet var mapView : MKMapView!
     
     @IBOutlet var searchBar : UISearchBar!
@@ -30,22 +30,25 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         _nav = appDelegate.NavManager
-        
+
+        doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonPressed))
+        navigationItem.rightBarButtonItem = doneButton
+
         mapView.delegate = self
 
         mapView.showsUserLocation = true
         mapView.isZoomEnabled = true
         mapView.isScrollEnabled = true
-        
+
         searchBar.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        
+
         tableView?.register(UITableViewCell.self, forCellReuseIdentifier: _cellIdentifier)
-        
+
         let long_press = UILongPressGestureRecognizer()
         long_press.minimumPressDuration = 1.0
         long_press.delegate = self
@@ -56,10 +59,34 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.title = "Choose a Destination"
-        
+
         didZoomToUserLocation = false
         _destination = _nav.CurrentDestination
-        
+
+        // Apply theme to search bar and table view
+        let currentTheme = Themes.Current
+
+        tableView.backgroundColor = currentTheme.BackgroundColor
+
+        // Style search bar container
+        searchBar.barTintColor = currentTheme.BackgroundColor
+        searchBar.backgroundColor = currentTheme.BackgroundColor
+        searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+
+        // Style search text field
+        searchBar.searchTextField.backgroundColor = currentTheme.HighlightColor
+        searchBar.searchTextField.textColor = currentTheme.PrimaryFontColor
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(
+            string: "Search",
+            attributes: [.foregroundColor: currentTheme.SecondaryColor]
+        )
+
+        // Style search bar icons
+        searchBar.searchTextField.leftView?.tintColor = currentTheme.SecondaryColor
+        if let clearButton = searchBar.searchTextField.value(forKey: "clearButton") as? UIButton {
+            clearButton.tintColor = currentTheme.SecondaryColor
+        }
+
         tableView.isHidden = true
         
         if nil != _nav.CurrentDestination {
@@ -78,12 +105,12 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         zoomMapView()
     }
     
-    @IBAction func doneButton(_ sender: UIBarButtonItem) {
-        
+    @objc func doneButtonPressed() {
+
         if nil != _destination {
             _nav.SetDestination(_destination)
         }
-        
+
         let nc = self.navigationController
         let _ = nc?.popToRootViewController(animated: true)
     }
@@ -91,7 +118,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         mapView.removeAnnotations(mapView.annotations)
         
-        let item = getItem((indexPath as NSIndexPath).row)
+        let item = getItem(indexPath.row)
         let coordinate = CLLocationCoordinate2D(latitude: item.Latitude, longitude: item.Longitude)
 
         let annot = MKPointAnnotation()
@@ -106,7 +133,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         searchBar.text = ""
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
-        searchBar.searchBarStyle = UISearchBarStyle.default
+        searchBar.searchBarStyle = UISearchBar.Style.default
         
         self._destination = item
         
@@ -138,10 +165,15 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: _cellIdentifier)
-        
-        let item = getItem((indexPath as NSIndexPath).row)
-        
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: _cellIdentifier)
+
+        let item = getItem(indexPath.row)
+        let currentTheme = Themes.Current
+
+        cell.backgroundColor = currentTheme.BackgroundColor
+        cell.textLabel?.textColor = currentTheme.PrimaryFontColor
+        cell.detailTextLabel?.textColor = currentTheme.SecondaryColor
+
         cell.textLabel?.text = item.Label
         cell.detailTextLabel?.text = item.SubLabel
         return cell
@@ -158,13 +190,13 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView.isHidden = false
         searchBar.showsCancelButton = true
-        searchBar.searchBarStyle = UISearchBarStyle.default
+        searchBar.searchBarStyle = UISearchBar.Style.default
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         tableView.isHidden = false
         searchBar.showsCancelButton = true
-        searchBar.searchBarStyle = UISearchBarStyle.default
+        searchBar.searchBarStyle = UISearchBar.Style.default
         performSearch()
     }
     
@@ -172,18 +204,18 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         tableView.isHidden = true
         searchBar.showsCancelButton = false
         searchBar.text = ""
-        searchBar.searchBarStyle = UISearchBarStyle.minimal
+        searchBar.searchBarStyle = UISearchBar.Style.minimal
         searchBar.resignFirstResponder()
     }
     
     func performSearch() {
         if nil != searchBar.text && !(searchBar.text?.isEmpty)! {
-            let request = MKLocalSearchRequest()
+            let request = MKLocalSearch.Request()
             
             if nil != mapView.userLocation.location  {
                 let user = mapView.userLocation.location?.coordinate
                 
-                let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(user!, 500, 500))
+                let adjustedRegion = mapView.regionThatFits(MKCoordinateRegion(center: user!, latitudinalMeters: 500, longitudinalMeters: 500))
                 
                 request.region = adjustedRegion
             }
@@ -210,7 +242,7 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         }
     }
     
-    func searchCompleteHandler(_ response: MKLocalSearchResponse?, error: NSError?) {
+    func searchCompleteHandler(_ response: MKLocalSearch.Response?, error: NSError?) {
         if nil != response {
             
             var items = [GPS]()
@@ -238,26 +270,28 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         if nil != _destination {
             //set zoom such that the users location and the destination are in frame plus a nominal margin of 10%
             let user = mapView.userLocation.location?.coordinate
-            let destination = CLLocationCoordinate2D(latitude: _destination.Latitude, longitude: _destination.Longitude)
-            
-            let userPoint = MKMapPointForCoordinate(user!)
-            let destinationPoint = MKMapPointForCoordinate(destination)
-            
-            let userRect = MKMapRectMake(userPoint.x, userPoint.y, 100, 100)
-            let destinationRect = MKMapRectMake(destinationPoint.x, destinationPoint.y, 100, 100);
+            if nil != user {
+                let destination = CLLocationCoordinate2D(latitude: _destination.Latitude, longitude: _destination.Longitude)
+                
+                let userPoint = MKMapPoint(user!)
+                let destinationPoint = MKMapPoint(destination)
 
-            let unionRect = MKMapRectUnion(userRect, destinationRect)
-            
-            let unionRectThatFits = mapView.mapRectThatFits(unionRect)
-            
-            mapView.setVisibleMapRect(unionRectThatFits, edgePadding:UIEdgeInsetsMake(75, 10, 10, 10), animated:false)
-        } else if nil != _destination {
-            let location = CLLocationCoordinate2D(latitude: _destination.Latitude, longitude: _destination.Longitude)
-            let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(location, 500, 500))
-            mapView.setRegion(adjustedRegion, animated: false)
-        } else if mapView.userLocation.location != nil {
+                let userRect = MKMapRect(x: userPoint.x, y: userPoint.y, width: 100, height: 100)
+                let destinationRect = MKMapRect(x: destinationPoint.x, y: destinationPoint.y, width: 100, height: 100)
+
+                let unionRect = userRect.union(destinationRect)
+
+                let unionRectThatFits = mapView.mapRectThatFits(unionRect)
+
+                mapView.setVisibleMapRect(unionRectThatFits, edgePadding: UIEdgeInsets(top: 75, left: 10, bottom: 10, right: 10), animated: false)
+            } else {
+                let location = CLLocationCoordinate2D(latitude: _destination.Latitude, longitude: _destination.Longitude)
+                let adjustedRegion = mapView.regionThatFits(MKCoordinateRegion(center: location, latitudinalMeters: 500, longitudinalMeters: 500))
+                mapView.setRegion(adjustedRegion, animated: false)
+            }
+        } else if nil == _destination && mapView.userLocation.location != nil {
             let location = mapView.userLocation.location?.coordinate
-            let adjustedRegion = mapView.regionThatFits(MKCoordinateRegionMakeWithDistance(location!, 500, 500))
+            let adjustedRegion = mapView.regionThatFits(MKCoordinateRegion(center: location!, latitudinalMeters: 500, longitudinalMeters: 500))
             mapView.setRegion(adjustedRegion, animated: false)
         }
     }
@@ -297,9 +331,8 @@ class DestinationSelectorController: UIViewController, UIGestureRecognizerDelega
         
         CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: touch_point_coord.latitude, longitude: touch_point_coord.longitude), completionHandler: {
             (placemarks, error) in
-            let pm = placemarks as [CLPlacemark]!
-            if pm!.count > 0 {
-                if let p = placemarks?[0] as CLPlacemark! {
+            if let pm = placemarks, pm.count > 0 {
+                if let p = pm.first {
                     self._destination.Label = p.name
                     self._destination.SubLabel = p.toLabelString()
                     annot.title = self._destination.Label

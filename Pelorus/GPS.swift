@@ -15,11 +15,21 @@ struct GPS {
     var Latitude : Double
     var Longitude : Double
     var Elevation : Double
+    var Label : String!
+    var SubLabel : String!
     
     init(latitude: Double, longitude: Double, elevation: Double) {
         self.Latitude = latitude
         self.Longitude = longitude
         self.Elevation = elevation
+    }
+    
+    init(latitude: Double, longitude: Double, elevation: Double, label: String!, subLabel:String!) {
+        self.Latitude = latitude
+        self.Longitude = longitude
+        self.Elevation = elevation
+        self.Label = label
+        self.SubLabel = subLabel
     }
     
     init(fromPlacemark: MKMapItem) {
@@ -29,9 +39,6 @@ struct GPS {
         self.Label = fromPlacemark.name!
         self.SubLabel = fromPlacemark.placemark.title
     }
-    
-    var Label : String!
-    var SubLabel : String!
     
     func equals(_ other: GPS) -> Bool {
         return self.Label == other.Label && self.Latitude == other.Latitude && self.Longitude == other.Longitude

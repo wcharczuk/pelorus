@@ -9,48 +9,91 @@
 import UIKit
 
 class ThemedViewController : UIViewController {
-    
+
     var appDelegate : AppDelegate!
+    var forcedOrientation : UIInterfaceOrientationMask?
+
+    private var _statusBarHidden = false
 
     override func viewDidLoad() {
         self.appDelegate = UIApplication.shared.delegate as! AppDelegate
         super.viewDidLoad()
     }
-    
+
+    override var prefersStatusBarHidden: Bool {
+        return _statusBarHidden
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
+        let currentTheme = Themes.Current
+        let isSystemTheme = currentTheme.Id == 5
+
         self.navigationController?.navigationBar.isTranslucent = false
         self.tabBarController?.tabBar.isTranslucent = false
-        
-        if nil != Themes.Current.MenubarBackgroundColor {
-            self.navigationController?.navigationBar.barTintColor = Themes.Current.MenubarBackgroundColor!
-            self.tabBarController?.tabBar.barTintColor = Themes.Current.MenubarBackgroundColor!
-            
-            UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.none)
-        } else {
-            
+
+        // Configure navigation bar appearance
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+
+        // Configure tab bar appearance
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+
+        if isSystemTheme {
+            // Use system default colors that adapt to light/dark mode
+            navBarAppearance.backgroundColor = UIColor.systemBackground
+            tabBarAppearance.backgroundColor = UIColor.systemBackground
+
             self.navigationController?.navigationBar.barTintColor = nil
             self.tabBarController?.tabBar.barTintColor = nil
-            UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.none)
-        }
-        
-        if nil != Themes.Current.MenubarFontColor {
-            let color = Themes.Current.MenubarFontColor!
-            let textAttributes : [String: Any]? = [
-                NSForegroundColorAttributeName : color
-            ]
-            
-            self.navigationController?.navigationBar.titleTextAttributes = textAttributes
-            self.navigationController?.navigationBar.tintColor = color
+            self.navigationController?.navigationBar.tintColor = UIColor.systemBlue
+            self.tabBarController?.tabBar.tintColor = UIColor.systemBlue
 
-            self.tabBarController?.tabBar.tintColor = color
+            self.view.window?.backgroundColor = UIColor.systemBackground
 
+            _statusBarHidden = false
+            setNeedsStatusBarAppearanceUpdate()
+        } else if let menubarBgColor = currentTheme.MenubarBackgroundColor {
+            navBarAppearance.backgroundColor = menubarBgColor
+            tabBarAppearance.backgroundColor = menubarBgColor
+
+            self.navigationController?.navigationBar.barTintColor = menubarBgColor
+            self.tabBarController?.tabBar.barTintColor = menubarBgColor
+
+            self.view.window?.backgroundColor = menubarBgColor
+
+            _statusBarHidden = true
+            setNeedsStatusBarAppearanceUpdate()
+
+            if let menubarFontColor = currentTheme.MenubarFontColor {
+                let textAttributes : [NSAttributedString.Key: Any] = [
+                    .foregroundColor : menubarFontColor
+                ]
+                navBarAppearance.titleTextAttributes = textAttributes
+                self.navigationController?.navigationBar.tintColor = menubarFontColor
+                self.tabBarController?.tabBar.tintColor = menubarFontColor
+            }
         } else {
-            self.navigationController?.navigationBar.titleTextAttributes = nil
+            navBarAppearance.backgroundColor = UIColor.systemBackground
+            tabBarAppearance.backgroundColor = UIColor.systemBackground
+
+            self.navigationController?.navigationBar.barTintColor = nil
+            self.tabBarController?.tabBar.barTintColor = nil
             self.navigationController?.navigationBar.tintColor = nil
-            
             self.tabBarController?.tabBar.tintColor = nil
+
+            self.view.window?.backgroundColor = UIColor.systemBackground
+
+            _statusBarHidden = false
+            setNeedsStatusBarAppearanceUpdate()
         }
+
+        // Apply the appearances
+        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        self.tabBarController?.tabBar.standardAppearance = tabBarAppearance
+        self.tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
     }
 }

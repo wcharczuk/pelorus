@@ -22,6 +22,7 @@ class SettingsViewController: UITableViewController {
     @IBOutlet var dark_blue : UITableViewCell!
     @IBOutlet var dark_red : UITableViewCell!
     @IBOutlet var hot_pink : UITableViewCell!
+    @IBOutlet var system_theme : UITableViewCell!
     
     var _nav : PelorusNav!
     
@@ -83,39 +84,60 @@ class SettingsViewController: UITableViewController {
     }
 
     func resetAllThemeRows() {
-        light_blue.accessoryType = UITableViewCellAccessoryType.none
-        light_red.accessoryType = UITableViewCellAccessoryType.none
-        dark_blue.accessoryType = UITableViewCellAccessoryType.none
-        dark_red.accessoryType = UITableViewCellAccessoryType.none
-        hot_pink.accessoryType = UITableViewCellAccessoryType.none
+        light_blue.accessoryType = UITableViewCell.AccessoryType.none
+        light_red.accessoryType = UITableViewCell.AccessoryType.none
+        dark_blue.accessoryType = UITableViewCell.AccessoryType.none
+        dark_red.accessoryType = UITableViewCell.AccessoryType.none
+        hot_pink.accessoryType = UITableViewCell.AccessoryType.none
+        system_theme.accessoryType = UITableViewCell.AccessoryType.none
     }
-    
+
     func selectTheme(_ theme_id : Int) {
         resetAllThemeRows()
         switch theme_id {
         case 0:
-            light_blue.accessoryType = UITableViewCellAccessoryType.checkmark
-            break;
+            light_blue.accessoryType = UITableViewCell.AccessoryType.checkmark
         case 1:
-            light_red.accessoryType = UITableViewCellAccessoryType.checkmark
-            break;
+            light_red.accessoryType = UITableViewCell.AccessoryType.checkmark
         case 2:
-            dark_blue.accessoryType = UITableViewCellAccessoryType.checkmark
-            break;
+            dark_blue.accessoryType = UITableViewCell.AccessoryType.checkmark
         case 3:
-            dark_red.accessoryType = UITableViewCellAccessoryType.checkmark
-            break;
+            dark_red.accessoryType = UITableViewCell.AccessoryType.checkmark
         case 4:
-            hot_pink.accessoryType = UITableViewCellAccessoryType.checkmark
-            break;
+            hot_pink.accessoryType = UITableViewCell.AccessoryType.checkmark
+        case 5:
+            system_theme.accessoryType = UITableViewCell.AccessoryType.checkmark
         default:
-            light_blue.accessoryType = UITableViewCellAccessoryType.checkmark
-            break;
+            system_theme.accessoryType = UITableViewCell.AccessoryType.checkmark
+        }
+    }
+
+    // Map row index to theme ID (System is first in the list but has ID 5)
+    func themeIdForRow(_ row: Int) -> Int {
+        switch row {
+        case 0:
+            return 5  // System
+        case 1:
+            return 0  // Light Blue
+        case 2:
+            return 1  // Light Red
+        case 3:
+            return 2  // Dark Blue
+        case 4:
+            return 3  // Dark Red
+        case 5:
+            return 4  // Hot Pink
+        default:
+            return 5  // System
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectTheme((indexPath as NSIndexPath).row)
-        UserPreferences.Theme = (indexPath as NSIndexPath).row
+        // Only handle theme section (section 1)
+        if indexPath.section == 1 {
+            let themeId = themeIdForRow(indexPath.row)
+            selectTheme(themeId)
+            UserPreferences.Theme = themeId
+        }
     }
 }
